@@ -1,0 +1,93 @@
+/* OnboardingScreen.module.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  .header h1 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .mainContent {
+    text-align: center;
+  }
+  
+  .imagePlaceholder {
+    width: 80%;
+    height: 200px;
+    border-radius: 20px;
+    background-color: #333;
+    margin: 20px 0;
+  }
+  
+  .description {
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 0 20px;
+  }
+  
+  .progressIndicators {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .progressDot {
+    width: 20px;
+    height: 4px;
+    background-color: #fff;
+    border-radius: 2px;
+    opacity: 0.5;
+  }
+  
+  .progressDot:first-child {
+    opacity: 1;
+  }
+  
+  .illustrations {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .illustration {
+    width: 80px;
+    height: 60px;
+    background-color: #333;
+    border-radius: 10px;
+  }
+  
+  .buttonsContainer {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 10px 0;
+    background: linear-gradient(to top, #333, transparent);
+  }
+  
+  .signUpButton, .loginButton {
+    width: 45%;
+    padding: 15px 0;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ffa500;
+    cursor: pointer;
+  }
+  
+  .loginButton {
+    background-color: #444;
+  }
+  

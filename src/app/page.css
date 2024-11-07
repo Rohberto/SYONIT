@@ -1,0 +1,246 @@
+/* OnboardingScreen.module.css */
+@font-face {
+  font-family: "Heebo";
+  src: url('./fonts/Heebo-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: "Grimer";
+  src: url('./fonts/BNGrimer.otf') format('opentype');
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  background-color: #000;
+  color: #fff;
+  padding: 20px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header h1 {
+font-family: "Grimer" !important;
+font-style: normal;
+font-size: 24px;
+line-height: 22px;
+leading-trim: both;
+text-edge: cap;
+color: #FFFFFF;
+}
+
+.headerLine {
+  width: 100vw;
+  height: 2px;
+  background-color: #A1A1A1;
+  margin-top: 16px;
+}
+
+
+
+/* Main Content */
+.swiper_container{
+  width: 100%;
+  background-color: transparent;
+}
+.swiper-slide{
+  width: 100%;
+}
+.onboarding_slide, .Home_slide{
+  width: 100%;
+  padding: 40px 0;
+}
+.Home_slide{
+  padding: 20px;
+}
+.onboarding_slide p{
+  font-family: "Grimer" !important;
+font-size: 24.898px;
+leading-trim: both;
+text-edge: cap;
+color: #FFFFFF;
+padding: 20px;
+}
+.small_slide_text{
+  font-size: 18px;
+}
+.onboaring_screen, .Home_screen{
+width: 100%;
+height: 282px;
+border: 1px solid #A1A1A1;
+border-radius: 36px;
+}
+
+/* Progress Indicators */
+
+
+.progressIndicators {
+  display: flex;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.progressDot, .swiper-pagination-bullet  {
+  width: 77px !important;
+  height: 8px !important;
+  background-color: #666 !important;
+  border-radius: 3px !important;
+
+}
+
+.activeDot, .swiper-pagination-bullet-active {
+  background-color: #fff !important;
+}
+.swiper-pagination{
+  display: flex;
+  justify-content: space-between;
+}
+.custom-pagination-bullet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.bullet-label {
+font-family: 'Heebo';
+font-style: normal;
+font-weight: 400;
+font-size: 8px;
+line-height: 12px;
+text-align: center;
+color: #FFFFFF;
+margin-bottom: 7px;
+text-transform: uppercase;
+}
+
+/* Illustrations */
+.illustrations {
+  display: flex;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.illustration {
+  width: 50%;
+  height: 60px;
+}
+
+/* Bottom Gradient, Circle, and Buttons */
+.bottomContainer {
+  position: absolute;
+  width: 100vw;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+height: 290px;
+background: linear-gradient(180deg, rgba(236, 193, 110, 0) 17.45%, rgba(154, 47, 14, 0) 27.4%, rgba(255, 180, 0, 0.84) 76.98%, #FFBB0D 87.4%, #F4E596 100%);
+
+}
+.main-button-container{
+  padding-bottom: 80px;
+}
+.buttonsContainer{
+width: 358px;
+height: 94px;
+background: rgba(201, 201, 201, 0.17);
+border-radius: 65px;
+position: relative;
+display: flex;
+justify-content: space-between;
+}
+.button_circle{
+border-radius: 50%;
+position: absolute;
+width: 93.5px;
+height: 93.5px;
+left: 50%;
+top: 50%;
+background: rgba(0, 0, 0, 0.8);
+transform: translate(-50%, -50%);
+border: 1px solid #fff;
+}
+
+.onboarding_link{
+font-family: "Heebo" !important;
+font-weight: 700;
+font-size: 20px;
+line-height: 26px;
+text-transform: uppercase;
+color: #FFFFFF;
+z-index: 100;
+}
+.onboarding_link_login{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 5%;
+}
+.onboarding_link_sign{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 5%;
+}
+/* points container*/
+.main_point_container{
+  width: 100%;
+  padding: 20px;
+}
+.Points_container{
+height: 50px;
+background: #292828;
+border-radius: 8px;
+width: 100%;
+display: flex;
+justify-content: space-between;
+align-items: center;
+text-align: center;
+}
+.points_text{
+ width: 30%;
+}
+.next_game{
+  width: 40%;
+}
+.points_text h4{
+  font-family: "Heebo" !important;
+font-style: normal;
+font-weight: 400;
+font-size: 8px;
+text-align: center;
+color: #A1A1A1;
+}
+.points_text p {
+font-family: 'Heebo';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+color: #F9C338;
+}
+.next_game{
+background: #A1A1A1;
+border-radius: 8px;
+}
+.next_game h4{
+font-family: 'Heebo';
+font-style: normal;
+font-weight: 400;
+font-size: 8px;
+color: #292828;
+}
+.next_game p{
+font-family: 'Heebo';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+color: #000000;
+}
