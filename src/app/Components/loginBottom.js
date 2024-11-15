@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Link from 'next/link';
 
@@ -6,7 +7,7 @@ const Bottom = () => {
     <>
          <div className='main-button-container'>
     <div className='buttonsContainer'>
-    <Link href={"/"}>
+    <Link href={"/Home"}>
             <span className="onboarding_link onboarding_link_login">Login</span>
           </Link>
           <Link href={"/"}>

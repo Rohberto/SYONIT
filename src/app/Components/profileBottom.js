@@ -7,7 +7,7 @@ const Bottom = () => {
     <>
          <div className='main-button-container'>
     <div className='buttonsContainer'>
-    <Link href={"/"}>
+    <Link href={"/Home"}>
             <span className="onboarding_link onboarding_link_login">Finish</span>
           </Link>
           <Link href={"/signup"}>
