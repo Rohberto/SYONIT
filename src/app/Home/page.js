@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../Components/mainHeader';
-import "./page.css";
+import "./home.css";
 import Points from '../Components/points';
 import "swiper/css";
 import "swiper/css/pagination";
