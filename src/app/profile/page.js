@@ -1,6 +1,9 @@
-"use client"
-import React, {useState, useEffect} from 'react'
-import Header from '../Components/Header'
+"use client";
+
+export const dynamic = "force-dynamic";
+
+import React, {useState, useEffect} from 'react';
+import Header from '../Components/Header';
 import Bottom from '../Components/profileBottom';
 import Image from 'next/image';
 import Pr from "../Assets/pr.png";
@@ -45,6 +48,7 @@ const Profile = () => {
           <input type="file" onChange={handleImageUpload} />
         </div>
       </div>
+      
 
 
         <Bottom/>
