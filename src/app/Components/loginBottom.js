@@ -6,8 +6,12 @@ const Bottom = () => {
     <>
          <div className='main-button-container'>
     <div className='buttonsContainer'>
-      <Link href={"/Home"} className='onboarding_link onboarding_link_login'>Login</Link>
-      <Link href={"/"} className='onboarding_link onboarding_link_sign'>Back</Link>
+    <Link href={"/"}>
+            <span className="onboarding_link onboarding_link_login">Login</span>
+          </Link>
+          <Link href={"/"}>
+            <span className="onboarding_link onboarding_link_sign">Back</span>
+          </Link>
       <div className='button_circle'></div>
     </div>
     </div>
