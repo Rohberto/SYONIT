@@ -11,7 +11,7 @@ const LoginScreen = () => {
       <div className="input-container">
         <div className="input-field">
           <label>Email:</label>
-          <input type="email" placeholder="Enter your email" />
+          <input type="email" placeholder="Enter your emails" />
         </div>
         <div className="input-field">
           <label>Password:</label>
