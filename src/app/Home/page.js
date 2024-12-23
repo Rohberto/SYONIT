@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../Components/mainHeader';
 import "./home.css";
+import { useRouter } from 'next/navigation';
 import Points from '../Components/points';
 import "swiper/css";
 import "swiper/css/pagination";
@@ -13,6 +14,51 @@ import Bottom from '../Components/homeBottom';
 const Home = () => {
   const labels = ['current game', 'Leaderboard', 'Prizes', 'History'];
   const [currentRound, setCurrentRound] = useState(0);
+  const [roomId, setRoomId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [userId, setUserId] = useState("");
+
+  const handleJoinGame = async (e) => {
+    e.stopPropagation();
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/join-game', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId}), // Replace with actual user ID
+      });
+console.log(response);
+      const data = await response.json();
+      setRoomId(data.roomId);
+      setIsLoading(false);
+
+      // Redirect to the assigned room
+    //  window.location.href = `/room/${data.roomId}`;
+    } catch (error) {
+      console.error('Error joining game:', error);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Check if a user ID already exists
+    if (!localStorage.getItem('userId')) {
+      // Generate a random string
+      const userId = Math.random().toString(36).substring(2, 7); // Generates 5 random characters
+      // Save it to localStorage
+      setUserId(userId);
+      localStorage.setItem('userId', userId);
+      console.log(`userId: ${userId}`)
+    } else{
+
+    // Retrieve and log the user ID
+    const savedUserId = localStorage.getItem('userId');
+    setUserId(savedUserId);
+    console.log(`saveduserId: ${savedUserId}`);
+    }
+  }, []);
   const [rounds, setRounds] = useState([
     { yesScore: 1000, noScore: 1000, isPlayed: false },
     { yesScore: 1000, noScore: 1000, isPlayed: false },
@@ -31,14 +77,6 @@ useEffect(() => {
   clickSoundRef.current.load();
   gameplaySoundRef.current = new Audio('/Sounds/game_sound.mp3');
   gameplaySoundRef.current.loop = true; // Loop the background sound
-
-  // Play the gameplay sound
-  gameplaySoundRef.current.play();
-
-  // Cleanup to pause sound when component unmounts
-  return () => {
-    gameplaySoundRef.current.pause();
-  };
 }, []);
 
   const handleNextRound = () => {
@@ -86,7 +124,7 @@ useEffect(() => {
     else if (noScore > yesScore) return 'No';
     return 'Tie';
   };
-
+  const router = useRouter();
   return (
     <div className='home_container'>
         <Header/>
@@ -150,7 +188,7 @@ useEffect(() => {
     <SwiperSlide>
       <div className='Home_slide'>
       <div className='Home_screen'>
-
+        <h1 className='screen_desc'>Leaderboard</h1>
       </div>
       <p>SIMPLE YES OR NO <span className='small_slide_text'>is a mind game about decision making.</span></p>
       </div>
@@ -158,7 +196,7 @@ useEffect(() => {
     <SwiperSlide>
       <div className='Home_slide'>
       <div className='Home_screen'>
-
+      <h1 className='screen_desc'>Prizes</h1>
       </div>
       <p>SIMPLE YES OR NO <span className='small_slide_text'>is a mind game about decision making.</span></p>
       </div>
@@ -166,7 +204,7 @@ useEffect(() => {
     <SwiperSlide>
       <div className='Home_slide'>
       <div className='Home_screen'>
-
+      <h1 className='screen_desc'>History</h1>
       </div>
       <p>SIMPLE YES OR NO <span className='small_slide_text'>is a mind game about decision making.</span></p>
       </div>
@@ -174,7 +212,7 @@ useEffect(() => {
    
    </Swiper>
 
-   <Bottom/>
+   <Bottom handleJoinGame={handleJoinGame} isLoading={isLoading} gameplaySoundRef={gameplaySoundRef}/>
     </div>
   )
 }

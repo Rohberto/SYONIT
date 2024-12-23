@@ -211,6 +211,15 @@ align-items: center;
 text-align: center;
 color: #A1A1A1;
 }
+.screen_desc{
+    text-align: center;
+color: #A1A1A1;
+font-family: 'Grimer';
+font-style: normal;
+font-weight: 400;
+font-size: 32px;
+line-height: 29px;
+}
 .home_bottom{
     margin-top: auto;
 }

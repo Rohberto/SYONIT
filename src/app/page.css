@@ -78,7 +78,12 @@ border: 1px solid #A1A1A1;
 border-radius: 36px;
 display: block;
 }
-
+.onboarding_button{
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+}
 /* Progress Indicators */
 
 
@@ -182,6 +187,10 @@ width: 40%;
 .main_point_container{
   width: 100%;
   padding: 20px;
+}
+.game_point_container{
+  width: 100%;
+  margin: 20px 0;
 }
 .Points_container{
 height: 50px;
