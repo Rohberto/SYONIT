@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const Bottom = () => {
   return (
-    <>
+    <div className='mainBottomContainer'>
          <div className='main-button-container'>
     <div className='buttonsContainer'>
     <Link href={"/Home"}>
@@ -16,8 +16,8 @@ const Bottom = () => {
       <div className='button_circle'></div>
     </div>
     </div>
-      <div className="bottomContainer"></div>
-    </>
+     
+    </div>
   )
 }
 
