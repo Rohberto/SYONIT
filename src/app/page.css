@@ -1,4 +1,10 @@
-/* OnboardingScreen.module.css */
+/* OnboardingScreen.module.css 
+$lime-green: #4BD330ff;
+$blue-ncs: #0088D1ff;
+$prussian-blue: #063759ff;
+$tea-green: #CFF1C7ff;
+$bice-blue: #00689Eff;
+*/
 @font-face {
   font-family: "Heebo";
   src: url('./fonts/Heebo-Medium.ttf') format('truetype');
@@ -7,13 +13,18 @@
   font-family: "Grimer";
   src: url('./fonts/BNGrimer.otf') format('opentype');
 }
+@property --gradient-angle{
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   min-height: 100vh;
-  background-color: #000;
+  background-color: #0088D1ff;
   color: #fff;
   padding: 20px 20px 0 20px;
 }
@@ -32,13 +43,13 @@ font-size: 24px;
 line-height: 22px;
 leading-trim: both;
 text-edge: cap;
-color: #FFFFFF;
+color: #000;
 }
 
 .headerLine {
   width: 100vw;
   height: 2px;
-  background-color: rgba(255, 180, 0, 0.84);
+  background-color: #4BD330ff;
   margin-top: 16px;
 }
 
@@ -65,7 +76,7 @@ color: #FFFFFF;
 font-size: 24.898px;
 leading-trim: both;
 text-edge: cap;
-color: #FFFFFF;
+color: #000;
 padding: 20px;
 }
 .small_slide_text{
@@ -92,7 +103,22 @@ display: block;
   border: none;
   outline: none;
   padding: 0;
+  position: relative;
 }
+
+.buttonsContainer::after, .buttonsContainer::before{
+  content: ' ';
+  position: absolute;
+  inset: -.1rem;
+  border-radius: inherit;
+  background: conic-gradient( from var(--gradient-angle), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), #00689Eff);
+  animation: rotation 2s linear infinite;
+  z-index: -1;
+}
+.buttonsContainer::after{
+  filter: blur(.4rem);
+}
+
 /* Progress Indicators */
 
 
@@ -114,7 +140,7 @@ display: block;
 }
 
 .container .activeDot,.container  .swiper-pagination-bullet-active {
-  background-color: #fff !important;
+  background-color: #4BD330ff !important;
 }
 .container .swiper-pagination{
   display: flex;
@@ -132,13 +158,16 @@ display: block;
 .illustration {
   width: 50%;
   height: 60px;
+  color: #000;
+  background-color: #000;
+  fill: #000;
 }
 
 /* Bottom Gradient, Circle, and Buttons */
 .mainBottomContainer {
   width: 100vw;
 height: 300px;
-background: linear-gradient(180deg, rgba(236, 193, 110, 0) 17.45%, rgba(154, 47, 14, 0) 27.4%, rgba(255, 180, 0, 0.84) 76.98%, #FFBB0D 87.4%, #F4E596 100%);
+background: linear-gradient(180deg, rgba(236, 193, 110, 0) 17.45%, rgba(154, 47, 14, 0) 27.4%, #4BD330ff 76.98%, rgb(78, 158, 60) 87.4%, #CFF1C7ff 100%);
 position: relative;
 }
 .main-button-container{
@@ -150,11 +179,13 @@ position: relative;
 .buttonsContainer{
 width: 358px;
 height: 94px;
-background: rgba(201, 201, 201, 0.17);
+background: #4BD330ff;
+color: #000;
 border-radius: 65px;
 position: relative;
 display: flex;
 justify-content: space-between;
+padding: 5px;
 }
 .button_circle{
 border-radius: 50%;
@@ -166,6 +197,7 @@ top: 50%;
 background: rgba(0, 0, 0, 0.8);
 transform: translate(-50%, -50%);
 border: 1px solid #fff;
+display: block;
 }
 
 .onboarding_link{
@@ -174,7 +206,7 @@ font-weight: 700;
 font-size: 20px;
 line-height: 26px;
 text-transform: uppercase;
-color: #FFFFFF;
+color: #000;
 z-index: 100;
 width: 40%;
 }
@@ -249,4 +281,9 @@ font-style: normal;
 font-weight: 700;
 font-size: 24px;
 color: #000000;
+}
+
+@keyframes rotation {
+  0% { --gradient-angle: 0deg; }
+  100% { --gradient-angle: 360deg}
 }
