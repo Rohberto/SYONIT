@@ -59,7 +59,7 @@ color: #fff;
 .headerLine {
   width: 100vw;
   height: 2px;
-  background-color: #bb44b1;
+  background-color: hsla(260, 98%, 74%, 1);
   margin-top: 16px;
 }
 
@@ -94,8 +94,8 @@ padding: 20px;
 } 
 .onboaring_screen, .Home_screen{
 width: 100%;
-min-height: 282px;
-border: 1px solid #bb44b1;
+min-height: 200px;
+border: 1px solid hsla(260, 98%, 74%, 1);
 border-radius: 36px;
 display: block;
 }
@@ -150,7 +150,7 @@ display: block;
 }
 
 .container .activeDot,.container  .swiper-pagination-bullet-active {
-  background-color: #bb44b1 !important;
+  background-color: hsla(260, 98%, 74%, 1) !important;
 }
 .container .swiper-pagination{
   display: flex;
@@ -173,7 +173,7 @@ display: block;
 /* Bottom Gradient, Circle, and Buttons */
 .mainBottomContainer {
   width: 100vw;
-height: 300px;
+height: 150px;
 background: linear-gradient(180deg, rgba(236, 193, 110, 0) 17.45%, rgba(154, 47, 14, 0) 27.4%, rgb(166, 135, 227) 76.98%, hsla(260, 98%, 74%, 1) 87.4%, hsla(260, 98%, 74%, 1) 100%);
 position: relative;
 }
