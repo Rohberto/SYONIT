@@ -36,7 +36,7 @@ background: hsla(260, 98%, 74%, 1);
   min-height: 100vh;
 background: radial-gradient(circle, hsla(230, 65%, 20%, 1) 22%, hsla(243, 67%, 11%, 1) 87%);
   color: #fff;
-  padding: 20px 20px 0 20px;
+  padding: 20px 20px 150px 20px;
 }
 
 /* Header */
@@ -176,6 +176,9 @@ display: block;
 height: 150px;
 background: linear-gradient(180deg, rgba(236, 193, 110, 0) 17.45%, rgba(154, 47, 14, 0) 27.4%, rgb(166, 135, 227) 76.98%, hsla(260, 98%, 74%, 1) 87.4%, hsla(260, 98%, 74%, 1) 100%);
 position: relative;
+position: fixed;
+bottom: 0;
+left: 0;
 }
 .main-button-container{
   position: absolute;
