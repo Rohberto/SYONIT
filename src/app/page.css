@@ -117,7 +117,7 @@ display: block;
   position: absolute;
   inset: -.1rem;
   border-radius: inherit;
-  background: conic-gradient( from var(--gradient-angle), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), #bb44b1);
+  background: conic-gradient( from var(--gradient-angle), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), #fff);
   animation: rotation 2s linear infinite;
   z-index: -1;
 }
@@ -200,10 +200,103 @@ width: 93.5px;
 height: 93.5px;
 left: 50%;
 top: 50%;
+transform: translate(-50%, -50%);
 background: rgba(0, 0, 0, 0.8);
 transform: translate(-50%, -50%);
 border: 1px solid #fff;
 display: block;
+overflow: hidden;
+}
+
+
+.button_circle:before {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  backdrop-filter: blur(2.1em);
+}
+.button_circle:after {
+  position: absolute;
+  content: "";
+  height: 50%;
+  width: 50%;
+  background-color: hsla(260, 98%, 74%, 1);
+  top: 25%;
+  left: 25%;
+  border-radius: 50%;
+}
+.button_circle div {
+  position: absolute;
+  border-radius: 50%;
+  z-index: -1;
+  animation: scale-up infinite;
+  animation: spin 8s infinite linear;
+}
+@keyframes scale-up {
+  50% {
+    transform: scale(1.8);
+  }
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.button_circle div:nth-child(1) {
+  height: 90%;
+  width: 100%;
+  background-color: #ff057c;
+  left: -5%;
+  top: -5%;
+  animation-duration: 2s;
+  animation-delay: 3s;
+}
+.button_circle div:nth-child(2) {
+  height: 80%;
+  width: 70%;
+  background-color: #800f86;
+  top: 15%;
+  right: -15%;
+  animation-duration: 10s;
+  animation-delay: 7s;
+}
+.button_circle div:nth-child(3) {
+  height: 65%;
+  width: 80%;
+  background-color: #1ba8e9;
+  bottom: -30%;
+  right: -20%;
+  animation-duration: 4s;
+  animation-delay: 2.2s;
+}
+.button_circle div:nth-child(4) {
+  height: 50%;
+  width: 75%;
+  background-color: #34ff78;
+  bottom: -5%;
+  left: 8%;
+  animation-duration: 7s;
+  animation-delay: 6s;
+}
+.button_circle div:nth-child(5) {
+  height: 45%;
+  width: 55%;
+  background-color: #f7fb1f;
+  top: 50%;
+  left: 0;
+  animation-duration: 2.5s;
+  animation-delay: 4s;
+}
+.button_circle div:nth-child(6) {
+  height: 25%;
+  width: 55%;
+  background-color: #ffb326;
+  top: 45%;
+  left: -15%;
+  animation-duration: 9s;
 }
 
 .onboarding_link{
