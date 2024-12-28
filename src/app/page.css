@@ -215,7 +215,7 @@ overflow: hidden;
   height: 100%;
   width: 100%;
   border-radius: 50%;
-  backdrop-filter: blur(2.1em);
+
 }
 .button_circle:after {
   position: absolute;
@@ -231,8 +231,8 @@ overflow: hidden;
   position: absolute;
   border-radius: 50%;
   z-index: -1;
-  animation: scale-up infinite;
-  animation: spin 8s infinite linear;
+  animation: spin 4s infinite linear, scale-up 2s infinite;
+
 }
 @keyframes scale-up {
   50% {
