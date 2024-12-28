@@ -4,6 +4,16 @@ $blue-ncs: #0088D1ff;
 $prussian-blue: #063759ff;
 $tea-green: #CFF1C7ff;
 $bice-blue: #00689Eff;
+
+$oxford-blue: #0B092Eff;
+$tropical-indigo: #A67BFEff;
+$neon-blue: #5072FEff;
+$rich-black: #080919ff;
+$russian-violet: #3C074Aff;
+
+background: hsla(260, 98%, 74%, 1);
+
+  background: radial-gradient(circle, hsla(260, 98%, 74%, 1) 27%, hsla(228, 99%, 65%, 1) 100%);
 */
 @font-face {
   font-family: "Heebo";
@@ -24,7 +34,7 @@ $bice-blue: #00689Eff;
   align-items: center;
   justify-content: space-between;
   min-height: 100vh;
-  background-color: #0088D1ff;
+background: radial-gradient(circle, hsla(230, 65%, 20%, 1) 22%, hsla(243, 67%, 11%, 1) 87%);
   color: #fff;
   padding: 20px 20px 0 20px;
 }
@@ -43,13 +53,13 @@ font-size: 24px;
 line-height: 22px;
 leading-trim: both;
 text-edge: cap;
-color: #000;
+color: #fff;
 }
 
 .headerLine {
   width: 100vw;
   height: 2px;
-  background-color: #4BD330ff;
+  background-color: #bb44b1;
   margin-top: 16px;
 }
 
@@ -76,7 +86,7 @@ color: #000;
 font-size: 24.898px;
 leading-trim: both;
 text-edge: cap;
-color: #000;
+color: #fff;
 padding: 20px;
 }
 .small_slide_text{
@@ -85,7 +95,7 @@ padding: 20px;
 .onboaring_screen, .Home_screen{
 width: 100%;
 min-height: 282px;
-border: 1px solid rgba(255, 180, 0, 0.84);
+border: 1px solid #bb44b1;
 border-radius: 36px;
 display: block;
 }
@@ -111,7 +121,7 @@ display: block;
   position: absolute;
   inset: -.1rem;
   border-radius: inherit;
-  background: conic-gradient( from var(--gradient-angle), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), #00689Eff);
+  background: conic-gradient( from var(--gradient-angle), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), #bb44b1);
   animation: rotation 2s linear infinite;
   z-index: -1;
 }
@@ -140,7 +150,7 @@ display: block;
 }
 
 .container .activeDot,.container  .swiper-pagination-bullet-active {
-  background-color: #4BD330ff !important;
+  background-color: #bb44b1 !important;
 }
 .container .swiper-pagination{
   display: flex;
@@ -158,16 +168,13 @@ display: block;
 .illustration {
   width: 50%;
   height: 60px;
-  color: #000;
-  background-color: #000;
-  fill: #000;
 }
 
 /* Bottom Gradient, Circle, and Buttons */
 .mainBottomContainer {
   width: 100vw;
 height: 300px;
-background: linear-gradient(180deg, rgba(236, 193, 110, 0) 17.45%, rgba(154, 47, 14, 0) 27.4%, #4BD330ff 76.98%, rgb(78, 158, 60) 87.4%, #CFF1C7ff 100%);
+background: linear-gradient(180deg, rgba(236, 193, 110, 0) 17.45%, rgba(154, 47, 14, 0) 27.4%, rgb(166, 135, 227) 76.98%, hsla(260, 98%, 74%, 1) 87.4%, hsla(260, 98%, 74%, 1) 100%);
 position: relative;
 }
 .main-button-container{
@@ -179,8 +186,8 @@ position: relative;
 .buttonsContainer{
 width: 358px;
 height: 94px;
-background: #4BD330ff;
-color: #000;
+background: linear-gradient(90deg, hsla(260, 98%, 74%, 1) 40%, hsla(228, 99%, 65%, 1) 100%);
+color: #fff;
 border-radius: 65px;
 position: relative;
 display: flex;
@@ -206,7 +213,7 @@ font-weight: 700;
 font-size: 20px;
 line-height: 26px;
 text-transform: uppercase;
-color: #000;
+color: #fff;
 z-index: 100;
 width: 40%;
 }
