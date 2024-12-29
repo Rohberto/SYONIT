@@ -1,6 +1,8 @@
 import React from 'react';
 import Bottom from '../Components/loginBottom';
 import Header from '../Components/Header';
+import { FcGoogle } from "react-icons/fc";
+
 import "./login.css";
 const LoginScreen = () => {
   return (
@@ -21,7 +23,7 @@ const LoginScreen = () => {
 
       {/* Sign in with Apple Button */}
       <button className="apple-button">
-        <span className="apple-icon"></span> Sign in with Google
+        <span className="apple-icon"><FcGoogle/> </span> Sign in with Google
       </button>
 
      <Bottom/>

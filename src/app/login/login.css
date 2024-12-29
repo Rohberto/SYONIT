@@ -7,14 +7,15 @@
     width: 100%;
     padding: 30px;
     font-family: "Heebo" !important;
-border: 1px solid #A1A1A1;
+border: 1px solid hsla(260, 98%, 74%, 1) ;
 border-radius: 36px;
+margin: 20px 0;
   }
   
   .input-field {
     display: flex;
     flex-direction: column;
-    background-color: #333;
+    background-color: #fff;
     border-radius: 20px;
     padding: 10px 15px;
     font-family: "Heebo" !important;
@@ -24,7 +25,7 @@ border-radius: 36px;
   .input-field label {
     font-size: 12px;
     text-transform: uppercase;
-    color: #aaa;
+    color: #000;
     margin-bottom: 5px;
     font-family: "Heebo" !important;
     font-weight: 700;
@@ -33,11 +34,18 @@ border-radius: 36px;
   .input-field input {
     background: transparent;
     border: none;
-    color: #fff;
+    color: #000;
     font-size: 14px;
     outline: none;
     font-family: "Heebo" !important;
     font-weight: 700;
+  }
+
+  .input-field input::placeholder{
+    color: #000;
+    font-family: "Heebo" !important;
+    font-size: 12px;
+    font-weight: 400;
   }
   
   /* Sign in with Apple Button */
@@ -51,11 +59,11 @@ border-radius: 36px;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin: 20px 0;
+    margin: 20px auto;
     cursor: pointer;
     width: 80%;
     text-align: center;
-    font-family: "Heebo" !important;
+    font-family: "Grimer" !important;
     font-weight: 700;
   }
   

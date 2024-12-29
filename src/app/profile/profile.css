@@ -5,14 +5,15 @@
     width: 100%;
     padding: 30px;
     font-family: "Heebo" !important;
-border: 1px solid #A1A1A1;
+border: 1px solid hsla(260, 98%, 74%, 1);
 border-radius: 36px;
+margin: 20px 0;
   }
   
   .input-field {
     display: flex;
     flex-direction: column;
-    background-color: #333;
+    background-color: #fff;
     border-radius: 20px;
     padding: 10px 15px;
     font-family: "Heebo" !important;
@@ -31,7 +32,7 @@ border-radius: 36px;
   .input-field input {
     background: transparent;
     border: none;
-    color: #fff;
+    color: #000;
     font-size: 14px;
     outline: none;
     font-family: "Heebo" !important;
@@ -44,5 +45,5 @@ border-radius: 36px;
     align-items: center;
   }
   .profile_pic img{
-    border: 1px solid #fff;
+    border: 1px solid hsla(260, 98%, 74%, 1);
   }
