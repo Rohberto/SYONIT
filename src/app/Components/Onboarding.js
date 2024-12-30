@@ -34,7 +34,7 @@ const OnboardingScreen = () => {
       
 {/* ILLUSTRATIONS */}
 <div className='illustrations_container'>
-  <img src='/syonit-logo.svg' alt='musketeeers'/>
+  <img src='/musketers.svg' alt='musketeeers'/>
 </div>
 
 
