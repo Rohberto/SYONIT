@@ -26,7 +26,7 @@ const OnboardingScreen = () => {
       {/* Header */}
     <Header/>
     <div className='onboarding_about'>
-        <h4>Syonit is a prize-based tourna-musement.</h4>
+        <h4>Syonit is a mind Game where thinking differently is the key to winning.</h4>
         <h4>It Features Elimination Rounds.</h4>
         <h4>Outcomes are determined by your own decision.</h4>
         <h4>The Last Player Standing is Crowned the <span>$</span>YO<span>&#8358;</span>AIR<span>&#8364;</span></h4>
@@ -34,7 +34,7 @@ const OnboardingScreen = () => {
       
 {/* ILLUSTRATIONS */}
 <div className='illustrations_container'>
-  <img src='/syonit-logo.svg' alt='musketeers'/>
+  <img src='/syonit-logo.svg' alt='musketeeers'/>
 </div>
 
 
