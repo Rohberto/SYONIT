@@ -43,10 +43,10 @@ const OnboardingScreen = () => {
       <div className='onboarding_buttons_container'>
     <div className='buttonsContainer'>
     <Link href={"/login"}>
-            <span className="onboarding_link onboarding_link_login">Login</span>
+            <span className="stroke_links onboarding_link_login">Login</span>
           </Link>
           <Link href={"/signup"}>
-            <span className="onboarding_link onboarding_link_sign">Signup</span>
+            <span className="stroke_links onboarding_link_sign">Signup</span>
           </Link>
       <div className='button_circle' >
       <div class="lines" id="lines" ref={circle}></div>
