@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 /* OnboardingScreen.module.css 
 $lime-green: #4BD330ff;
 $blue-ncs: #0088D1ff;
@@ -15,6 +16,7 @@ background: hsla(260, 98%, 74%, 1);
 
   background: radial-gradient(circle, hsla(260, 98%, 74%, 1) 27%, hsla(228, 99%, 65%, 1) 100%);
 */
+
 @font-face {
   font-family: "Heebo";
   src: url('./fonts/Heebo-Medium.ttf') format('truetype');
@@ -29,10 +31,16 @@ background: hsla(260, 98%, 74%, 1);
   inherits: false;
 }
 .container {
-  min-height: 100vh;
-background: radial-gradient(circle, hsla(230, 65%, 20%, 1) 22%, hsla(243, 67%, 11%, 1) 87%);
+  height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium4.png'); /* Replace with the path to your image */
+  background-size: cover; /* Ensures the image covers the entire screen */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center;
   color: #fff;
   padding: 20px 20px 150px 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header */
@@ -49,18 +57,39 @@ font-size: 24px;
 line-height: 22px;
 leading-trim: both;
 text-edge: cap;
-color: #fff;
+color: transparent; /* Make the text fill transparent */
+  -webkit-text-stroke: 1px #fff; /* Define the stroke width and color */
+  font-size: 24px; /* Adjust font size */
+  font-weight: bold; 
 }
 
 
 .header .headerLine {
   width: 100vw;
   height: 2px;
-  background-color: hsla(260, 98%, 74%, 1);
+  background-color: #fff;
   margin-top: 16px;
 }
 
-
+.onboarding_about{
+  text-align: center;
+  width: 100%;
+  border-radius: 36px;
+  display: block;
+  height: 282px;
+border:1px solid #fff;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+margin: 20px 0;
+}
+.onboarding_about h4{
+  font-family: "DM Sans", serif;
+  font-size: 16px;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+}
 
 /* Main Content */
 .swiper_container{
@@ -155,16 +184,12 @@ display: block;
 }
 
 /* Illustrations */
-.illustrations {
-  display: flex;
-  align-items: center;
+.illustrations_container{
   width: 100%;
- margin-top: 50px;
-}
-
-.illustration {
-  width: 50%;
-  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
 }
 
 /* Bottom Gradient, Circle, and Buttons */
@@ -183,10 +208,18 @@ left: 0;
   left: 50%;
   transform: translateX(-50%);
 }
+.onboarding_buttons_container{
+  width: 100%;
+  position: fixed;
+bottom: 0%;
+left: 0;
+padding: 20px 20px 40px 20px;
+}
 .buttonsContainer{
-width: 358px;
+width: 100%;
 height: 94px;
-background: linear-gradient(90deg, hsla(260, 98%, 74%, 1) 40%, hsla(228, 99%, 65%, 1) 100%);
+background: rgba(0, 0, 0, 0.9);
+border: 1px solid #fff;
 color: #fff;
 border-radius: 65px;
 position: relative;
@@ -206,8 +239,9 @@ background: rgba(0, 0, 0, 0.8);
 transform: translate(-50%, -50%);
 border: 1px solid #fff;
 display: block;
-overflow: hidden;
 }
+
+
 
 
 .button_circle:before {
@@ -218,16 +252,21 @@ overflow: hidden;
   border-radius: 50%;
 
 }
+
 .button_circle:after {
   position: absolute;
   content: "";
   height: 50%;
   width: 50%;
-  background-color: hsla(260, 98%, 74%, 1);
+  background-image: url('/syonit-logo.svg'); /* Replace with the path to your image */
+  background-size: cover; /* Ensures the image covers the entire screen */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center;
   top: 25%;
   left: 25%;
   border-radius: 50%;
 }
+/*
 .button_circle div {
   position: absolute;
   border-radius: 50%;
@@ -299,16 +338,29 @@ overflow: hidden;
   left: -15%;
   animation-duration: 9s;
 }
+*/
+.lines {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
 
+.line {
+  position: absolute;
+  width: 1px;
+  height: 20px;
+  background: #fff;
+  top: 0;
+  left: 50%;
+  transform-origin: center 45px;
+}v
 .onboarding_link{
-font-family: "Heebo" !important;
-font-weight: 700;
-font-size: 20px;
-line-height: 26px;
+  font-family: "DM Sans", serif;
+font-size: 28px;
 text-transform: uppercase;
-color: #fff;
+color: transparent;
 z-index: 100;
-width: 40%;
+-webkit-text-stroke: 0.5px #fff; /* Define the stroke width and color */
 }
 .onboarding_link_login{
   position: absolute;

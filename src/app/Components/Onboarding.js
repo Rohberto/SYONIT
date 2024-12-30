@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import "swiper/css";
 import "swiper/css/pagination";
 import {Swiper, SwiperSlide} from 'swiper/react';
@@ -9,73 +9,50 @@ import Icon1 from "../Assets/icon1.png";
 import Icon2 from "../Assets/icon2.png";
 import Header from './Header';
 import Bottom from './Bottom';
+import Link from 'next/link';
 
 const OnboardingScreen = () => {
+  const circle = useRef();
+  useEffect(() => {
+    for (let i = 0; i < 60; i++) {
+      const line = document.createElement('div');
+      line.classList.add('line');
+      line.style.transform = `rotate(${i * 6}deg) translateX(-50%)`;
+      circle.current.appendChild(line);
+    }
+  }, []);
   return (
     <div className="container">
       {/* Header */}
     <Header/>
+    <div className='onboarding_about'>
+        <h4>Syonit is a prize-based tourna-musement.</h4>
+        <h4>It Features Elimination Rounds.</h4>
+        <h4>Outcomes are determined by players own decision.</h4>
+        <h4>The Last Player Standing is Crowned the <span>$</span>YO<span>&#8358;</span>AIR<span>&#8364;</span></h4>
+    </div>
       
-      {/* slider  Content */}
-   <Swiper 
-   grabCursor={true}
-   centeredSlides={true}
-   slidesPerView={1}
-   spaceBetween={20}
-   autoplay = {{
-    delay: 3000,
-    disableOnInteraction: false
-   }
-  }
-   pagination={{clickable: true, type: "bullets"}}
-   modules={[Pagination, Autoplay]}
-  className='swiper_container' >
-    <SwiperSlide>
-      <div className='onboarding_slide'>
-      <div className='onboaring_screen'>
-      <img src='/stadium.png' alt='stadium'/>
+{/* ILLUSTRATIONS */}
+<div className='illustrations_container'>
+  <img src='/musketers.svg' alt='musketeers'/>
+</div>
+
+
+
+
+      <div className='onboarding_buttons_container'>
+    <div className='buttonsContainer'>
+    <Link href={"/login"}>
+            <span className="onboarding_link onboarding_link_login">Login</span>
+          </Link>
+          <Link href={"/signup"}>
+            <span className="onboarding_link onboarding_link_sign">Signup</span>
+          </Link>
+      <div className='button_circle' >
+      <div class="lines" id="lines" ref={circle}></div>
       </div>
-      <p>SIMPLE YES OR NO <span className='small_slide_text'>is a mind game about decision making.</span></p>
-      </div>
-    </SwiperSlide>
-    <SwiperSlide>
-      <div className='onboarding_slide'>
-      <div className='onboaring_screen'>
-        <img src='/stadium.png' alt='stadium'/>
-      </div>
-      <p>SIMPLE YES OR NO <span className='small_slide_text'>is a prized based gameplay.</span></p>
-      </div>
-    </SwiperSlide>
-    <SwiperSlide>
-      <div className='onboarding_slide'>
-      <div className='onboaring_screen'>
-      <img src='/stadium.png' alt='stadium'/>
-      </div>
-      <p>SIMPLE YES OR NO <span className='small_slide_text'>combines competition, strategy and rewards.</span></p>
-      </div>
-    </SwiperSlide>
-    <SwiperSlide>
-      <div className='onboarding_slide'>
-      <div className='onboaring_screen'>
-      <img src='/stadium.png' alt='stadium'/>
-      </div>
-      <p>SIMPLE YES OR NO <span className='small_slide_text'>is a unique concept game of binary decision making.</span></p>
-      </div>
-    </SwiperSlide>
-   
-   </Swiper>
-      
-      {/* Illustrations */}
-      <div className="illustrations">
-        <div className="illustration">
-         <Image src={Icon2} alt='walking logo'/>
-        </div>
-        <div className="illustration">
-        <Image src={Icon1} alt='walking logo'/>
-        </div>
-      </div>
-      
-      <Bottom/>
+    </div>
+    </div>
    
     </div>
   );
