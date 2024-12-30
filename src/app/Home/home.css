@@ -1,10 +1,20 @@
 .home_container{
-    height: 100vh;
+    min-height: 100vh;
     background-color: #000;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: radial-gradient(circle, hsla(230, 65%, 20%, 1) 22%, hsla(243, 67%, 11%, 1) 87%);
+  color: #fff;
+  padding: 20px 0 150px 0;
 }
+.Home_screen{
+    width: 100%;
+    min-height: 282px;
+    border: 1px solid hsla(260, 98%, 74%, 1);
+    border-radius: 36px;
+    display: block;
+    }
 .home_container .swiper_container{
     padding-bottom: 40px;
 }
@@ -37,14 +47,19 @@
   
   }
   
-.swiper-pagination-bullet-active .pagination-dot {
-    background-color: #fff !important;
+.swiper-pagination-bullet-active{
+    background-color: hsla(260, 98%, 74%, 1) !important;
   }
  .home_container .swiper-pagination{
     display: flex;
     justify-content: space-between;
     bottom: 0 !important;
     z-index: 100;
+  }
+.main_header .headerLine {
+    width: 100vw;
+    height: 2px;
+    background-color: hsla(260, 98%, 74%, 1);
   }
 .header_links{
     display: flex;
@@ -78,8 +93,8 @@ font-family: "Heebo";
 width: 96px;
 height: 24px;
 text-align: center;
-color: #000;
-background: #D9D9D9;
+color: #fff;
+background: linear-gradient(90deg, hsla(260, 98%, 74%, 1) 40%, hsla(228, 99%, 65%, 1) 100%);
 border-radius: 16px;
 display: flex;
 align-items: center;
@@ -98,10 +113,10 @@ text-align: center;
 color: #FFFFFF;
 margin-bottom: 10px;
     }
-    .game_round{
+    .home_container .game_round{
 width: 100%;
 height: 32px;
-background: #D9D9D9;
+background: linear-gradient(90deg, hsla(260, 98%, 74%, 1) 40%, hsla(228, 99%, 65%, 1) 100%);
 border-radius: 8px;
 margin: 15px 0;
 display: flex;
@@ -116,8 +131,9 @@ font-weight: 700;
 font-size: 16px;
 line-height: 24px;
 text-align: center;
-color: #292828;
+color: #fff;
     }
+    
     .y-section, .n-section{
         width: 35%;
         height: 100%;
@@ -129,7 +145,7 @@ color: #292828;
         transition: background-color 1s ease, border-color 1s ease;
     }
 .highlight{
-background-color: #292828;
+background-color: #fff;
 border-radius: 8px;
 }
 .y-section p, .n-section p{
@@ -190,7 +206,7 @@ color: #292828;
 .game_buttons{
 width: 100%;
 height: 72px;
-background: #D9D9D9;
+background: linear-gradient(90deg, hsla(260, 98%, 74%, 1) 40%, hsla(228, 99%, 65%, 1) 100%);
 border-radius: 36px;
 display: flex;
 justify-content: space-between;
@@ -201,6 +217,8 @@ padding: 0 20px;
 background-color: transparent;
 width: 24px;
 height: 22px;
+border: none;
+outline: none;
 font-family: 'Grimer';
 font-style: normal;
 font-weight: 400;
@@ -209,7 +227,7 @@ line-height: 29px;
 display: flex;
 align-items: center;
 text-align: center;
-color: #A1A1A1;
+color: #fff;
 }
 .screen_desc{
     text-align: center;
