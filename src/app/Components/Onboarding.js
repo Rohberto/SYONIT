@@ -28,7 +28,7 @@ const OnboardingScreen = () => {
     <div className='onboarding_about'>
         <h4>Syonit is a prize-based tourna-musement.</h4>
         <h4>It Features Elimination Rounds.</h4>
-        <h4>Outcomes are determined by players own decision.</h4>
+        <h4>Outcomes are determined by your own decision.</h4>
         <h4>The Last Player Standing is Crowned the <span>$</span>YO<span>&#8358;</span>AIR<span>&#8364;</span></h4>
     </div>
       
