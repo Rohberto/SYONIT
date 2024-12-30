@@ -289,9 +289,8 @@ display: block;
   background-size: cover; /* Ensures the image covers the entire screen */
   background-repeat: no-repeat; /* Prevents the image from repeating */
   background-position: center;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 25%;
+  left: 25%;
   border-radius: 50%;
   background-color: transparent;
 }
@@ -381,7 +380,7 @@ display: block;
   background: #fff;
   top: 0;
   left: 50%;
-  transform-origin: center 45px;
+  transform-origin: center 46.75px;
 }v
 .onboarding_link{
   font-family: "DM Sans", serif;
