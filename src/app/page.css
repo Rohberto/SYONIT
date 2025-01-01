@@ -91,6 +91,7 @@ visibility: visible;
   font-size: 20px;
   letter-spacing: -0.5px;
   margin-bottom: 20px;
+  font-weight: normal;
 }
 .about_no_display, .no_illustration{
 visibility: hidden;
