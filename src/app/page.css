@@ -58,7 +58,7 @@ line-height: 22px;
 leading-trim: both;
 text-edge: cap;
 color: transparent; /* Make the text fill transparent */
-  -webkit-text-stroke: 1px #fff; /* Define the stroke width and color */
+  -webkit-text-stroke: 1px rgb(221, 221, 23); /* Define the stroke width and color */
   font-size: 24px; /* Adjust font size */
   font-weight: bold; 
 }
@@ -223,6 +223,23 @@ left: 0;
 bottom: 0%;
 left: 0;
 padding: 20px;
+
+}
+.onboarding_buttons_container::before{
+  content: '';
+  background: conic-gradient(transparent 270deg, green, transparent);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 1;
+  width: 100%;
+}
+.onboarding_buttons_container::after{
+content: '';
+background: inherit;
+border-radius: inherit;
+position: absolute;
 
 }
 .buttonsContainer{
