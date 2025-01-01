@@ -76,21 +76,26 @@ color: transparent; /* Make the text fill transparent */
   width: 100%;
   border-radius: 36px;
   display: block;
-border:1px solid #fff;
 display: flex;
 flex-direction: column;
 padding: 20px 0;
 justify-content: center;
 align-items: center;
 margin: 20px 0;
+visibility: visible;
+  opacity: 1;
+  transition: visibility 0s .5s, opacity 1s .5s; 
 }
 .onboarding_about h4{
   font-family: "DM Sans", serif;
-  font-size: 16px;
+  font-size: 20px;
   letter-spacing: -0.5px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
-
+.about_no_display, .no_illustration{
+visibility: hidden;
+opacity: 0;
+}
 /* Main Content */
 .swiper_container{
   width: 100%;
@@ -189,7 +194,10 @@ display: block;
   justify-content: center;
   align-items: center;
   margin-top: auto;
-  padding-bottom: 40px;
+  padding-bottom: 60px;
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s .5s, opacity 1s .5s;
 }
 
 /* Bottom Gradient, Circle, and Buttons */
@@ -397,6 +405,11 @@ text-transform: uppercase;
 color: transparent;
 z-index: 100;
 -webkit-text-stroke: 0.5px #fff;
+}
+.onboarding_link_button{
+  border: none;
+  outline: none;
+  background-color: transparent;
 }
 .onboarding_link_login{
   position: absolute;
