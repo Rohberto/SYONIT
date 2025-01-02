@@ -9,7 +9,7 @@
   padding: 0 20px;
   transition: height 0.8s ease-in-out;
   overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 .close_curtain{
     height: 2px;

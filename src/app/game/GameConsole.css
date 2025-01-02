@@ -1,13 +1,41 @@
 /* GameConsole.css */
 
 .game-console {
-   height: 100vh;
-    background-color: #000;
-    color: white;
-    padding: 0 20px;
+  height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium4.png'); /* Replace with the path to your image */
+  background-size: cover; /* Ensures the image covers the entire screen */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center;
+  color: #fff;
+  padding: 20px 20px 150px 20px;
+  position: relative;
   }
   
-  
+  .main_header{
+    position: relative;
+}
+.main_header h1{
+    font-family: "DM Sans" !important;
+font-style: normal;
+font-size: 28px;
+line-height: 32px;
+leading-trim: both;
+text-edge: cap;
+color: transparent; /* Make the text fill transparent */
+  -webkit-text-stroke: 1px rgb(221, 221, 23); /* Define the stroke width and color */
+  font-weight: bold; 
+}
+.main_header .headerLine{
+    width: 100%;
+    height: 1px;
+    background-color: #fff;
+}
+.header_links{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
   .console-container {
     width: 100%;
     padding: 16px;
@@ -102,7 +130,6 @@ margin-bottom: 20px;
   
   .game-console .game_round{
     width: 100%;
-    background: #D9D9D9;
     border-radius: 8px;
     margin: 15px 0;
     display: flex;
@@ -131,6 +158,9 @@ border-radius: 26px;
         .y-section, .n-section{
             width: 96px;
 height: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
 font-family: 'Grimer';
 font-style: normal;
 font-weight: 400;
@@ -162,18 +192,9 @@ border-radius: 26px;
 
 }
 .game-button-container{
-    padding-bottom: 10px;
-  }
-  .gamebuttonsContainer{
   width: 100%;
-  height: 94px;
-  background: rgba(201, 201, 201, 0.17);
-  border-radius: 65px;
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid #DEAE37;
-  }
+padding: 20px 0;
+}
   .button_circle{
   border-radius: 50%;
   position: absolute;
@@ -185,7 +206,17 @@ border-radius: 26px;
   transform: translate(-50%, -50%);
   border: 1px solid #DEAE37;
   }
-  
+  .game_stroke_links{
+    font-family: "Grimer";
+    font-size: 20px;
+    text-transform: uppercase;
+    color: transparent;
+    z-index: 100;
+    background-color: transparent;
+    -webkit-text-stroke: 0.5px #fff;
+    outline: none;
+    border: none;
+  }
 
   .onboarding_link_login{
     position: absolute;

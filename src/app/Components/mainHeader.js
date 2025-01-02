@@ -11,7 +11,7 @@ const Header = () => {
             <Image src={Profile} alt='profile'/>
         </div>
 
-        <h1>SYONIT</h1>
+        <h1>SYONit!</h1>
 
         <div className='hamburger_menu'>
             <Image src={Hamburger} alt='hamburger'/>
