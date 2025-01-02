@@ -45,6 +45,8 @@ const OnboardingScreen = () => {
 
 
       <div className='onboarding_buttons_container'>
+        <div className='buttonsContainer_glow'></div>
+        
     <div className='buttonsContainer'>
       {!drop && (
         <>
