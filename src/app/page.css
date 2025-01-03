@@ -7,7 +7,11 @@
   font-family: "Grimer";
   src: url('./fonts/BNGrimer.otf') format('opentype');
 }
-
+@property --gradient-angle{
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
 
 body{
   font-family: 'Grimer', 'Heebo';
@@ -160,15 +164,19 @@ display: block;
 
 /* Illustrations */
 .illustrations_container{
-  width: 100%;
+  width: 200px;
+  height: 200px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-self: center;
   margin-top: auto;
-  padding-bottom: 60px;
   visibility: visible;
   opacity: 1;
   transition: visibility 0s .5s, opacity 1s .5s;
+}
+.illustrations_container img{
+  width: 100%;
+  height: 100%;
 }
 
 /* Bottom Gradient, Circle, and Buttons */
@@ -195,11 +203,10 @@ left: 0;
 padding: 20px;
 }
 
-.buttonsContainer, .buttonsContainer_glow{
+.buttonsContainer{
 width: 100%;
 height: 94px;
-background: transparent;
-border: 1px solid #fff;
+background: linear-gradient(90deg, hsla(153, 21%, 25%, 1) 55%, hsla(213, 54%, 15%, 1) 100%);
 border-radius: 65px;
 position: relative;
 display: flex;
@@ -207,47 +214,23 @@ justify-content: space-between;
 padding: 5px;
 overflow: hidden;
 transition: color 0.3s;
+aspect-ratio: 1/15;
 }
-.buttonsContainer_glow{
-  
-    overflow: hidden;
-    /* Glow Blur */
-    filter: blur(20px);
-  
-}
-
-.buttonsContainer::before, .buttonsContainer_glow::before {
-  content: '';
-  z-index: -2;
-  text-align: center;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%) rotate(0deg);
+.buttonsContainer::before, .buttonsContainer::after{
+  content: " ";
   position: absolute;
-	width: 99999px;
-	height: 99999px;
-	background-repeat: no-repeat;
-	background-position: 0 0;
-  /*border color, change middle color*/
-	background-image: conic-gradient(rgba(0,0,0,0), #1976ed, rgba(0,0,0,0) 25%);
-  /* change speed here */
-	animation: rotate 4s linear infinite;
+  inset: -30rem;
+background: conic-gradient(from var(--gradient-angle), #fff, #fff, #fff, transparent, transparent);
+border-radius: inherit;
+animation: rotation 2s linear infinite;
+z-index: -1;
 }
-
-.buttonsContainer::after {
-	content: '';
-	position: absolute;
-	z-index: -1;
-  /* border width */
-	left: 5px;
-	top: 5px;
-  /* double the px from the border width left */
-	width: calc(100% - 10px);
-	height: calc(100% - 10px);
-  /*bg color*/
-	background: transparent;
-  /*box border radius*/
-	border-radius: 36px;
+.buttonsContainer::after{
+  filter: blur(3.5rem);
+}
+@keyframes rotation {
+  0% {--gradient-angle: 0deg;}
+  100% {--gradient-angle: 360deg}
 }
 
 @keyframes rotate {
@@ -484,4 +467,13 @@ color: #000000;
 @keyframes rotation {
   0% { --gradient-angle: 0deg; }
   100% { --gradient-angle: 360deg}
+}
+@media all and (max-width: 400px){
+  .header h1 {
+      font-size: 18px; /* Adjust font size */
+      font-weight: bold; 
+    }
+    .stroke_links{
+    font-size: 18px;
+    }
 }

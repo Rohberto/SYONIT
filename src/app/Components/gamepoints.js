@@ -12,7 +12,7 @@ const Points = () => {
     
 
         <div className='points_text'>
-        <h4>Total Points</h4>
+        <h4>MY Points</h4>
         <p>1</p>
         </div>
     </div>

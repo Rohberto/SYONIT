@@ -1,5 +1,5 @@
 .home_container{
-    height: 100vh;
+    min-height: 100vh;
     background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium4.png'); /* Replace with the path to your image */
     background-size: cover; /* Ensures the image covers the entire screen */
     background-repeat: no-repeat; /* Prevents the image from repeating */
@@ -263,6 +263,7 @@ border-radius: 8px;
   bottom: 0%;
   left: 0;
   padding: 20px;
+  z-index: 100;
 }
 .home_stroke_links{
     font-family: "DM Sans", serif;
@@ -271,4 +272,18 @@ border-radius: 8px;
     color: transparent;
     z-index: 100;
     -webkit-text-stroke: 0.5px #fff;
+}
+@media all and (max-width: 400px){
+    .bullet-label {
+        font-size: 8px;
+        line-height: 12px;
+        }
+        .home_stroke_links{
+            font-family: "DM Sans", serif;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: transparent;
+            z-index: 100;
+            -webkit-text-stroke: 0.5px #fff;
+        }
 }

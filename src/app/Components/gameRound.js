@@ -13,7 +13,7 @@ const Round = ({round, yesScore, noScore, isPlayed}) => {
   return (
     <div className="game_round">
   <div className={`y-section ${isPlayed && !yesIsHigher && "round-highlight"}`}>{!isPlayed ? "Y" : yesScore}</div>
-    <div className="round_section">{!isPlayed ? <div className='round_ball'></div> : yesIsHigher ? <span className='round_center_text'>N</span> : <span className='round_center_text'>Y</span>}</div>
+    <div className="round_section">{!isPlayed ? <div className='round_ball'>{round}</div> : yesIsHigher ? <span className='round_center_text'>N</span> : <span className='round_center_text'>Y</span>}</div>
     <div className={`y-section ${isPlayed && yesIsHigher && "round-highlight"}`}>{!isPlayed ? "N" : noScore}</div>
   </div>
   )

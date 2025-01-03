@@ -45,8 +45,6 @@ const OnboardingScreen = () => {
 
 
       <div className='onboarding_buttons_container'>
-        <div className='buttonsContainer_glow'></div>
-        
     <div className='buttonsContainer'>
       {!drop && (
         <>
@@ -55,7 +53,7 @@ const OnboardingScreen = () => {
           </button>
           <button onClick={() => {setDrop(true); auth_state !== "sign_up" && setAuthState("sign_up")}} className='onboarding_link_button'>
             <span className="stroke_links onboarding_link_sign">Signup</span>
-          </button>
+          </button> 
           </>
       )
     }
@@ -84,7 +82,7 @@ const OnboardingScreen = () => {
       )
     }
       <div className='button_circle' >
-      <div class="lines" id="lines" ref={circle}></div>
+      <div className="lines" id="lines" ref={circle}></div>
       </div>
     </div>
     </div>
