@@ -33,7 +33,7 @@ const OnboardingScreen = () => {
     <DropdownForm drop={drop} auth_state={auth_state}/>
     <div className={drop ? "about_no_display" : 'onboarding_about'}>
         <h4>Syonit! is a fast paced, multi-player mind game where players must think critically and make lightning-quick Yes or No decisions. Thinking differently is the secret to winning.</h4>
-        <h4>The Last Player Standing is Crowned the <span>$</span>YO<span>&#8358;</span>AIR<span>&#8364;</span></h4>
+        <p>The Last Player Standing is Crowned the <span>$</span>YO<span>&#8358;</span>AIR<span>&#8364;</span></p>
     </div>
       
 {/* ILLUSTRATIONS */}

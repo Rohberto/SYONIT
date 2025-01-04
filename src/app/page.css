@@ -1,4 +1,3 @@
-
 @font-face {
   font-family: "Heebo";
   src: url('./fonts/Heebo-Medium.ttf') format('truetype');
@@ -6,6 +5,14 @@
 @font-face {
   font-family: "Grimer";
   src: url('./fonts/BNGrimer.otf') format('opentype');
+}
+@font-face {
+  font-family: "sf-text";
+  src: url('./fonts/sf-pro-display/sf-pro-text.ttf') format('truetype');
+}
+@font-face {
+  font-family: "sf-display";
+  src: url('./fonts/sf-pro-display/SFPRODISPLAYMEDIUM.OTF') format('opentype');
 }
 @property --gradient-angle{
   syntax: "<angle>";
@@ -44,7 +51,7 @@ line-height: 22px;
 leading-trim: both;
 text-edge: cap;
 color: transparent; /* Make the text fill transparent */
-  -webkit-text-stroke: 1px rgb(221, 221, 23); /* Define the stroke width and color */
+  -webkit-text-stroke: 1px #F6ee23; /* Define the stroke width and color */
   font-size: 24px; /* Adjust font size */
   font-weight: bold; 
 }
@@ -72,12 +79,19 @@ visibility: visible;
   opacity: 1;
   transition: visibility 0s .5s, opacity 1s .5s; 
 }
-.onboarding_about h4{
-  font-family: "DM Sans", serif;
-  font-size: 20px;
+.onboarding_about h4:first-child{
+  font-family: "sf-display", serif;
+  font-size: 28px;
   letter-spacing: -0.5px;
-  margin-bottom: 20px;
-  font-weight: normal;
+  margin: 40px 0;
+  text-transform: capitalize;
+}
+.onboarding_about p{
+  font-family: "DM Sans", serif;
+  font-size: 18px;
+  margin: 20px 0;
+  text-transform: capitalize;
+  font-weight: regular;
 }
 .about_no_display, .no_illustration{
 visibility: hidden;
@@ -249,7 +263,7 @@ height: 93.5px;
 left: 50%;
 top: 50%;
 transform: translate(-50%, -50%);
-background: rgba(0, 0, 0, 0.8);
+background: transparent;
 transform: translate(-50%, -50%);
 display: block;
 }
