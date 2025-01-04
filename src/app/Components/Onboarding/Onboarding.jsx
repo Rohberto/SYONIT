@@ -1,3 +1,4 @@
+import Header from "../Header";
 import "./onboarding.css";
 import { FaPlay } from "react-icons/fa";
 const Onboarding = () => {
