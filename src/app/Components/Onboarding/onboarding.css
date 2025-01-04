@@ -1,0 +1,85 @@
+.new_onboarding_container {
+    height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium4.png'); /* Replace with the path to your image */
+    background-size: cover; /* Ensures the image covers the entire screen */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center;
+    color: #fff;
+    padding: 20px;
+  }
+  .onboarding_primary_text{
+    width: 100%;
+    position: relative;
+    text-align: center;
+  }
+  .onboarding_primary_text h1{
+    font-family: "sf-display", serif;
+  font-size: 76px;
+  line-height: 70px;
+  text-transform: capitalize;
+  width: 100%;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  }
+  .onboarding_primary_text h1 span{
+    display: inline-flex;
+    width: 70px;
+    height: 100%;
+    align-items: center;
+  }
+  .onboarding_primary_text h1 span img{
+    width: 100%;
+    object-fit: cover;
+  }
+  .onboarding_primary_text p{
+    font-family: "DM Sans";
+    font-size: 14px;
+    font-weight: 300;
+    text-transform: uppercase;
+  }
+  .new_onboarding_bottom_content{
+position: absolute;
+bottom: 0;
+left: 0;
+width: 100%;
+padding: 40px 0;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+  }
+  .new_onboarding_illustration{
+    width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+    visibility: visible;
+  opacity: 1;
+  transition: visibility 0s .5s, opacity 1s .5s;
+  }
+  .new_onboarding_illustration img{
+    width: 100%;
+    height: 100%;
+  }
+  .new_onboarding_bottom_text{
+    text-align: center;
+    width: 100%;
+    font-family: "sf-display";
+    font-size: 14px;
+  }
+  .become_a_syonaire{
+    font-family: "DM Sans";
+    font-size: 12px;
+    font-weight: 200;
+    margin: 10px 0;
+  }
+  .play_container button{
+    width: 100px;
+    padding: 5px;
+    border-radius: 20px;
+    color: lightgray;
+    margin: 10px 0;
+  }

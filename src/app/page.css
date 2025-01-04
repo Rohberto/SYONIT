@@ -14,6 +14,10 @@
   font-family: "sf-display";
   src: url('./fonts/sf-pro-display/SFPRODISPLAYMEDIUM.OTF') format('opentype');
 }
+@font-face {
+  font-family: "sf-display-thin";
+  src: url('./fonts/sf-pro-display/SFPRODISPLAYTHINITALIC.OTF') format('opentype');
+}
 @property --gradient-angle{
   syntax: "<angle>";
   initial-value: 0deg;
