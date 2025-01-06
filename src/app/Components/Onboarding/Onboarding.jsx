@@ -1,7 +1,19 @@
-import Header from "../Header";
+import {useRef} from "react";
 import "./onboarding.css";
 import { FaPlay } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+
 const Onboarding = () => {
+    const router = useRouter();
+    const audioRef = useRef(null);
+
+    const playAudio = () => {
+      if (!audioRef.current) {
+        // Create the Audio object if it doesn't exist
+        audioRef.current = new Audio("/Sounds/SYON.mp3");
+      }
+      audioRef.current.play();
+    };
     return (
         <div className="new_onboarding_container">
             <div className="onboarding_primary_text">
@@ -11,8 +23,14 @@ const Onboarding = () => {
 
             <div className="new_onboarding_bottom_content">
                 
+              
+             
+             
+              <img src='/musketeer_new1.svg' alt='musketeeers' className="onboarding_musketeer"/>
+             
+
                
-                    <img src='/Musketeers_update.svg' alt='musketeeers' className="onboarding_musketeer"/>
+                
          
 
             <div className="new_onboarding_bottom_text">
@@ -21,7 +39,10 @@ const Onboarding = () => {
             </div>
 
             <div className="play_container">
-                <button><FaPlay/></button>
+                <button onClick={() => {
+                    router.push("/Home");
+                    playAudio();
+                }}><FaPlay/></button>
             </div>
             </div>
         </div>

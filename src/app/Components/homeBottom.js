@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-const Bottom = ({handleJoinGame, isLoading, gameplaySoundRef}) => {
+const Bottom = () => {
   const router = useRouter();
   const circle = useRef();
     useEffect(() => {

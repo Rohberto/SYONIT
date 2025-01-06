@@ -25,6 +25,9 @@
   justify-content: center;
   font-weight: 300;
   }
+  .illustration{
+    background-color: #000;
+  }
   .onboarding_primary_text h1 span{
     display: inline-flex;
     width: 70px;
@@ -67,7 +70,9 @@ justify-content: center;
     height: 100%;
   }
   .onboarding_musketeer{
-   
+   width: 80px;
+   height: 80px;
+   margin-bottom: 5px;
   }
   .new_onboarding_bottom_text{
     text-align: center;
