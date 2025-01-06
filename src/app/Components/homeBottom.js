@@ -16,10 +16,10 @@ const Bottom = () => {
   return (
     <div className='home_buttons_container'>
     <div className='buttonsContainer'>
-      <Link href={"/invite"} className='home_stroke_links onboarding_link_login onboarding_left'>Invite Friends</Link>
-      <button className='home_stroke_links onboarding_button onboarding_link_sign onboarding_right'  onClick={() => {router.push("/game");
+    <button className='home_stroke_links onboarding_button onboarding_link_sign onboarding_right'  onClick={() => {router.push("/game");
         gameplaySoundRef.current.play();
       }}>Join Next Game</button>
+      <Link href={"/signup"} className='home_stroke_links onboarding_link_login onboarding_left'>Sign Up</Link>
       <div className='button_circle'>
       <div className="lines" id="lines" ref={circle}></div>
    </div>
