@@ -5,15 +5,15 @@ const Onboarding = () => {
     return (
         <div className="new_onboarding_container">
             <div className="onboarding_primary_text">
-                <h1>SY<span className="syonit_text_logo"><img src="/syonit_logo.png" alt="syonit logo" /></span>Nit!</h1>
                 <p>A mind game tourna-musement.</p>
+                <h1>SY<span className="syonit_text_logo"><img src="/syonit_logo.png" alt="syonit logo" /></span>Nit!</h1>
             </div>
 
             <div className="new_onboarding_bottom_content">
                 
-                <div className="new_onboarding_illustration">
-                    <img src='/musketers.svg' alt='musketeeers'/>
-            </div>
+               
+                    <img src='/Musketeers_update.svg' alt='musketeeers' className="onboarding_musketeer"/>
+         
 
             <div className="new_onboarding_bottom_text">
                 <p className="think_differently">THINK DIFFERENTLY</p>
