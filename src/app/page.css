@@ -289,7 +289,7 @@ display: block;
   content: "";
   height: 50%;
   width: 50%;
-  background-image: url('/syonit-logo.svg'); /* Replace with the path to your image */
+  background-image: url('/syonit_icon.png'); /* Replace with the path to your image */
   background-size: cover; /* Ensures the image covers the entire screen */
   background-repeat: no-repeat; /* Prevents the image from repeating */
   background-position: center;

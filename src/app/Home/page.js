@@ -71,25 +71,7 @@ const Home = () => {
     <div className='home_container'>
         <Header/>
         <Points/>
-   <Swiper 
-   grabCursor={true}
-   centeredSlides={true}
-   slidesPerView={1}
-   spaceBetween={20}
-   modules={[Pagination]}
-      pagination={{
-        clickable: true,
-        renderBullet: (index, className) => {
-          return `
-            <div class="custom-pagination-bullet">
-              <span class="bullet-label">${labels[index]}</span>
-              <span class="${className}"></span>
-            </div>
-          `;
-        },
-      }}
-  className='swiper_container' >
-    <SwiperSlide>
+      <div>
       <div className='Home_slide'>
       <div className='Home_screen'>
         <div className="current_game_header">CURRENT GAME</div>
@@ -121,34 +103,7 @@ const Home = () => {
         </div>
       </div>
       </div>
-    </SwiperSlide>
-    <SwiperSlide>
-      <div className='Home_slide'>
-      <div className='Home_screen'>
-        <h1 className='screen_desc'>Leaderboard</h1>
-      </div>
-      <p>SIMPLE YES OR NO <span className='small_slide_text'>is a mind game about decision making.</span></p>
-      </div>
-    </SwiperSlide>
-    <SwiperSlide>
-      <div className='Home_slide'>
-      <div className='Home_screen'>
-      <h1 className='screen_desc'>Prizes</h1>
-      </div>
-      <p>SIMPLE YES OR NO <span className='small_slide_text'>is a mind game about decision making.</span></p>
-      </div>
-    </SwiperSlide>
-    <SwiperSlide>
-      <div className='Home_slide'>
-      <div className='Home_screen'>
-      <h1 className='screen_desc'>History</h1>
-      </div>
-      <p>SIMPLE YES OR NO <span className='small_slide_text'>is a mind game about decision making.</span></p>
-      </div>
-    </SwiperSlide>
-   
-   </Swiper>
-
+    </div>
    <Bottom/>
     </div>
   )
