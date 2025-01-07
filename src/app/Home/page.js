@@ -96,11 +96,6 @@ const Home = () => {
       ))}
 
         </div>
-
-        <div className='game_buttons'>
-          <button className='game_button y_button'  onClick={handleYesClick} disabled={allRoundsPlayed}>Y</button>
-          <button className='game_button y_button' onClick={handleNoClick} disabled={allRoundsPlayed}>N</button>
-        </div>
       </div>
       </div>
     </div>

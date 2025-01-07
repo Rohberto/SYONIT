@@ -30,8 +30,8 @@ color: #fff; /* Make the text fill transparent */
 }
 .Home_screen{
     width: 100%;
-    min-height: 282px;
-    border: 1px solid hsla(260, 98%, 74%, 1);
+    min-height: 200px;
+    border: 1px solid #fff;
     border-radius: 36px;
     display: block;
     }
