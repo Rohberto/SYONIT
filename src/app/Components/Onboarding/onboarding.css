@@ -32,11 +32,13 @@
     display: inline-flex;
     width: 70px;
     height: 100%;
-    align-items: center;
+    align-items: flex-end;
   }
   .onboarding_primary_text h1 span img{
     width: 100%;
+    height: 100%;
     object-fit: cover;
+    margin-top: 10px;
   }
   .onboarding_primary_text p{
     font-family: "DM Sans";
