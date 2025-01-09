@@ -17,7 +17,7 @@ const Onboarding = () => {
     return (
         <div className="new_onboarding_container">
             <div className="onboarding_primary_text">
-                <p>A mind game tourna-musement.</p>
+                <p>A mind game tourna-musement </p>
                 <h1>SY<span className="syonit_text_logo"><img src="/syonit_icon.png" alt="syonit logo" /></span>Nit!</h1>
             </div>
 
