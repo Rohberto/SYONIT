@@ -5,17 +5,18 @@
     flex-direction: column;
     gap: 15px;
     width: 100%;
-    padding: 30px;
+    padding: 20px 10px;
     font-family: "Heebo" !important;
-border: 1px solid  hsla(260, 98%, 74%, 1);
+border: 1px solid #fff;
 border-radius: 36px;
-margin: 20px 0;
+margin: 0;
   }
   
   .input-field {
     display: flex;
     flex-direction: column;
-    background-color: #fff;
+    background-color: transparent;
+    border: 1px solid #fff;
     border-radius: 20px;
     padding: 10px 15px;
     font-family: "Heebo" !important;
@@ -25,7 +26,7 @@ margin: 20px 0;
   .input-field label {
     font-size: 12px;
     text-transform: uppercase;
-    color: #000;
+    color: #fff;
     margin-bottom: 5px;
     font-family: "Heebo" !important;
     font-weight: 700;
@@ -34,7 +35,7 @@ margin: 20px 0;
   .input-field input {
     background: transparent;
     border: none;
-    color: #000;
+    color: #fff;
     font-size: 14px;
     outline: none;
     font-family: "Heebo" !important;
@@ -42,16 +43,17 @@ margin: 20px 0;
   }
   
   .input-field input::placeholder{
-    color: #000;
+    color: #fff;
     font-family: "Heebo" !important;
     font-size: 12px;
     font-weight: 400;
   }
   /* Sign in with Apple Button */
   .apple-button {
-    background-color: #fff;
-    color: #000;
+    background-color: transparent;
+    color: #fff;
     font-weight: bold;
+    border: 1px solid #fff;
     border-radius: 25px;
     padding: 10px 20px;
     display: flex;
@@ -61,15 +63,56 @@ margin: 20px 0;
     margin: 20px auto;
     font-family: "Grimer" !important;
     cursor: pointer;
-    width: 80%;
+    width: 90%;
     text-align: center;
-    font-family: "Heebo" !important;
     font-weight: 700;
   }
   
   .apple-icon {
     font-size: 20px;
   }
+  .main_header{
+    position: relative;
+}
+.main_header h1{
+    font-family: "Helvetica Neue" !important;
+font-style: normal;
+font-size: 40px;
+line-height: 32px;
+leading-trim: both;
+text-edge: cap;
+color: #fff; /* Make the text fill transparent */
+  font-weight: 500; 
+}
+.header_links{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+}
+.sign_buttons_container{
+  width: 100%;
+  position: fixed;
+bottom: 0%;
+left: 0;
+padding: 40px 20px;
+z-index: 100;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 40px;
+}
+.sign_stroke_links{
+  width: 200px;
+  padding: 10px 5px;
+  border-radius: 20px;
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  font-family: "DM Sans";
+  font-size: 14px;
+  outline: none;
+}
   
   
   

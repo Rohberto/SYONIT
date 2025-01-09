@@ -81,7 +81,7 @@ color: #fff; /* Make the text fill transparent */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0;
+    padding: 15px 0;
 }
 .profile_menu{
     margin-top: 15px;
@@ -262,16 +262,23 @@ border-radius: 8px;
     position: fixed;
   bottom: 0%;
   left: 0;
-  padding: 20px;
+  padding: 40px 20px;
   z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
 }
 .home_stroke_links{
-    font-family: "DM Sans", serif;
+    width: 200px;
+    padding: 10px 5px;
+    border-radius: 20px;
+    background-color: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    font-family: "DM Sans";
     font-size: 14px;
-    text-transform: uppercase;
-    color: transparent;
-    z-index: 100;
-    -webkit-text-stroke: 0.5px #fff;
+    outline: none;
 }
 @media all and (max-width: 400px){
     .bullet-label {

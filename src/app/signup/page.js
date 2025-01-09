@@ -1,10 +1,12 @@
+"use client";
 import React from 'react';
-import Bottom from '../Components/signBottom';
-import Header from '../Components/Header';
+import { useRouter } from 'next/navigation';
+import Header from '../Components/mainHeader';
 import "./login.css";
 import { FcGoogle } from "react-icons/fc";
 
 const LoginScreen = () => {
+  const router = useRouter();
   return (
     <div className="container">
       <Header/>
@@ -34,7 +36,12 @@ const LoginScreen = () => {
         <span className="apple-icon"><FcGoogle/> </span> Sign in with Google
       </button>
 
-     <Bottom/>
+      <div className='sign_buttons_container'>
+          <button  className='sign_stroke_links' onClick={() => {router.push("/Home");
+      }}>Cancel</button>
+    <button className='sign_stroke_links' onClick={() => {router.push("/game");
+      }}>Enter</button>
+  </div>
     </div>
   );
 };

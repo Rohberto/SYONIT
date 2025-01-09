@@ -74,7 +74,7 @@ const Home = () => {
       <div>
       <div className='Home_slide'>
       <div className='Home_screen'>
-        <div className="current_game_header">CURRENT GAME</div>
+        <div className="current_game_header">GAME 0N</div>
         <div className="current_game_info_buttons">
           <p>N.O.P: 4000</p>
           <p>OPP 3</p>

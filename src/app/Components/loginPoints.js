@@ -2,14 +2,12 @@ import React from 'react'
 
 const Points = () => {
   return (
-    <div className='main_point_container'>
+    <div className='sign_point_container'>
     <div className='Points_container'>
-
-        <div className='next_game'>
-          <h4>Next Game</h4>
-          <p>11:45</p>
+        <div className='points_text'>
+          <h4>No of players</h4>
+          <p>1000</p>
         </div>
-
     </div>
     </div>
   )
