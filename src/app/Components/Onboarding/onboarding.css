@@ -72,9 +72,9 @@ justify-content: center;
     height: 100%;
   }
   .onboarding_musketeer{
-   width: 90px;
-   height: 90px;
-   margin-bottom: 15px;
+   width: 100px;
+   height: 100px;
+   margin-bottom: 5px;
   }
   .new_onboarding_bottom_text{
     text-align: center;
