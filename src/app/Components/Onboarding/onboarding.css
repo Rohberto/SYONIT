@@ -89,6 +89,10 @@ justify-content: center;
     font-weight: 200;
     letter-spacing: -0.5px;
   }
+  .flipped{
+    display: inline-block;
+    transform: scaleX(-1);
+  }
   .play_container button{
     width: 100px;
     padding: 5px;
