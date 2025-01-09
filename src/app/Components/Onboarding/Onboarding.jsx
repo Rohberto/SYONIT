@@ -23,7 +23,7 @@ const Onboarding = () => {
 
             <div className="new_onboarding_bottom_content">
                 
-             <img src='/syonit_musketeer.png' alt='musketeeers' className="onboarding_musketeer"/>
+             <img src='/main_musketeer.svg' alt='musketeeers' className="onboarding_musketeer"/>
              
              <div className="new_onboarding_bottom_text">
                 <p className="think_differently">THINK DIFFERENTLY</p>

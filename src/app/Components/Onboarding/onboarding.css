@@ -30,7 +30,7 @@
   }
   .onboarding_primary_text h1 span{
     display: inline-flex;
-    width: 70px;
+    width: 65px;
     height: 100%;
     align-items: flex-end;
   }
@@ -96,4 +96,6 @@ justify-content: center;
     background-color: #fff;
     color: lightgray;
     margin: 5px 0;
+    border: none;
+    outline: none;
   }
