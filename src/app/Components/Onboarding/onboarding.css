@@ -103,3 +103,15 @@ justify-content: center;
     border: none;
     outline: none;
   }
+  @media all and (max-width: 399px){
+    .new_onboarding_bottom_content{
+      width: 100%;
+      padding: 10px 0;
+      justify-content: flex-end;
+        }
+        .onboarding_musketeer{
+          width: 70px;
+          height: 70px;
+          margin-bottom: 5px;
+         }
+  }
