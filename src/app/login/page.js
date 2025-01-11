@@ -1,10 +1,11 @@
 "use client";
 import React from 'react';
 import Bottom from '../Components/loginBottom';
-import Header from '../Components/mainHeader';
+import Header from '../Components/MainHeader/mainHeader';
 import { FcGoogle } from "react-icons/fc";
 import Points from '../Components/loginPoints';
 import { useRouter } from 'next/navigation';
+import { FaApple } from 'react-icons/fa';
 
 import "./login.css";
 const LoginScreen = () => {
@@ -45,6 +46,7 @@ const SecondLoginScreen = () => {
 
   {/* Round Info */}
   <div className="round-info">
+    <p>Next Game:</p>
     <h2>9:43</h2>
   </div>
 
@@ -66,6 +68,9 @@ const SecondLoginScreen = () => {
         <button className="login-apple-button">
         <span className="apple-icon"><FcGoogle/> </span> Sign in with Google
       </button>  
+       <button className="login-apple-button">
+              <span className="apple-icon"><FaApple/> </span> Sign in with Apple
+            </button>
 </div>
 
 </div>

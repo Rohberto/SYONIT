@@ -1,9 +1,9 @@
 "use client"
 import React, {useState,useRef, useEffect} from "react";
 import "./GameConsole.css"; // Import the CSS file
-import Header from "../Components/mainHeader";
+import Header from "../Components/MainHeader/mainHeader";
 import Points from "../Components/gamepoints";
-import Round from "../Components/gameRound";
+import Round from "../Components/gameRound/gameRound";
 
 const GameConsole = () => {
     const clickSoundRef = useRef(null);
@@ -74,13 +74,16 @@ const GameConsole = () => {
 
         {/* Round Info */}
         <div className="round-info">
+        <p>Next Game:</p>
+        <h2>9:43</h2>
           <h2>ROUND 1</h2>
-        </div>
+  </div>
+      
 
         {/* Player and Points */}
       <Points/>
 
-<div className="game_blank_screen"></div>
+
      
       {rounds.map((round, index) => (
         <Round
@@ -93,7 +96,6 @@ const GameConsole = () => {
          currentRound={currentRound} 
         />
       ))}
-
       </div>
 
          <div className='game-button-container'>

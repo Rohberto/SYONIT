@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'; 
+import "./gameRound.css";
 
 const Round = ({round, yesScore, noScore, isPlayed}) => {
   const [highlightY, setHighlightY] = useState(false);

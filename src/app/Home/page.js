@@ -1,13 +1,13 @@
 "use client"
 import React, { useState} from 'react';
-import Header from '../Components/mainHeader';
+import Header from '../Components/MainHeader/mainHeader';
 import "./home.css";
 import Points from '../Components/points';
 import "swiper/css";
 import "swiper/css/pagination";
 import {Swiper, SwiperSlide} from 'swiper/react';
 import {Pagination} from "swiper/modules";
-import Round from '../Components/Round';
+import Round from '../Components/gameRound/gameRound';
 import Bottom from '../Components/homeBottom';
 
 const Home = () => {
