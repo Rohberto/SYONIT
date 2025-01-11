@@ -24,6 +24,15 @@
   .round-info{
     margin-bottom: 20px;
   }
+  .round-info p{
+    font-family: 'DM Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 8px;
+color: #fff;
+text-align: center;
+margin-bottom: 2.5px;
+  }
   .round-info h2 {
 font-family: 'Helvetica Neue';
 font-style: normal;
