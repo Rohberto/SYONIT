@@ -7,6 +7,8 @@ import Round from "../Components/gameRound/gameRound";
 
 const GameConsole = () => {
     const clickSoundRef = useRef(null);
+    const [timer, setTimer] = useState(10); // Timer duration in seconds
+    const [isFlipped, setIsFlipped] = useState(false); 
     useEffect(() => {
       clickSoundRef.current = new Audio('Sounds/click_sound.wav');
       clickSoundRef.current.load();
@@ -65,6 +67,24 @@ const GameConsole = () => {
           circle.current.appendChild(line);
         }
       }, []);
+
+      useEffect(() => {
+        if (timer > 0) {
+          const countdown = setInterval(() => {
+            setTimer((prev) => prev - 1);
+          }, 1000);
+    
+          return () => clearInterval(countdown); // Cleanup on unmount or state update
+        } else {
+          setIsFlipped(true); // Flip card when timer ends
+        }
+      }, [timer]);
+      const formatTime = (totalSeconds) => {
+        const minutes = Math.floor(totalSeconds / 60); // Get whole minutes
+        const remainingSeconds = totalSeconds % 60; // Get remaining seconds
+        return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`; // Format as mm:ss
+      };
+
   return (
     <div className="game-console">
           <Header/>
@@ -72,13 +92,13 @@ const GameConsole = () => {
         {/* Header */}
    
 
-        {/* Round Info */}
+        {/* Round Info 
         <div className="round-info">
         <p>Next Game:</p>
         <h2>9:43</h2>
           <h2>ROUND 1</h2>
   </div>
-      
+      */}
 
         {/* Player and Points */}
       <Points/>
@@ -98,7 +118,15 @@ const GameConsole = () => {
       ))}
       </div>
 
-         <div className='game-button-container'>
+         <div className='game-button-container flip-card '>
+         <div
+        className={`flip-card-inner ${isFlipped ? "flipped" : ""}`}
+      >
+    <div className="flip-card-back">
+         <h1 className="big_timer">{formatTime(timer)}</h1>
+          <p>Count down to next game</p>
+    </div>
+
     <div className='buttonsContainer'>
       <button className='game_stroke_links onboarding_link_login onboarding_left game_single_button' onClick={() => {handleYesClick(); clickSoundRef.current.play()}} disabled={allRoundsPlayed}>Yes</button>
       <button className=' game_stroke_links onboarding_link_sign onboarding_right game_single_button' onClick={() => {handleNoClick(); clickSoundRef.current.play();}} disabled={allRoundsPlayed}>No</button>
@@ -107,7 +135,7 @@ const GameConsole = () => {
       </div>
     </div>
     </div>
-
+</div>
     </div>
   );
 };

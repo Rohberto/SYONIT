@@ -22,7 +22,6 @@ const Header = () => {
           </div>
 
         <div className='header_time_text'>
-        <p>{time}</p>
         <h1>SYONit!</h1>
         </div>
         
