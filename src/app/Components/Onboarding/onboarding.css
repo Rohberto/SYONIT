@@ -144,11 +144,16 @@ justify-content: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: "Helvetica Neue";
-    font-size: 16px;
-    font-weight: 500;
     color: #000;
     transform: rotateY(180deg);
+  }
+  
+  .coin_musketeer{
+    width: 40px;
+    height: 40px;
+    stroke: #000;
+    fill: #000;
+    object-fit: contain; 
   }
   @keyframes flip-animation {
     0% {

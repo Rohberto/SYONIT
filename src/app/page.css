@@ -97,6 +97,7 @@ visibility: visible;
   text-transform: capitalize;
   font-weight: regular;
 }
+
 .about_no_display, .no_illustration{
 visibility: hidden;
 opacity: 0;

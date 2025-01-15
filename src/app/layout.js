@@ -2,7 +2,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import "./page.css";
 import Head from 'next/head';
-
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 export const metadata = {
   title: "SYONIT",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
 <link href="https://fonts.cdnfonts.com/css/helvetica-neue-55" rel="stylesheet"/>
   </head>
       <body>
+        <ToastContainer/>
         {children}
       </body>
     </html>

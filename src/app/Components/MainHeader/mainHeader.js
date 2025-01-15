@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Hamburger from "../../Assets/hamburger.png";
 import Image from 'next/image';
 import "./mainheader.css";
+import HamburgerMenu from './Hamburger';
 
 const Header = () => {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
@@ -26,9 +27,7 @@ const Header = () => {
         </div>
         
 
-        <div className='hamburger_menu'>
-            <Image src={Hamburger} alt='hamburger'/>
-        </div>
+       <HamburgerMenu/>
         </div>    
   </div>
   )
