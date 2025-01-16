@@ -216,7 +216,6 @@ const moveToNextOpportunity = () => {
       <p>Count down to next game</p>
     </div>
 
-    {!frozen && !breakTie && (
       <div className="buttonsContainer">
         <button
           className="game_stroke_links game_single_button"
@@ -261,7 +260,7 @@ const moveToNextOpportunity = () => {
           </div>
         </div>
       </div>
-    )}
+   
 
     {frozen && (
       <div className="frozenButtonContainer">
