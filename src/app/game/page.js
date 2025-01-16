@@ -210,61 +210,67 @@ const moveToNextOpportunity = () => {
       </div>
 
       <div className="game-button-container game-flip-card">
-        <div className={`game-flip-card-inner ${isFlipped ? "game-flipped" : ""}`}>
-         
-          <div className="game-flip-card-back">
-            <h1 className="big_timer">{formatTime(timer)}</h1>
-            <p>Count down to next game</p>
-          </div>
-          
-
-
-       { !frozen && !breakTie &&  <div className="buttonsContainer">
-            <button
-              className="game_stroke_links game_single_button"
-              onClick={() => {
-                handleYesClick();
-                clickSoundRef.current.play();
-              }}
-            >
-              Yes
-            </button>
-            <button
-              className="game_stroke_links game_single_button"
-              onClick={() => {
-                handleNoClick();
-                clickSoundRef.current.play();
-              }}
-            >
-              No
-            </button>
-            <div className="button_circle" onClick={() => {
-             lockInOption();
-            }}>
-              <div className="lines" id="lines">
-                {lines.map((line) => (
-                  <div
-                    key={line.id}
-                    className={`line ${line.active ? "active" : ""}`}
-                    style={{
-                      transform: `rotate(${line.id * 6}deg) translateX(-50%)`,
-                    }}
-                  ></div>
-                ))}
-              </div>
-            </div>
-          </div>
-}
-
-{
-  frozen && (
-    <div className="frozenButtonContainer">
-      <p className="frozen_text">oops! You are frozen.</p>
+  <div className={`game-flip-card-inner ${isFlipped ? "game-flipped" : ""}`}>
+    <div className="game-flip-card-back">
+      <h1 className="big_timer">{formatTime(timer)}</h1>
+      <p>Count down to next game</p>
     </div>
-  )
-}
+
+    {!frozen && !breakTie && (
+      <div className="buttonsContainer">
+        <button
+          className="game_stroke_links game_single_button"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleYesClick();
+            clickSoundRef.current.play();
+          }}
+          onTouchStart={(e) => {
+            e.stopPropagation();
+            handleYesClick();
+            clickSoundRef.current.play();
+          }}
+        >
+          Yes
+        </button>
+        <button
+          className="game_stroke_links game_single_button"
+          onClick={() => {
+            handleNoClick();
+            clickSoundRef.current.play();
+          }}
+        >
+          No
+        </button>
+        <div
+          className="button_circle"
+          onClick={() => {
+            lockInOption();
+          }}
+        >
+          <div className="lines" id="lines">
+            {lines.map((line) => (
+              <div
+                key={line.id}
+                className={`line ${line.active ? "active" : ""}`}
+                style={{
+                  transform: `rotate(${line.id * 6}deg) translateX(-50%)`,
+                }}
+              ></div>
+            ))}
+          </div>
         </div>
       </div>
+    )}
+
+    {frozen && (
+      <div className="frozenButtonContainer">
+        <p className="frozen_text">oops! You are frozen.</p>
+      </div>
+    )}
+  </div>
+</div>
+
     </div>
   );
 };
