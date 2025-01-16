@@ -10,7 +10,7 @@ const GameConsole = () => {
   const clickSoundRef = useRef(null);
   const clock = useRef(null);
   const [timer, setTimer] = useState(10); // Timer duration in seconds
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(true);
   const [lines, setLines] = useState([]); // For rendering strokes dynamically
   const [opportunity, setOpportunity] = useState(0); 
   const [roundTimer, setRoundTimer] = useState(60);
@@ -123,7 +123,7 @@ toast.info("Decision made! Click the center logo to lock it in.")
 
       return () => clearInterval(countdown); // Cleanup on unmount or state update
     } else {
-      setIsFlipped(true); // Flip card when timer ends
+      setIsFlipped(false); // Flip card when timer ends
     }
   }, [timer]);
   // Update active strokes based on the timer
@@ -143,7 +143,7 @@ const moveToNextOpportunity = () => {
     setIsLocked(false);
     setTimer(10);
     setRoundTimer(60)
-    setIsFlipped(false);
+    setIsFlipped(true);
     clock.current.pause();
   }else{
     setFrozen(true);
@@ -213,12 +213,7 @@ const moveToNextOpportunity = () => {
 
       <div className="game-button-container game-flip-card">
   <div className={`game-flip-card-inner ${isFlipped ? "game-flipped" : ""}`}>
-    <div className="game-flip-card-back">
-      <h1 className="big_timer">{formatTime(timer)}</h1>
-      <p>Count down to next game</p>
-    </div>
-
-    {!frozen && !breakTie && (
+  {!frozen && !breakTie && (
       <div className="buttonsContainer">
         <button
           className="game_stroke_links game_single_button"
@@ -260,6 +255,12 @@ const moveToNextOpportunity = () => {
         </div>
       </div>
     )}
+    
+    <div className="game-flip-card-back">
+      <h1 className="big_timer">{formatTime(timer)}</h1>
+      <p>Count down to next game</p>
+    </div>
+
 
     {frozen && (
       <div className="frozenButtonContainer">
