@@ -211,10 +211,7 @@ const moveToNextOpportunity = () => {
 
       <div className="game-button-container game-flip-card">
   <div className={`game-flip-card-inner ${isFlipped ? "game-flipped" : ""}`}>
-    <div className="game-flip-card-back">
-      <h1 className="big_timer">{formatTime(timer)}</h1>
-      <p>Count down to next game</p>
-    </div>
+   
 
       <div className="buttonsContainer">
         <button
