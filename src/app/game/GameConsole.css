@@ -231,7 +231,6 @@ z-index: 100;
     font-size: 20px;
     text-transform: uppercase;
     color: transparent;
-    z-index: 100;
     background-color: transparent;
     -webkit-text-stroke: 0.5px #fff;
     outline: none;
@@ -287,5 +286,4 @@ font-size: 32px;
 line-height: 108.88%;
 text-align: center;
 color: #F7EE25;
-z-index: 10000;
 }
