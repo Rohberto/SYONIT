@@ -211,8 +211,12 @@ const moveToNextOpportunity = () => {
 
       <div className="game-button-container game-flip-card">
   <div className={`game-flip-card-inner ${isFlipped ? "game-flipped" : ""}`}>
-   
+    <div className="game-flip-card-back">
+      <h1 className="big_timer">{formatTime(timer)}</h1>
+      <p>Count down to next game</p>
+    </div>
 
+    {!frozen && !breakTie && (
       <div className="buttonsContainer">
         <button
           className="game_stroke_links game_single_button"
@@ -257,7 +261,7 @@ const moveToNextOpportunity = () => {
           </div>
         </div>
       </div>
-   
+    )}
 
     {frozen && (
       <div className="frozenButtonContainer">
