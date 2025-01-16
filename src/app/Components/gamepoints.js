@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Points = () => {
+const Points = ({currentRound}) => {
   return (
     <div className='game_point_container'>
     <div className='game_Points_container'>
@@ -11,7 +11,7 @@ const Points = () => {
 
         <div className="points_text">
         <h4>Game Round:</h4>
-          <p>ROUND 1</p>
+          <p>ROUND {currentRound}</p>
   </div>
 
         <div className='points_text'>

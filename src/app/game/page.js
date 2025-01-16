@@ -147,6 +147,12 @@ const moveToNextOpportunity = () => {
     clock.current.pause();
   }else{
     setFrozen(true);
+    setCurrentRound(prev => prev + 1);
+    setRounds([
+      { yesScore: 1000, noScore: 1000, nullScore: false, isPlayed: false },
+      { yesScore: 1000, noScore: 1000, nullScore:false,  isPlayed: false },
+      { yesScore: 1000, noScore: 1000, nullScore:false, isPlayed: false },
+    ]);
     toast.info("OOPS! you didn't qualify for the next round.");
   }
 }
@@ -203,7 +209,7 @@ const moveToNextOpportunity = () => {
         ))}
       </div>
 
-      <div className="game-button-container ame-flip-card">
+      <div className="game-button-container game-flip-card">
         <div className={`game-flip-card-inner ${isFlipped ? "game-flipped" : ""}`}>
          
           <div className="game-flip-card-back">
