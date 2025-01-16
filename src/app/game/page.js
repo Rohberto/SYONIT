@@ -221,22 +221,20 @@ const moveToNextOpportunity = () => {
 
        { !frozen && !breakTie &&  <div className="buttonsContainer">
             <button
-              className="game_stroke_links onboarding_link_login onboarding_left game_single_button"
+              className="game_stroke_links game_single_button"
               onClick={() => {
                 handleYesClick();
                 clickSoundRef.current.play();
               }}
-              disabled={allRoundsPlayed}
             >
               Yes
             </button>
             <button
-              className="game_stroke_links onboarding_link_sign onboarding_right game_single_button"
+              className="game_stroke_links game_single_button"
               onClick={() => {
                 handleNoClick();
                 clickSoundRef.current.play();
               }}
-              disabled={allRoundsPlayed}
             >
               No
             </button>
