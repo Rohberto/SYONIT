@@ -13,7 +13,7 @@ const GameConsole = () => {
   const [isFlipped, setIsFlipped] = useState(true);
   const [lines, setLines] = useState([]); // For rendering strokes dynamically
   const [opportunity, setOpportunity] = useState(0); 
-  const [roundTimer, setRoundTimer] = useState(60);
+  const [roundTimer, setRoundTimer] = useState(15);
   const [currentRound, setCurrentRound] = useState(1);
   const [selectedOption, setSelectedOption] = useState(null); // Player's current selection
   const [isLocked, setIsLocked] = useState(false); // Whether the decision is locked
@@ -103,7 +103,9 @@ toast.info("Decision made! Click the center logo to lock it in.")
   };
 
   const allRoundsPlayed = rounds.every((round) => round.isPlayed);
-  
+  const totalLines = 60; // Assuming there are 60 lines to light up
+  const activeLines = Math.floor(((15 - roundTimer) / 15) * totalLines);
+
 
   // Create lines dynamically
   useEffect(() => {
@@ -132,7 +134,7 @@ toast.info("Decision made! Click the center logo to lock it in.")
       setLines((prevLines) =>
         prevLines.map((line, index) => ({
           ...line,
-          active: index < 60 - roundTimer, // Light up based on remaining time
+          active: index < activeLines, // Light up based on remaining time
         }))
       );
     };
@@ -142,7 +144,7 @@ const moveToNextOpportunity = () => {
     setSelectedOption(null);
     setIsLocked(false);
     setTimer(10);
-    setRoundTimer(60)
+    setRoundTimer(15)
     setIsFlipped(true);
     clock.current.pause();
   }else{
@@ -265,6 +267,7 @@ const moveToNextOpportunity = () => {
     {frozen && (
       <div className="frozenButtonContainer">
         <p className="frozen_text">oops! You are frozen.</p>
+      <p className="frozen_motiVation">"Neverr give up! Missed Opportunities can seldom be regained. Be alert for the siren to <span className="break_bold">Break-the-Tie.</span> Fastest finger joins next round."</p>
       </div>
     )}
   </div>

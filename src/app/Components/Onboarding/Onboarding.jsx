@@ -20,7 +20,7 @@ const Onboarding = () => {
                 <p>A mind game tourna-musement </p>
                 <h1>SY <div className="flip-container"><div className="flip-card"><div className="flip-card-front"><img src="/syonit_icon.png" alt="syonit logo" /></div> 
      <div class="flip-card-back">
-     <img src='/main_musketeer.svg' alt='musketeeers' className="coin_musketeer"/>
+     <img src='/dark_musketeer.png' alt='musketeeers' className="coin_musketeer"/>
     </div>
     </div></div>Nit!</h1>
             </div>
