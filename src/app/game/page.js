@@ -211,7 +211,11 @@ const moveToNextOpportunity = () => {
         ))}
       </div>
 
-      
+{
+  frozen && (
+    <p className="frozen_motivation">"Never give up! Missed Opportunities can seldom be regained. Be alert for the siren to <span className="break_bold">Break-the-Tie.</span> Fastest finger joins next round."</p>
+  )
+}      
 
       <div className="game-button-container game-flip-card">
   <div className={`game-flip-card-inner ${isFlipped ? "game-flipped" : ""}`}>
@@ -267,7 +271,7 @@ const moveToNextOpportunity = () => {
     {frozen && (
       <div className="frozenButtonContainer">
         <p className="frozen_text">oops! You are frozen.</p>
-      <p className="frozen_motiVation">"Neverr give up! Missed Opportunities can seldom be regained. Be alert for the siren to <span className="break_bold">Break-the-Tie.</span> Fastest finger joins next round."</p>
+    
       </div>
     )}
   </div>

@@ -78,7 +78,7 @@ const SecondLoginScreen = () => {
 <div className='sign_buttons_container'>
           <button  className='sign_stroke_links' onClick={() => {router.push("/Home");
       }}>Cancel</button>
-    <button className='sign_stroke_links' onClick={() => {router.push("/game");
+    <button className='sign_stroke_links' onClick={() => {router.push("/Prize");
       }}>Enter</button>
   </div>
 

@@ -274,7 +274,7 @@ display: block;
   left: 25%;
   border-radius: 50%;
   background-color: transparent;
-  animation: flashGreen 1s infinite; /* Flash animation */
+  /*animation: flashGreen 1s infinite; Flash animation */
 }
 @keyframes flashGreen {
   0%, 100% {

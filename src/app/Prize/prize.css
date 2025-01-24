@@ -1,0 +1,58 @@
+.prize_container{
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium4.png'); /* Replace with the path to your image */
+    background-size: cover; /* Ensures the image covers the entire screen */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center;
+    color: #fff;
+    padding: 0 20px 150px 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.Home_screen{
+    width: 100%;
+    min-height: 200px;
+    border: 1px solid #fff;
+    border-radius: 36px;
+    display: block;
+    padding: 40px 20px;
+    }
+    .prize_list{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .prize_list button{
+        background-color: transparent;
+        color: #fff;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border: 1px solid #fff;
+        margin-bottom: 10px;
+    }
+    .prize_buttons{
+        width: 100%;
+  height: 94px;
+  background-color: #a9d8f3;
+  color: #000;
+  border-radius: 65px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  overflow: hidden;
+  transition: color 0.3s;
+    }
+    .prize_buttons button{
+        background-color: transparent;
+        color: #fff;
+        font-size: 24px;
+        outline: none;
+        border: none;
+    }

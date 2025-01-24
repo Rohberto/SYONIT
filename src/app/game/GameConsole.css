@@ -146,20 +146,28 @@ z-index: 100;
   transform-style: preserve-3d;
   transition: transform 0.6s;
 }
+
 .game-flipped {
   transform: rotateY(180deg);
 }
-.buttonsContainer{
+
+.buttonsContainer,
+.game-flip-card-back,
+.frozenButtonContainer {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+
   position: relative;
   width: 100%;
   height: 100%;
-  backface-visibility: hidden;
 }
+
 .game-flip-card-back {
   position: absolute;
   top: 0;
   left: 0;
-  backface-visibility: hidden;
   width: 100%;
   height: 94px;
   background: rgba(255, 255, 255, 0.8);
@@ -172,21 +180,22 @@ z-index: 100;
   padding: 5px;
   overflow: hidden;
   transition: color 0.3s;
-  aspect-ratio: 1/15;
   transform: rotateY(180deg);
 }
-.game-flip-card-back h1{
+
+.game-flip-card-back h1 {
   font-size: 40px;
   font-family: "Grimer";
   font-weight: bold;
 }
-.game-flip-card-back p{
-  font-family: 16px;
+
+.game-flip-card-back p {
+  font-size: 16px;
   font-family: "Helvetica Neue";
   font-weight: 500;
 }
-.frozenButtonContainer{
-  backface-visibility: hidden;
+
+.frozenButtonContainer {
   width: 100%;
   height: 94px;
   background-color: #a9d8f3;
@@ -199,33 +208,30 @@ z-index: 100;
   padding: 5px;
   overflow: hidden;
   transition: color 0.3s;
-  aspect-ratio: 1/15;
   animation: pulsate 2s infinite;
-}
-.frozen_text{
-  font-size: 24px;
-}
-.frozen_motiVation{
-  font-size: 14px;
-  font-family: "Helvetica Neue";
-  font-weight: 500;
-  text-align: center;
-}
-.break_bold{
-  font-weight: bold;
-  font-family: "Grimer";
 }
 
 @keyframes pulsate {
   0% {
-    background-color: #3498db;
+    transform: scale(1);
   }
   50% {
-    background-color: #5dade2;
+    transform: scale(1.05);
   }
   100% {
-    background-color: #3498db;
+    transform: scale(1);
   }
+}
+
+.frozen_motivation{
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  bottom: 30%;
+  font-size: 14px;
+  font-family: "Helvetica Neue";
+  left: 0;
+  color: #Fff;
 }
 
   .button_circle{
@@ -258,7 +264,6 @@ z-index: 100;
     display: flex;
     justify-content: space-between;
     padding: 5px;
-    overflow: hidden;
     transition: color 0.3s;
     aspect-ratio: 1/15;
     }
