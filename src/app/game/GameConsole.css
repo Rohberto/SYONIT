@@ -158,10 +158,6 @@ z-index: 100;
   -moz-backface-visibility: hidden;
   -ms-backface-visibility: hidden;
   backface-visibility: hidden;
-
-  position: relative;
-  width: 100%;
-  height: 100%;
 }
 
 .game-flip-card-back {
@@ -178,9 +174,9 @@ z-index: 100;
   justify-content: center;
   align-items: center;
   padding: 5px;
-  overflow: hidden;
   transition: color 0.3s;
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(0);
+  backface-visibility: hidden;
 }
 
 .game-flip-card-back h1 {
