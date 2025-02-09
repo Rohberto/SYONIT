@@ -13,6 +13,8 @@ import { useRouter } from 'next/navigation';
 
 const Prize = () => {
   const router = useRouter();
+  const [actualPrize, setActualPrize] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
   const prize = [
     {
       prize: "car",
@@ -34,6 +36,16 @@ const Prize = () => {
       points: 30
     }
   ]
+  const onClose = () => {
+    setModalOpen(false);
+    setActualPrize("");
+  }
+
+  const onConfirm = () => {
+    router.push("/game");
+    setModalOpen(false);
+    setActualPrize("");
+  }
   return (
     <div className='prize_container'>
       <Header/>
@@ -44,20 +56,35 @@ const Prize = () => {
           {
             prize && 
             prize.map((item, key) => (
-              <button key={key}>
+              <button key={key} onClick={() => {setActualPrize(item.prize) 
+                setModalOpen(true);
+              }} className={actualPrize === item.prize && "selected_prize"}>
                 <span>{item.prize}</span>
                 <span>{item.points}</span>
               </button>
             ))
           }
         </div>
+
+{
+  isModalOpen && (
+    <div className="modal-overlay">
+    <div className="modal">
+      <h2>Are you sure you want to play for this prize?</h2>
+      <div className="modal-buttons">
+        <button className="no-button" onClick={onClose}>
+          No
+        </button>
+        <button className="continue-button" onClick={onConfirm}>
+          Continue
+        </button>
       </div>
+    </div>
+  </div>
+  )
+}
 
-
-      <div className='prize_buttons'>
-        <button onClick={() => {router.push("/game");
-      }} >SELECT PRIZE</button>
-        </div>
+      </div>
     </div>
   )
 }
