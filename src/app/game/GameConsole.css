@@ -175,7 +175,7 @@ z-index: 100;
   align-items: center;
   padding: 5px;
   transition: color 0.3s;
-  transform: rotateY(180deg) translateZ(0);
+  transform: rotateY(180deg);
   backface-visibility: hidden;
 }
 

@@ -29,7 +29,7 @@ const GameConsole = () => {
     clickSoundRef.current = new Audio('Sounds/click_sound.wav');
     clickSoundRef.current.load();
     clock.current = new Audio('Sounds/clock.mp3');
-    clock.current.load();
+    clock.current.load();  
   }, [])
   
   const handleNextOpportunity = () => {
