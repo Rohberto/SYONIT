@@ -154,6 +154,7 @@ z-index: 100;
 .buttonsContainer,
 .game-flip-card-back,
 .frozenButtonContainer {
+  position: relative;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   -ms-backface-visibility: hidden;
