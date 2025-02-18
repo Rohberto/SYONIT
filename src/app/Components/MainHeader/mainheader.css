@@ -1,5 +1,6 @@
 .main_header{
     position: relative;
+    width: 100%;
 }
 .main_header h1{
     font-family: "Helvetica Neue" !important;

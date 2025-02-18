@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./HamburgerMenu.css"; // Import the CSS file
-
+import Link from "next/link";
 const HamburgerMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -24,19 +24,19 @@ const HamburgerMenu = () => {
       <div className={`dropdown-menu ${isOpen ? "menu-open" : ""}`}>
         <ul>
           <li>
-            <a href="#home">Home</a>
+            <Link href="/Home">Home</Link>
           </li>
           <li>
-            <a href="#about">About</a>
+            <Link href="/about">About</Link>
           </li>
           <li>
-            <a href="#services">How To Play</a>
+            <Link href="/play">How To Play</Link>
           </li>
           <li>
-            <a href="#contact">Invite Friends</a>
+            <Link href="#contact">Invite Friends</Link>
           </li>
           <li>
-            <a href="#contact">Profile</a>
+            <Link href="/user_profile">Profile</Link>
           </li>
         </ul>
       </div>
