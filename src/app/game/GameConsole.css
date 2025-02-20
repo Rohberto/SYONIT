@@ -225,7 +225,7 @@ z-index: 100;
   text-align: center;
   position: absolute;
   bottom: 30%;
-  font-size: 14px;
+  font-size: 18px;
   font-family: "Helvetica Neue";
   left: 0;
   color: #Fff;
@@ -306,4 +306,13 @@ font-size: 32px;
 line-height: 108.88%;
 text-align: center;
 color: #F7EE25;
+}
+.never_give_up{
+  display: inline-block;
+  font-size: 18px;
+}
+.rest_of_text{
+  opacity: 1;
+  display: inline-block;
+  font-size: 18px;
 }

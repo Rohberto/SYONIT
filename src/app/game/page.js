@@ -5,6 +5,7 @@ import Header from "../Components/MainHeader/mainHeader";
 import Points from "../Components/gamepoints";
 import Round from "../Components/gameRound/gameRound";
 import {toast} from "react-toastify";
+import AnimatedText from "../Components/AnimatedText";
 
 const GameConsole = () => {
   const clickSoundRef = useRef(null);
@@ -215,7 +216,9 @@ const moveToNextOpportunity = () => {
 
 {
   frozen && (
-    <p className="frozen_motivation">"Never give up! You can still join the game if you stay alert to \<span className="break_bold">Break-the-Tie.</span> Fastest finger joins next round."</p>
+    <>
+      <AnimatedText/>
+    </>
   )
 }      
 
