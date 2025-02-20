@@ -13,26 +13,32 @@ import { useRouter } from 'next/navigation';
 
 const Prize = () => {
   const router = useRouter();
-  const [actualPrize, setActualPrize] = useState("");
+  const [actualPrize, setActualPrize] = useState(0);
   const [isModalOpen, setModalOpen] = useState(false);
   const prize = [
     {
-      prize: "car",
+      id: 1,
+      prize: "/camera.jpg",
       points: 30
     },
     {
-      prize: "camera",
+      id: 2,
+      prize: "/car.jpg",
       points: 20
     },
     {
-      prize: "phone",
+      id: 3,
+      prize: "/laptop.jpg",
       points: 25
-    }, {
-      prize: "television",
+    }, 
+    {
+      id: 4,
+      prize: "/phone.jpg",
       points: 15
     }, 
     {
-      prize: "laptop",
+      id: 5,
+      prize: "/television.jpg",
       points: 30
     }
   ]
@@ -50,18 +56,18 @@ const Prize = () => {
     <div className='prize_container'>
       <Header/>
       <div className='Home_screen'>
-        <h1>Select Prizes</h1>
+        <h1>Select Your Prize</h1>
 
-        <div className='prize_list'>
+        <div className='prize_grid'>
           {
             prize && 
             prize.map((item, key) => (
-              <button key={key} onClick={() => {setActualPrize(item.prize) 
-                setModalOpen(true);
-              }} className={actualPrize === item.prize && "selected_prize"}>
-                <span>{item.prize}</span>
-                <span>{item.points}</span>
-              </button>
+            <div className={`prizes_container ${item.id === actualPrize ? "selected_prize" : undefined}`} key={key} onClick={() => {setActualPrize(item.id); setModalOpen(true)}}>
+              <div className='prize_img_container'>
+                <img src={item.prize} alt='prize Image'/>
+              </div>
+              <p>{item.points}</p>
+            </div>
             ))
           }
         </div>

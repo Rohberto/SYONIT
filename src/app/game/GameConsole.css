@@ -263,6 +263,11 @@ z-index: 100;
     padding: 5px;
     transition: color 0.3s;
     aspect-ratio: 1/15;
+    transform: rotateY(0deg);
+    }
+    .game-flipped .buttonsContainer{
+      visibility: hidden;
+      opacity: 0;
     }
     /*
     .buttonsContainer::before, .buttonsContainer::after{

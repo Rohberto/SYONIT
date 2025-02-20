@@ -30,6 +30,9 @@ const HamburgerMenu = () => {
             <Link href="/about">About</Link>
           </li>
           <li>
+            <Link href="/Prize">Select Prize</Link>
+          </li>
+          <li>
             <Link href="/play">How To Play</Link>
           </li>
           <li>

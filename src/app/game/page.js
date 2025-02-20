@@ -176,9 +176,11 @@ const moveToNextOpportunity = () => {
         return handleCountdown();
       }
     } else if (isLocked && roundTimer <= 0) {
+      clock.current.pause();
       updateScore();
       moveToNextOpportunity();
     } else if (!isLocked && roundTimer <= 0) {
+      clock.current.pause();
       updateNullScore();
      moveToNextOpportunity();
       toast.error("Oops! You didn't lock in your decision!");
@@ -213,7 +215,7 @@ const moveToNextOpportunity = () => {
 
 {
   frozen && (
-    <p className="frozen_motivation">"Never give up! Missed Opportunities can seldom be regained. Be alert for the siren to <span className="break_bold">Break-the-Tie.</span> Fastest finger joins next round."</p>
+    <p className="frozen_motivation">"Never give up! You can still join the game if you stay alert to \<span className="break_bold">Break-the-Tie.</span> Fastest finger joins next round."</p>
   )
 }      
 

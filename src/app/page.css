@@ -371,7 +371,7 @@ display: block;
   top: 0;
   left: 50%;
   transform-origin: center 46.75px;
-}v
+}
 .onboarding_link{
   font-family: "DM Sans", serif;
 font-size: 28px;
@@ -417,8 +417,6 @@ z-index: 100;
 .Points_container{
 height: 50px;
 background: transparent;
-border: 1px solid #fff;
-border-radius: 8px;
 width: 100%;
 display: flex;
 justify-content: center;
@@ -460,22 +458,22 @@ line-height: 22px;
 color: #fff;
 }
 .next_game{
-background: #FFF;
-border-radius: 8px;
+color: #fff;
+margin-top: 30px;
 }
 .next_game h4{
 font-family: 'Heebo';
 font-style: normal;
 font-weight: 400;
-font-size: 8px;
-color: #292828;
+font-size: 14px;
+color: #fff;
 }
 .next_game p{
 font-family: 'Heebo';
 font-style: normal;
 font-weight: 700;
 font-size: 24px;
-color: #000000;
+color: #fff;
 }
 
 @keyframes rotation {
