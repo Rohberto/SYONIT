@@ -150,7 +150,7 @@ const moveToNextOpportunity = () => {
     setRoundTimer(15)
     setIsFlipped(true);
     clock?.current.pause();
-    audioRef?.current.play();
+    audioRef?.current?.play();
   }else{
     setFrozen(true);
     setCurrentRound(prev => prev + 1);
@@ -166,8 +166,12 @@ const moveToNextOpportunity = () => {
     const handleCountdown = () => {
       const countdown = setInterval(() => {
         setRoundTimer((prev) => prev - 1);
-        audioRef?.current.pause();
-        clock?.current.play();
+        audioRef?.current?.pause().then(() => {
+          setTimeout(() => {
+            clock?.current.play();
+
+          }, 300);
+        });
         updateLines();
       }, 1000);
   
