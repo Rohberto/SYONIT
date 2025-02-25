@@ -4,6 +4,7 @@ import "./page.css";
 import Head from 'next/head';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import { AudioProvider } from "./Context/AudioContext";
 
 export const metadata = {
   title: "SYONIT",
@@ -20,8 +21,10 @@ export default function RootLayout({ children }) {
 <link href="https://fonts.cdnfonts.com/css/helvetica-neue-55" rel="stylesheet"/>
   </head>
       <body>
+        <AudioProvider>
         <ToastContainer/>
         {children}
+        </AudioProvider>
       </body>
     </html>
   );

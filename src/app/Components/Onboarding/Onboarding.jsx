@@ -1,12 +1,12 @@
-import {useRef} from "react";
+
 import "./onboarding.css";
 import { FaPlay } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { useAudio } from "@/app/Context/AudioContext";
 
 const Onboarding = () => {
     const router = useRouter();
-    const audioRef = useRef(null);
-
+    const {audioRef} = useAudio();
     const playAudio = () => {
       if (!audioRef.current) {
         // Create the Audio object if it doesn't exist

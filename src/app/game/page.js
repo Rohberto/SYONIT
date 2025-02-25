@@ -6,10 +6,11 @@ import Points from "../Components/gamepoints";
 import Round from "../Components/gameRound/gameRound";
 import {toast} from "react-toastify";
 import AnimatedText from "../Components/AnimatedText";
+import { useAudio } from "../Context/AudioContext";
 
 const GameConsole = () => {
   const clickSoundRef = useRef(null);
-  const clock = useRef(null);
+  const {clock, audioRef} = useAudio();
   const [timer, setTimer] = useState(10); // Timer duration in seconds
   const [isFlipped, setIsFlipped] = useState(true);
   const [lines, setLines] = useState([]); // For rendering strokes dynamically
@@ -97,6 +98,7 @@ toast.info("Decision made! Click the center logo to lock it in.")
     if(selectedOption === null){
       toast.error("Select an option before locking in.")
     }else{
+      clickSoundRef.current.volume = 1;
       clickSoundRef.current.play();
       setIsLocked(true);
       toast.success("Decision locked! Await final results.")
@@ -148,6 +150,7 @@ const moveToNextOpportunity = () => {
     setRoundTimer(15)
     setIsFlipped(true);
     clock.current.pause();
+    audioRef.current.play();
   }else{
     setFrozen(true);
     setCurrentRound(prev => prev + 1);
@@ -163,7 +166,9 @@ const moveToNextOpportunity = () => {
     const handleCountdown = () => {
       const countdown = setInterval(() => {
         setRoundTimer((prev) => prev - 1);
+        clock.current.volume = 0.7;
         clock.current.play();
+        audioRef.current.pause();
         updateLines();
       }, 1000);
   
