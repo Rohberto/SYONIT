@@ -166,9 +166,9 @@ const moveToNextOpportunity = () => {
     const handleCountdown = () => {
       const countdown = setInterval(() => {
         setRoundTimer((prev) => prev - 1);
+        audioRef.current.pause();
         clock.current.volume = 0.7;
         clock.current.play();
-        audioRef.current.pause();
         updateLines();
       }, 1000);
   
