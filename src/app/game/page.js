@@ -31,7 +31,7 @@ const GameConsole = () => {
     clickSoundRef.current = new Audio('Sounds/click_sound.wav');
     clickSoundRef.current.load();
     clock.current = new Audio('Sounds/clock.mp3');
-    clock.current.load();  
+    clock?.current?.load();  
   }, [])
   
   const handleNextOpportunity = () => {
@@ -149,8 +149,8 @@ const moveToNextOpportunity = () => {
     setTimer(10);
     setRoundTimer(15)
     setIsFlipped(true);
-    clock.current.pause();
-    audioRef.current.play();
+    clock?.current.pause();
+    audioRef?.current.play();
   }else{
     setFrozen(true);
     setCurrentRound(prev => prev + 1);
@@ -166,9 +166,8 @@ const moveToNextOpportunity = () => {
     const handleCountdown = () => {
       const countdown = setInterval(() => {
         setRoundTimer((prev) => prev - 1);
-        audioRef.current.pause();
-        clock.current.volume = 0.7;
-        clock.current.play();
+        audioRef?.current.pause();
+        clock?.current.play();
         updateLines();
       }, 1000);
   
@@ -182,11 +181,11 @@ const moveToNextOpportunity = () => {
         return handleCountdown();
       }
     } else if (isLocked && roundTimer <= 0) {
-      clock.current.pause();
+      clock?.current.pause();
       updateScore();
       moveToNextOpportunity();
     } else if (!isLocked && roundTimer <= 0) {
-      clock.current.pause();
+      clock?.current.pause();
       updateNullScore();
      moveToNextOpportunity();
       toast.error("Oops! You didn't lock in your decision!");
