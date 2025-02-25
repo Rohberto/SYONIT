@@ -31,6 +31,8 @@ const GameConsole = () => {
     clickSoundRef.current = new Audio('/Sounds/click_sound.wav');
     clickSoundRef.current.load();
     clock.current = new Audio('/Sounds/clock.mp3');
+    clock?.current?.load();  
+    audioRef?.current?.pause();
   }, [])
   
   const handleNextOpportunity = () => {
@@ -149,7 +151,6 @@ const moveToNextOpportunity = () => {
     setRoundTimer(15)
     setIsFlipped(true);
     clock?.current.pause();
-    audioRef?.current.play();
   }else{
     setFrozen(true);
     setCurrentRound(prev => prev + 1);
@@ -165,10 +166,7 @@ const moveToNextOpportunity = () => {
     const handleCountdown = () => {
       const countdown = setInterval(() => {
         setRoundTimer((prev) => prev - 1);
-        audioRef?.current.pause();
-        setTimeout(() => {
-          clock?.current.play();
-        },300)
+      clock?.current?.play();
         updateLines();
       }, 1000);
   
