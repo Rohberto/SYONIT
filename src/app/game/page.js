@@ -7,6 +7,7 @@ import Round from "../Components/gameRound/gameRound";
 import {toast} from "react-toastify";
 import AnimatedText from "../Components/AnimatedText";
 import { useAudio } from "../Context/AudioContext";
+import GameStartModal from "./GameStartModal";
 
 const GameConsole = () => {
   const clickSoundRef = useRef(null);
@@ -26,6 +27,7 @@ const GameConsole = () => {
     { yesScore: 1000, noScore: 1000, nullScore:false,  isPlayed: false },
     { yesScore: 1000, noScore: 1000, nullScore:false, isPlayed: false },
   ]);
+  const [showModal, setShowModal] = useState(true);
 
   useEffect(() => {
     clickSoundRef.current = new Audio('/Sounds/click_sound.wav');
@@ -202,6 +204,7 @@ const moveToNextOpportunity = () => {
     <div className="game-console">
       <Header />
       <div className="console-container">
+      <GameStartModal visible={showModal} onClose={() => setShowModal(false)} />
         <Points currentRound={currentRound}/>
         {rounds.map((round, index) => (
           <Round
