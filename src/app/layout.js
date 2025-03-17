@@ -4,7 +4,7 @@ import "./page.css";
 import Head from 'next/head';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import { AudioProvider } from "./Context/AudioContext";
+import AudioProvider from "./audioProvider";
 
 export const metadata = {
   title: "SYONIT",

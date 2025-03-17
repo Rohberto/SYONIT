@@ -1,11 +1,12 @@
 "use client";
-import React from 'react';
+import React, {useEffect} from 'react';
 import Bottom from '../Components/loginBottom';
 import Header from '../Components/MainHeader/mainHeader';
 import { FcGoogle } from "react-icons/fc";
 import Points from '../Components/loginPoints';
 import { useRouter } from 'next/navigation';
 import { FaApple } from 'react-icons/fa';
+import { getAudioContext, playSound } from '../libs/audioContext';
 
 import "./login.css";
 const LoginScreen = () => {
@@ -37,6 +38,24 @@ const LoginScreen = () => {
 
 const SecondLoginScreen = () => {
   const router = useRouter();
+    useEffect(() => {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+  
+      // Example: Load a sound file and play it on button click
+      const loadAndPlaySound = async () => {
+        const response = await fetch('/Sounds/click_sound.wav');
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+        
+        const button = document.getElementById('login_cancel');
+        const button1 = document.getElementById('login_enter');
+        button.addEventListener('click', () => playSound(audioBuffer));
+        button1.addEventListener('click', () => playSound(audioBuffer));
+      };
+  
+      loadAndPlaySound();
+    }, []);
   return (
     <div className="login-console">
     <Header/>
@@ -76,9 +95,9 @@ const SecondLoginScreen = () => {
 </div>
 
 <div className='sign_buttons_container'>
-          <button  className='sign_stroke_links' onClick={() => {router.push("/Home");
+          <button id='login_cancel' className='sign_stroke_links' onClick={() => {router.push("/Home");
       }}>Cancel</button>
-    <button className='sign_stroke_links' onClick={() => {router.push("/Prize");
+    <button id='login_enter' className='sign_stroke_links' onClick={() => {router.push("/Prize");
       }}>Enter</button>
   </div>
 

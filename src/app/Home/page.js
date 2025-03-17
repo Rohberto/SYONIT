@@ -29,44 +29,10 @@ const Home = () => {
 
 
 
-  const handleNextRound = () => {
-    // Mark the current round as played
-    setRounds(prevRounds =>
-      prevRounds.map((round, index) =>
-        index === currentRound
-          ? { ...round, isPlayed: true }
-          : round
-      )
-    );
 
-    // Move to the next round if it's not the last round
-    if (currentRound < rounds.length - 1) {
-      setCurrentRound(prevRound => prevRound + 1);
-    }
-  };
-  const handleYesClick = () => {
-    clickSoundRef.current.play();
-    setRounds(prevRounds =>
-      prevRounds.map((round, index) =>
-        index === currentRound
-          ? { ...round, yesScore: round.yesScore + 1 }
-          : round
-      )
-    );
-    handleNextRound();
-  };
 
-  const handleNoClick = () => {
-    clickSoundRef.current.play();
-    setRounds(prevRounds =>
-      prevRounds.map((round, index) =>
-        index === currentRound
-          ? { ...round, noScore: round.noScore + 1 }
-          : round
-      )
-    );
-    handleNextRound();
-  };
+
+
   return (
     <div className='home_container'>
         <Header/>

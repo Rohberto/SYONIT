@@ -1,19 +1,37 @@
-
+"use client"
+import { useEffect } from "react";
 import "./onboarding.css";
 import { FaPlay } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { getAudioContext, playSound } from "@/app/libs/audioContext";
 import { useAudio } from "@/app/Context/AudioContext";
 
 const Onboarding = () => {
     const router = useRouter();
-    const {audioRef} = useAudio();
+  /*  const {audioRef} = useAudio();
     const playAudio = () => {
       if (!audioRef.current) {
         // Create the Audio object if it doesn't exist
         audioRef.current = new Audio("/Sounds/SYON.mp3");
       }
       audioRef.current.play();
-    };
+    };*/
+
+    useEffect(() => {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+    
+        const loadAndPlaySound = async () => {
+          const response = await fetch("/Sounds/SYON.mp3");
+          const arrayBuffer = await response.arrayBuffer();
+          const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+    
+          const button = document.getElementById('game-button');
+          button.addEventListener('click', () => {playSound(audioBuffer); router.push("/Home")});
+        };
+    
+        loadAndPlaySound();
+      }, []);
     return (
         <div className="new_onboarding_container">
             <div className="onboarding_primary_text">
@@ -35,10 +53,7 @@ const Onboarding = () => {
             </div>
 
             <div className="play_container">
-                <button onClick={() => {
-                    router.push("/Home");
-                    playAudio();
-                }}><FaPlay/></button>
+                <button id="game-button"><FaPlay/></button>
             </div>
             </div>
         </div>

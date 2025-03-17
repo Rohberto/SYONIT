@@ -6,12 +6,9 @@ import Points from "../Components/gamepoints";
 import Round from "../Components/gameRound/gameRound";
 import {toast} from "react-toastify";
 import AnimatedText from "../Components/AnimatedText";
-import { useAudio } from "../Context/AudioContext";
-import GameStartModal from "./GameStartModal";
+import { getAudioContext } from "../libs/audioContext";
 
 const GameConsole = () => {
-  const clickSoundRef = useRef(null);
-  const {clock, audioRef} = useAudio();
   const [timer, setTimer] = useState(10); // Timer duration in seconds
   const [isFlipped, setIsFlipped] = useState(true);
   const [lines, setLines] = useState([]); // For rendering strokes dynamically
@@ -22,21 +19,112 @@ const GameConsole = () => {
   const [isLocked, setIsLocked] = useState(false); // Whether the decision is locked
   const [frozen, setFrozen] = useState(false);
   const [breakTie, setBreakTie] = useState(false);
+  const [tickBuffer, setTickBuffer] = useState(null);
+  const activeSources = useRef({});
+  const [countdownBuffer, setCountdownBuffer] = useState(null);
+  const [clickBuffer, setClickBuffer] = useState(null);
+  const countdownSourceRef = useRef(null); // Countdown sound source
+  const tickSourceRef = useRef(null);
   const [rounds, setRounds] = useState([
     { yesScore: 1000, noScore: 1000, nullScore: false, isPlayed: false },
     { yesScore: 1000, noScore: 1000, nullScore:false,  isPlayed: false },
     { yesScore: 1000, noScore: 1000, nullScore:false, isPlayed: false },
   ]);
   const [showModal, setShowModal] = useState(true);
+  const [gameOverBuffer, setGameOverBuffer] = useState(null);
+
 
   useEffect(() => {
-    clickSoundRef.current = new Audio('/Sounds/click_sound.wav');
-    clickSoundRef.current.load();
-    clock.current = new Audio('/Sounds/clock.mp3');
-    clock?.current?.load();  
-    audioRef?.current?.pause();
-  }, [])
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const loadSound = async () => {
+      try {
+        const tickResponse = await fetch('/Sounds/clock_countdown.mp3');
+        const tickArrayBuffer = await tickResponse.arrayBuffer();
+        const tickAudioBuffer = await ctx.decodeAudioData(tickArrayBuffer);
+        setTickBuffer(tickAudioBuffer);
+
+        // Load countdown completion sound
+        const countdownResponse = await fetch('/Sounds/main_countdown.mp3');
+        const countdownArrayBuffer = await countdownResponse.arrayBuffer();
+        const countdownAudioBuffer = await ctx.decodeAudioData(countdownArrayBuffer);
+        setCountdownBuffer(countdownAudioBuffer);
+
+        // Load click sound
+        const clickResponse = await fetch('/Sounds/click_sound.wav');
+        const clickArrayBuffer = await clickResponse.arrayBuffer();
+        const clickAudioBuffer = await ctx.decodeAudioData(clickArrayBuffer);
+        setClickBuffer(clickAudioBuffer);
+
+        const gameOverResponse = await fetch('/Sounds/fail.mp3');
+const gameOverArrayBuffer = await gameOverResponse.arrayBuffer();
+const gameOverAudioBuffer = await ctx.decodeAudioData(gameOverArrayBuffer);
+setGameOverBuffer(gameOverAudioBuffer);
+      } catch (error) {
+        console.error('Error loading tick sound:', error);
+      }
+    };
+
+    loadSound();
+  }, []);
   
+// Play a non-looping sound (click)
+const playSound = (buffer) => {
+  const ctx = getAudioContext();
+  if (!ctx || !buffer) return;
+
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+  source.connect(ctx.destination);
+  source.start(0);
+};
+
+// Start countdown sound
+const startCountdownSound = () => {
+  const ctx = getAudioContext();
+  if (!ctx || !countdownBuffer || countdownSourceRef.current) return;
+
+  const source = ctx.createBufferSource();
+  source.buffer = countdownBuffer;
+  source.connect(ctx.destination);
+  source.start(0);
+  countdownSourceRef.current = source;
+
+  // Stop sound when it ends naturally
+  source.onended = () => {
+    countdownSourceRef.current = null;
+  };
+};
+
+// Pause countdown sound
+const pauseCountdownSound = () => {
+  if (countdownSourceRef.current) {
+    countdownSourceRef.current.stop();
+    countdownSourceRef.current = null; // No resuming, just stop for simplicity
+  }
+};
+
+// Start tick sound (looping for game phase)
+const startTickSound = () => {
+  const ctx = getAudioContext();
+  if (!ctx || !tickBuffer || tickSourceRef.current) return;
+
+  const source = ctx.createBufferSource();
+  source.buffer = tickBuffer;
+  source.loop = true;
+  source.connect(ctx.destination);
+  source.start(0);
+  tickSourceRef.current = source;
+};
+
+// Stop tick sound
+const stopTickSound = () => {
+  if (tickSourceRef.current) {
+    tickSourceRef.current.stop();
+    tickSourceRef.current = null;
+  }
+};
   const handleNextOpportunity = () => {
       // Move to the next round
       setRounds((prevRounds) =>
@@ -53,12 +141,18 @@ const GameConsole = () => {
   };
 
   const handleYesClick = () => {
+    if (clickBuffer) {
+      playSound(clickBuffer);
+    }
 setSelectedOption("Yes");
 toast.info("Decision made! Click the center logo to lock it in.")
   };
 
   const handleNoClick = () => {
     // Update no score
+    if (clickBuffer) {
+      playSound(clickBuffer);
+    }
   setSelectedOption("No");
   toast.info("Decision made! Click the center logo to lock it in.")
   };
@@ -98,11 +192,14 @@ toast.info("Decision made! Click the center logo to lock it in.")
   }
 
   const lockInOption = () => {
+    if (clickBuffer) {
+      playSound(clickBuffer);
+    }
     if(selectedOption === null){
       toast.error("Select an option before locking in.")
     }else{
-      clickSoundRef.current.volume = 1;
-      clickSoundRef.current.play();
+    // click sounde  .current.volume = 1;
+     // click play .current.play();
       setIsLocked(true);
       toast.success("Decision locked! Await final results.")
     }
@@ -125,6 +222,7 @@ toast.info("Decision made! Click the center logo to lock it in.")
   //flipping based on when timer for game to start kickoffs
   useEffect(() => {
     if (timer > 0) {
+      startCountdownSound();
       const countdown = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);
@@ -132,6 +230,7 @@ toast.info("Decision made! Click the center logo to lock it in.")
       return () => clearInterval(countdown); // Cleanup on unmount or state update
     } else {
       setIsFlipped(false); // Flip card when timer ends
+      pauseCountdownSound();
     }
   }, [timer]);
   // Update active strokes based on the timer
@@ -152,10 +251,14 @@ const moveToNextOpportunity = () => {
     setTimer(10);
     setRoundTimer(15)
     setIsFlipped(true);
-    clock?.current.pause();
+    stopTickSound();
+    startCountdownSound();
+   // clock pause ?.current.pause();
+
   }else{
     setFrozen(true);
     setCurrentRound(prev => prev + 1);
+    playSound(gameOverBuffer);
     setRounds([
       { yesScore: 1000, noScore: 1000, nullScore: false, isPlayed: false },
       { yesScore: 1000, noScore: 1000, nullScore:false,  isPlayed: false },
@@ -168,7 +271,8 @@ const moveToNextOpportunity = () => {
     const handleCountdown = () => {
       const countdown = setInterval(() => {
         setRoundTimer((prev) => prev - 1);
-      clock?.current?.play();
+    // clock play  ?.current?.play();
+  startTickSound();
         updateLines();
       }, 1000);
   
@@ -182,12 +286,14 @@ const moveToNextOpportunity = () => {
         return handleCountdown();
       }
     } else if (isLocked && roundTimer <= 0) {
-      clock?.current.pause();
-      updateScore();
+     // pause clcok sound ?.current.pause();
+     stopTickSound();
+     updateScore();
       moveToNextOpportunity();
     } else if (!isLocked && roundTimer <= 0) {
-      clock?.current.pause();
-      updateNullScore();
+    //pause clock sound  ?.current.pause();
+stopTickSound();
+    updateNullScore();
      moveToNextOpportunity();
       toast.error("Oops! You didn't lock in your decision!");
     }
@@ -204,7 +310,6 @@ const moveToNextOpportunity = () => {
     <div className="game-console">
       <Header />
       <div className="console-container">
-      <GameStartModal visible={showModal} onClose={() => setShowModal(false)} />
         <Points currentRound={currentRound}/>
         {rounds.map((round, index) => (
           <Round
@@ -237,7 +342,7 @@ const moveToNextOpportunity = () => {
           onClick={(e) => {
             e.stopPropagation();
             handleYesClick();
-            clickSoundRef.current.play();
+       
           }}
         >
           Yes
@@ -247,7 +352,7 @@ const moveToNextOpportunity = () => {
           className="game_stroke_links game_single_button"
           onClick={() => {
             handleNoClick();
-            clickSoundRef.current.play();
+           
           }}
         >
           No
