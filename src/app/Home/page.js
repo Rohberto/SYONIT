@@ -27,13 +27,7 @@ const Home = () => {
   //check if all round has been played
   const allRoundsPlayed = rounds.every(round => round.isPlayed);
 
-
-
-
-
-
-
-  return (
+return (
     <div className='home_container'>
         <Header/>
         <Points/>

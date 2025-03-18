@@ -1,304 +1,246 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import "./GameConsole.css"; // Import the CSS file
+import "./GameConsole.css";
 import Header from "../Components/MainHeader/mainHeader";
 import Points from "../Components/gamepoints";
 import Round from "../Components/gameRound/gameRound";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import AnimatedText from "../Components/AnimatedText";
-import { getAudioContext } from "../libs/audioContext";
+import { getAudioContext, playSound as playAudioContextSound } from "../libs/audioContext";
+import 'whatwg-fetch'; // Polyfill for older Safari
 
 const GameConsole = () => {
-  const [timer, setTimer] = useState(10); // Timer duration in seconds
+  const [timer, setTimer] = useState(10); // Pre-game countdown
   const [isFlipped, setIsFlipped] = useState(true);
-  const [lines, setLines] = useState([]); // For rendering strokes dynamically
-  const [opportunity, setOpportunity] = useState(0); 
-  const [roundTimer, setRoundTimer] = useState(15);
+  const [lines, setLines] = useState([]);
+  const [opportunity, setOpportunity] = useState(0);
+  const [roundTimer, setRoundTimer] = useState(15); // Game phase timer
   const [currentRound, setCurrentRound] = useState(1);
-  const [selectedOption, setSelectedOption] = useState(null); // Player's current selection
-  const [isLocked, setIsLocked] = useState(false); // Whether the decision is locked
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [isLocked, setIsLocked] = useState(false);
   const [frozen, setFrozen] = useState(false);
   const [breakTie, setBreakTie] = useState(false);
   const [tickBuffer, setTickBuffer] = useState(null);
-  const activeSources = useRef({});
   const [countdownBuffer, setCountdownBuffer] = useState(null);
   const [clickBuffer, setClickBuffer] = useState(null);
-  const countdownSourceRef = useRef(null); // Countdown sound source
+  const [gameOverBuffer, setGameOverBuffer] = useState(null);
+  const countdownSourceRef = useRef(null);
   const tickSourceRef = useRef(null);
   const [rounds, setRounds] = useState([
     { yesScore: 1000, noScore: 1000, nullScore: false, isPlayed: false },
-    { yesScore: 1000, noScore: 1000, nullScore:false,  isPlayed: false },
-    { yesScore: 1000, noScore: 1000, nullScore:false, isPlayed: false },
+    { yesScore: 1000, noScore: 1000, nullScore: false, isPlayed: false },
+    { yesScore: 1000, noScore: 1000, nullScore: false, isPlayed: false },
   ]);
-  const [showModal, setShowModal] = useState(true);
-  const [gameOverBuffer, setGameOverBuffer] = useState(null);
-
 
   useEffect(() => {
     const ctx = getAudioContext();
-    if (!ctx) return;
+    if (!ctx) {
+      console.warn('Web Audio API not supported');
+      return;
+    }
 
-    const loadSound = async () => {
+    const loadSounds = async () => {
       try {
         const tickResponse = await fetch('/Sounds/clock_countdown.mp3');
+        if (!tickResponse.ok) throw new Error('Failed to fetch tick sound');
         const tickArrayBuffer = await tickResponse.arrayBuffer();
         const tickAudioBuffer = await ctx.decodeAudioData(tickArrayBuffer);
         setTickBuffer(tickAudioBuffer);
 
-        // Load countdown completion sound
         const countdownResponse = await fetch('/Sounds/main_countdown.mp3');
+        if (!countdownResponse.ok) throw new Error('Failed to fetch countdown sound');
         const countdownArrayBuffer = await countdownResponse.arrayBuffer();
         const countdownAudioBuffer = await ctx.decodeAudioData(countdownArrayBuffer);
         setCountdownBuffer(countdownAudioBuffer);
 
-        // Load click sound
         const clickResponse = await fetch('/Sounds/click_sound.wav');
+        if (!clickResponse.ok) throw new Error('Failed to fetch click sound');
         const clickArrayBuffer = await clickResponse.arrayBuffer();
         const clickAudioBuffer = await ctx.decodeAudioData(clickArrayBuffer);
         setClickBuffer(clickAudioBuffer);
 
         const gameOverResponse = await fetch('/Sounds/fail.mp3');
-const gameOverArrayBuffer = await gameOverResponse.arrayBuffer();
-const gameOverAudioBuffer = await ctx.decodeAudioData(gameOverArrayBuffer);
-setGameOverBuffer(gameOverAudioBuffer);
+        if (!gameOverResponse.ok) throw new Error('Failed to fetch game over sound');
+        const gameOverArrayBuffer = await gameOverResponse.arrayBuffer();
+        const gameOverAudioBuffer = await ctx.decodeAudioData(gameOverArrayBuffer);
+        setGameOverBuffer(gameOverAudioBuffer);
       } catch (error) {
-        console.error('Error loading tick sound:', error);
+        console.error('Error loading sounds:', error);
       }
     };
 
-    loadSound();
+    loadSounds();
   }, []);
-  
-// Play a non-looping sound (click)
-const playSound = (buffer) => {
-  const ctx = getAudioContext();
-  if (!ctx || !buffer) return;
 
-  const source = ctx.createBufferSource();
-  source.buffer = buffer;
-  source.connect(ctx.destination);
-  source.start(0);
-};
-
-// Start countdown sound
-const startCountdownSound = () => {
-  const ctx = getAudioContext();
-  if (!ctx || !countdownBuffer || countdownSourceRef.current) return;
-
-  const source = ctx.createBufferSource();
-  source.buffer = countdownBuffer;
-  source.connect(ctx.destination);
-  source.start(0);
-  countdownSourceRef.current = source;
-
-  // Stop sound when it ends naturally
-  source.onended = () => {
-    countdownSourceRef.current = null;
+  // Use playSound from audioContext.js with fallback
+  const playSound = (buffer, fallbackUrl) => {
+    playAudioContextSound(buffer, fallbackUrl);
   };
-};
 
-// Pause countdown sound
-const pauseCountdownSound = () => {
-  if (countdownSourceRef.current) {
-    countdownSourceRef.current.stop();
-    countdownSourceRef.current = null; // No resuming, just stop for simplicity
-  }
-};
+  const startCountdownSound = () => {
+    if (!countdownBuffer || countdownSourceRef.current) return;
+    const source = playAudioContextSound(countdownBuffer, '/Sounds/main_countdown.mp3');
+    if (source) {
+      countdownSourceRef.current = source;
+      source.onended = () => {
+        countdownSourceRef.current = null;
+      };
+    }
+  };
 
-// Start tick sound (looping for game phase)
-const startTickSound = () => {
-  const ctx = getAudioContext();
-  if (!ctx || !tickBuffer || tickSourceRef.current) return;
+  const pauseCountdownSound = () => {
+    if (countdownSourceRef.current) {
+      countdownSourceRef.current.stop ? countdownSourceRef.current.stop() : countdownSourceRef.current.pause();
+      countdownSourceRef.current = null;
+    }
+  };
 
-  const source = ctx.createBufferSource();
-  source.buffer = tickBuffer;
-  source.loop = true;
-  source.connect(ctx.destination);
-  source.start(0);
-  tickSourceRef.current = source;
-};
+  const startTickSound = () => {
+    if (!tickBuffer || tickSourceRef.current) return;
+    const source = playAudioContextSound(tickBuffer, '/Sounds/clock_countdown.mp3');
+    if (source) {
+      source.loop = true;
+      tickSourceRef.current = source;
+    }
+  };
 
-// Stop tick sound
-const stopTickSound = () => {
-  if (tickSourceRef.current) {
-    tickSourceRef.current.stop();
-    tickSourceRef.current = null;
-  }
-};
+  const stopTickSound = () => {
+    if (tickSourceRef.current) {
+      tickSourceRef.current.stop ? tickSourceRef.current.stop() : tickSourceRef.current.pause();
+      tickSourceRef.current = null;
+    }
+  };
+
   const handleNextOpportunity = () => {
-      // Move to the next round
-      setRounds((prevRounds) =>
-        prevRounds.map((round, index) =>
-          index === opportunity
-            ? { ...round, isPlayed: true }
-            : round
-        )
-      );
-      if(opportunity < rounds.length - 1){
-        setOpportunity(prev => prev + 1);
-      }
-     
+    setRounds((prevRounds) =>
+      prevRounds.map((round, index) =>
+        index === opportunity ? { ...round, isPlayed: true } : round
+      )
+    );
+    if (opportunity < rounds.length - 1) {
+      setOpportunity(prev => prev + 1);
+    }
   };
 
   const handleYesClick = () => {
-    if (clickBuffer) {
-      playSound(clickBuffer);
-    }
-setSelectedOption("Yes");
-toast.info("Decision made! Click the center logo to lock it in.")
+    if (clickBuffer) playSound(clickBuffer, '/Sounds/click_sound.wav');
+    setSelectedOption("Yes");
+    toast.info("Decision made! Click the center logo to lock it in.");
   };
 
   const handleNoClick = () => {
-    // Update no score
-    if (clickBuffer) {
-      playSound(clickBuffer);
-    }
-  setSelectedOption("No");
-  toast.info("Decision made! Click the center logo to lock it in.")
+    if (clickBuffer) playSound(clickBuffer, '/Sounds/click_sound.wav');
+    setSelectedOption("No");
+    toast.info("Decision made! Click the center logo to lock it in.");
   };
 
   const updateScore = () => {
-    if(selectedOption === "Yes") {
+    if (selectedOption === "Yes") {
       setRounds((prevRounds) =>
         prevRounds.map((round, index) =>
-          index === opportunity
-            ? { ...round, yesScore: round.yesScore + 1 }
-            : round
+          index === opportunity ? { ...round, yesScore: round.yesScore + 1 } : round
         )
       );
-    } else if(selectedOption === "No"){
+    } else if (selectedOption === "No") {
       setRounds((prevRounds) =>
         prevRounds.map((round, index) =>
-          index === opportunity
-            ? { ...round, noScore: round.noScore + 1 }
-            : round
+          index === opportunity ? { ...round, noScore: round.noScore + 1 } : round
         )
       );
-    } 
-    // Update no score
+    }
     handleNextOpportunity();
   };
 
   const updateNullScore = () => {
     setRounds((prevRounds) =>
       prevRounds.map((round, index) =>
-        index === opportunity
-          ? { ...round, nullScore: true}
-          : round
+        index === opportunity ? { ...round, nullScore: true } : round
       )
     );
-    console.log(rounds);
     handleNextOpportunity();
-  }
+  };
 
   const lockInOption = () => {
-    if (clickBuffer) {
-      playSound(clickBuffer);
-    }
-    if(selectedOption === null){
-      toast.error("Select an option before locking in.")
-    }else{
-    // click sounde  .current.volume = 1;
-     // click play .current.play();
+    if (clickBuffer) playSound(clickBuffer, '/Sounds/click_sound.wav');
+    if (!selectedOption) {
+      toast.error("Select an option before locking in.");
+    } else {
       setIsLocked(true);
-      toast.success("Decision locked! Await final results.")
+      toast.success("Decision locked! Await final results.");
     }
   };
 
-  const allRoundsPlayed = rounds.every((round) => round.isPlayed);
-  const totalLines = 60; // Assuming there are 60 lines to light up
+  const totalLines = 60;
   const activeLines = Math.floor(((15 - roundTimer) / 15) * totalLines);
 
-
-  // Create lines dynamically
   useEffect(() => {
-    const newLines = [];
-    for (let i = 0; i < 60; i++) {
-      newLines.push({ id: i, active: false });
-    }
+    const newLines = Array.from({ length: 60 }, (_, i) => ({ id: i, active: false }));
     setLines(newLines);
   }, []);
 
-  //flipping based on when timer for game to start kickoffs
   useEffect(() => {
     if (timer > 0) {
       startCountdownSound();
-      const countdown = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
-
-      return () => clearInterval(countdown); // Cleanup on unmount or state update
+      const countdown = setInterval(() => setTimer(prev => prev - 1), 1000);
+      return () => clearInterval(countdown);
     } else {
-      setIsFlipped(false); // Flip card when timer ends
+      setIsFlipped(false);
       pauseCountdownSound();
     }
   }, [timer]);
-  // Update active strokes based on the timer
+
   useEffect(() => {
     const updateLines = () => {
-      setLines((prevLines) =>
+      setLines(prevLines =>
         prevLines.map((line, index) => ({
           ...line,
-          active: index < activeLines, // Light up based on remaining time
+          active: index < activeLines,
         }))
       );
     };
-  
-const moveToNextOpportunity = () => {
-  if(opportunity < rounds.length - 1){
-    setSelectedOption(null);
-    setIsLocked(false);
-    setTimer(10);
-    setRoundTimer(15)
-    setIsFlipped(true);
-    stopTickSound();
-    startCountdownSound();
-   // clock pause ?.current.pause();
 
-  }else{
-    setFrozen(true);
-    setCurrentRound(prev => prev + 1);
-    playSound(gameOverBuffer);
-    setRounds([
-      { yesScore: 1000, noScore: 1000, nullScore: false, isPlayed: false },
-      { yesScore: 1000, noScore: 1000, nullScore:false,  isPlayed: false },
-      { yesScore: 1000, noScore: 1000, nullScore:false, isPlayed: false },
-    ]);
-    toast.info("OOPS! you didn't qualify for the next round.");
-  }
-}
+    const moveToNextOpportunity = () => {
+      if (opportunity < rounds.length - 1) {
+        setSelectedOption(null);
+        setIsLocked(false);
+        setTimer(10);
+        setRoundTimer(15);
+        setIsFlipped(true);
+        stopTickSound();
+        startCountdownSound();
+      } else {
+        setFrozen(true);
+        setCurrentRound(prev => prev + 1);
+        playSound(gameOverBuffer, '/Sounds/fail.mp3');
+        setRounds([
+          { yesScore: 1000, noScore: 1000, nullScore: false, isPlayed: false },
+          { yesScore: 1000, noScore: 1000, nullScore: false, isPlayed: false },
+          { yesScore: 1000, noScore: 1000, nullScore: false, isPlayed: false },
+        ]);
+        toast.info("OOPS! You didn't qualify for the next round.");
+      }
+    };
 
-    const handleCountdown = () => {
-      const countdown = setInterval(() => {
-        setRoundTimer((prev) => prev - 1);
-    // clock play  ?.current?.play();
-  startTickSound();
+    let countdown;
+    if (roundTimer > 0 && timer === 0) {
+      countdown = setInterval(() => {
+        setRoundTimer(prev => prev - 1);
+        startTickSound();
         updateLines();
       }, 1000);
-  
-      return () => clearInterval(countdown);
-    };
-  
-    if (roundTimer > 0 && timer === 0) {
-      if (!isLocked) {
-        return handleCountdown();
-      } else {
-        return handleCountdown();
-      }
     } else if (isLocked && roundTimer <= 0) {
-     // pause clcok sound ?.current.pause();
-     stopTickSound();
-     updateScore();
+      stopTickSound();
+      updateScore();
       moveToNextOpportunity();
     } else if (!isLocked && roundTimer <= 0) {
-    //pause clock sound  ?.current.pause();
-stopTickSound();
-    updateNullScore();
-     moveToNextOpportunity();
+      stopTickSound();
+      updateNullScore();
+      moveToNextOpportunity();
       toast.error("Oops! You didn't lock in your decision!");
     }
+
+    return () => clearInterval(countdown);
   }, [roundTimer, isLocked, timer]);
-  
 
   const formatTime = (totalSeconds) => {
     const minutes = Math.floor(totalSeconds / 60);
@@ -310,7 +252,7 @@ stopTickSound();
     <div className="game-console">
       <Header />
       <div className="console-container">
-        <Points currentRound={currentRound}/>
+        <Points currentRound={currentRound} />
         {rounds.map((round, index) => (
           <Round
             key={index}
@@ -325,74 +267,48 @@ stopTickSound();
         ))}
       </div>
 
-{
-  frozen && (
-    <>
-      <AnimatedText/>
-    </>
-  )
-}      
+      {frozen && <AnimatedText />}
 
       <div className="game-button-container game-flip-card">
-  <div className={`game-flip-card-inner ${isFlipped ? "game-flipped" : ""}`}>
-  {!frozen && !breakTie && (
-      <div className="buttonsContainer">
-        <button
-          className="game_stroke_links game_single_button"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleYesClick();
-       
-          }}
-        >
-          Yes
-        </button>
-
-        <button
-          className="game_stroke_links game_single_button"
-          onClick={() => {
-            handleNoClick();
-           
-          }}
-        >
-          No
-        </button>
-        <div
-          className="button_circle"
-          onClick={() => {
-            lockInOption();
-          }}
-        >
-          <div className="lines" id="lines">
-            {lines.map((line) => (
-              <div
-                key={line.id}
-                className={`line ${line.active ? "active" : ""}`}
-                style={{
-                  transform: `rotate(${line.id * 6}deg) translateX(-50%)`,
-                }}
-              ></div>
-            ))}
+        <div className={`game-flip-card-inner ${isFlipped ? "game-flipped" : ""}`}>
+          {!frozen && !breakTie && (
+            <div className="buttonsContainer">
+              <button
+                className="game_stroke_links game_single_button"
+                onClick={handleYesClick}
+              >
+                Yes
+              </button>
+              <button
+                className="game_stroke_links game_single_button"
+                onClick={handleNoClick}
+              >
+                No
+              </button>
+              <div className="button_circle" onClick={lockInOption}>
+                <div className="lines" id="lines">
+                  {lines.map((line) => (
+                    <div
+                      key={line.id}
+                      className={`line ${line.active ? "active" : ""}`}
+                      style={{ transform: `rotate(${line.id * 6}deg) translateX(-50%)` }}
+                    ></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="game-flip-card-back">
+            <h1 className="big_timer">{formatTime(timer)}</h1>
+            <p>Count down to next game</p>
           </div>
+          {frozen && (
+            <div className="frozenButtonContainer">
+              <p className="frozen_text">oops! You are frozen.</p>
+            </div>
+          )}
         </div>
       </div>
-    )}
-    
-    <div className="game-flip-card-back">
-      <h1 className="big_timer">{formatTime(timer)}</h1>
-      <p>Count down to next game</p>
-    </div>
-
-
-    {frozen && (
-      <div className="frozenButtonContainer">
-        <p className="frozen_text">oops! You are frozen.</p>
-    
-      </div>
-    )}
-  </div>
-</div>
-
     </div>
   );
 };
