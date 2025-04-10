@@ -5,11 +5,20 @@ import Header from '../Components/MainHeader/mainHeader';
 import "./login.css";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from 'react-icons/fa';
+import { useUser } from '../Context/userContext';
 
 const LoginScreen = () => {
+    const {user, setUser} = useUser();
   const router = useRouter();
   const picture = useRef();
   const input = useRef();
+
+
+  const handleSubmit = () => {
+    setUser(true);
+    localStorage.setItem("user", JSON.stringify(user))
+    router.push("/Prize");
+  }
 
   useEffect(() => {
     input.current.addEventListener('change', (event) => {
@@ -69,8 +78,7 @@ const LoginScreen = () => {
       <div className='sign_buttons_container'>
           <button  className='sign_stroke_links' onClick={() => {router.push("/Home");
       }}>Cancel</button>
-    <button className='sign_stroke_links' onClick={() => {router.push("/game");
-      }}>Enter</button>
+    <button className='sign_stroke_links' onClick={() => {handleSubmit()}}>Enter</button>
   </div>
     </div>
   );

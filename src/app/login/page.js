@@ -7,7 +7,7 @@ import Points from '../Components/loginPoints';
 import { useRouter } from 'next/navigation';
 import { FaApple } from 'react-icons/fa';
 import { getAudioContext, playSound } from '../libs/audioContext';
-
+import { useUser } from '../Context/userContext';
 import "./login.css";
 const LoginScreen = () => {
   return (
@@ -37,7 +37,14 @@ const LoginScreen = () => {
 };
 
 const SecondLoginScreen = () => {
+  const {user, setUser} = useUser();
   const router = useRouter();
+
+  const handleSubmit = () => {
+    setUser(true);
+    localStorage.setItem("user", JSON.stringify(user))
+    router.push("/Prize");
+  }
     useEffect(() => {
       const ctx = getAudioContext();
       if (!ctx) return;
@@ -97,8 +104,7 @@ const SecondLoginScreen = () => {
 <div className='sign_buttons_container'>
           <button id='login_cancel' className='sign_stroke_links' onClick={() => {router.push("/Home");
       }}>Cancel</button>
-    <button id='login_enter' className='sign_stroke_links' onClick={() => {router.push("/Prize");
-      }}>Enter</button>
+    <button id='login_enter' className='sign_stroke_links' onClick={() => {handleSubmit()}}>Enter</button>
   </div>
 
 </div>

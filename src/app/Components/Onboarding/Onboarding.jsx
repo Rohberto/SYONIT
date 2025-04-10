@@ -61,7 +61,7 @@ const Onboarding = () => {
         playSound(audioBuffer, '/Sounds/SYON.mp3');
         router.push("/Home");
       } else {
-        console.warn('AudioContext not running yet - click again after unlocking');
+        alert('AudioContext not running yet - click again after unlocking');
       }
     } else {
       console.warn('Audio not loaded yet');
@@ -80,11 +80,6 @@ const Onboarding = () => {
 
   return (
     <div className="new_onboarding_container">
-      {!audioUnlocked && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', background: 'yellow', textAlign: 'center', padding: '10px' }}>
-          Please click anywhere to enable sound (required for older browsers)
-        </div>
-      )}
       <div className="onboarding_primary_text">
         <p>A mind game tourna-musement </p>
         <h1>SY <div className="flip-container"><div className="flip-card"><div className="flip-card-front"><img src="/syonit_icon.png" alt="syonit logo" /></div> 

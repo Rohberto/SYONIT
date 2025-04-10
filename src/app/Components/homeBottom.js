@@ -3,12 +3,14 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAudioContext, playSound } from '../libs/audioContext';
 import 'whatwg-fetch';
+import { useUser } from '../Context/userContext';
 
 const Bottom = () => {
   const router = useRouter();
   const [audioBuffer, setAudioBuffer] = useState(null);
   const signUpButtonRef = useRef(null);
   const nextGameButtonRef = useRef(null);
+  const {user} = useUser();
 
   useEffect(() => {
     const ctx = getAudioContext();
@@ -43,7 +45,7 @@ const Bottom = () => {
     if (audioBuffer) {
       playSound(audioBuffer, '/Sounds/click_sound.wav');
     }
-    router.push("/login");
+    router.push(`${user ? "/Prize" : "login"}`);
   };
 
   useEffect(() => {

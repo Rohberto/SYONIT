@@ -252,6 +252,7 @@ const GameConsole = () => {
     <div className="game-console">
       <Header />
       <div className="console-container">
+        <p style={{textAlign: "center", marginBottom: 20}}>possible rounds: 6</p>
         <Points currentRound={currentRound} />
         {rounds.map((round, index) => (
           <Round

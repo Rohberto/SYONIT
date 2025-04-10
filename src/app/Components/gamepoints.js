@@ -11,7 +11,12 @@ const Points = ({currentRound}) => {
 
         <div className="points_text">
         <h4>Game Round:</h4>
-          <p>ROUND {currentRound}</p>
+          <p>ROUND {currentRound}/6</p>
+  </div>
+
+        <div className="points_text">
+        <h4>Game ID:</h4>
+          <p>SYON_004</p>
   </div>
 
         <div className='points_text'>

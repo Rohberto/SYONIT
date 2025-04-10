@@ -17,10 +17,10 @@ const Prize = () => {
 
   const prize = [
     { id: 1, prize: "/camera.jpg", points: 30 },
-    { id: 2, prize: "/car.jpg", points: 20 },
-    { id: 3, prize: "/laptop.jpg", points: 25 },
+    { id: 2, prize: "/car.jfif", points: 20 },
+    { id: 3, prize: "/laptop.jfif", points: 25 },
     { id: 4, prize: "/phone.jpg", points: 15 },
-    { id: 5, prize: "/television.jpg", points: 30 }
+    { id: 5, prize: "/tv.webp", points: 30 }
   ];
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const Prize = () => {
     <div className='prize_container'>
       <Header />
       <div className='Home_screen'>
-        <h1>Select Your Prize</h1>
+        <h1>You have To Select A Prize To Play.</h1>
 
         <div className='prize_grid'>
           {prize.map((item) => (
@@ -92,7 +92,7 @@ const Prize = () => {
               <div className='prize_img_container'>
                 <img src={item.prize} alt='prize Image' />
               </div>
-              <p>{item.points}</p>
+              <p>You need {item.points} points to redeem this prize.</p>
             </div>
           ))}
         </div>

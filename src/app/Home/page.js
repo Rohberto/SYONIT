@@ -5,10 +5,9 @@ import "./home.css";
 import Points from '../Components/points';
 import "swiper/css";
 import "swiper/css/pagination";
-import {Swiper, SwiperSlide} from 'swiper/react';
-import {Pagination} from "swiper/modules";
 import Round from '../Components/gameRound/gameRound';
 import Bottom from '../Components/homeBottom';
+import { useUser } from '../Context/userContext';
 
 const Home = () => {
   const labels = ['current game', 'Leaderboard', 'Prizes', 'History'];
@@ -27,6 +26,8 @@ const Home = () => {
   //check if all round has been played
   const allRoundsPlayed = rounds.every(round => round.isPlayed);
 
+  const {user} = useUser();
+ 
 return (
     <div className='home_container'>
         <Header/>
@@ -59,6 +60,13 @@ return (
       </div>
       </div>
     </div>
+
+     {
+      user && (
+        <p className='signed-in' style={{textAlign: "center"}}> You are successfully signed in</p>
+      )
+     }
+
    <Bottom/>
     </div>
   )
