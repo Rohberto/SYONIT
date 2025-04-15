@@ -33,6 +33,13 @@ a {
   color: inherit;
   text-decoration: none;
 }
+.custom-toast-container{
+  top: auto !important;
+  right: 0 !important;
+  left: auto !important;
+  bottom: 300px !important;
+  position: fixed !important;
+}
 
 @media (prefers-color-scheme: dark) {
   html {

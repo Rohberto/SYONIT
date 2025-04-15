@@ -125,7 +125,8 @@ const GameConsole = () => {
   const handleYesClick = () => {
     if (clickBuffer) playSound(clickBuffer, '/Sounds/click_sound.wav');
     setSelectedOption("Yes");
-    toast.info("Decision made! Click the center logo to lock it in.");
+    toast.info("Decision made! Click the center logo to lock it in."
+    );
   };
 
   const handleNoClick = () => {

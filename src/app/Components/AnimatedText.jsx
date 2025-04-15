@@ -19,7 +19,14 @@ export default function AnimatedText() {
         ease: "power1.inOut"
       })
       .fromTo(".rest_of_text",   { scale: 1.2, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 2, ease: "power1.out" });
+        { scale: 1, opacity: 1, duration: 2, ease: "power1.out" })
+        .to([".never_give_up", ".rest_of_text"], {
+          scale: 1.06,
+          duration: 0.6,
+          repeat: -1,
+          yoyo: true,
+          ease: "power1.inOut"
+        });
   }, []);
 
   return (

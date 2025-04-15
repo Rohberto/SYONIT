@@ -24,7 +24,10 @@ export default function RootLayout({ children }) {
       <body>
         <UserProvider>
         <AudioProvider>
-        <ToastContainer/>
+        <ToastContainer
+        toastClassName="custom-toast"
+        className="custom-toast-container"
+        position="bottom-center"/>
         {children}
         </AudioProvider>
         </UserProvider>

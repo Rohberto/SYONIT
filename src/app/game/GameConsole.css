@@ -205,7 +205,6 @@ z-index: 100;
   padding: 5px;
   overflow: hidden;
   transition: color 0.3s;
-  animation: pulsate 2s infinite;
 }
 
 @keyframes pulsate {

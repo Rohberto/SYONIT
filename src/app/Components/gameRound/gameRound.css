@@ -14,8 +14,8 @@ border-radius: 26px;
     .round_ball{
 width: 96px;
 height: 52px;
-background: #292828;
-color: #fff;
+background: #fff;
+color: #292828;
 display: flex;
 justify-content: center;
 align-items: center;
