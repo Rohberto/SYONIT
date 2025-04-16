@@ -42,7 +42,7 @@ const SecondLoginScreen = () => {
 
   const handleSubmit = () => {
     setUser(true);
-    localStorage.setItem("user", JSON.stringify(user))
+    localStorage.setItem("user", true)
     router.push("/Prize");
   }
     useEffect(() => {

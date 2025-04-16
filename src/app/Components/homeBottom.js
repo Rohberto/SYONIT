@@ -45,7 +45,7 @@ const Bottom = () => {
     if (audioBuffer) {
       playSound(audioBuffer, '/Sounds/click_sound.wav');
     }
-    router.push(`${user ? "/Prize" : "login"}`);
+    router.push(`${user === true ? "/Prize" : "login"}`);
   };
 
   useEffect(() => {

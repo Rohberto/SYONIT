@@ -4,7 +4,7 @@ import Header from '../Components/MainHeader/mainHeader';
 import "./prize.css";
 import { useRouter } from 'next/navigation';
 import { getAudioContext, playSound } from '../libs/audioContext';
-
+import { useUser } from '../Context/userContext';
 // Polyfill Fetch for older Safari (<10.1)
 import 'whatwg-fetch';
 
@@ -14,7 +14,7 @@ const Prize = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [clickBuffer, setClickBuffer] = useState(null);
   const [confirmBuffer, setConfirmBuffer] = useState(null);
-
+  const {setPrize} = useUser();
   const prize = [
     { id: 1, prize: "/camera.jpg", points: 30 },
     { id: 2, prize: "/car.jfif", points: 20 },
@@ -53,8 +53,10 @@ const Prize = () => {
 
   const handlePrizeClick = (id) => {
     if (clickBuffer) {
-      playSound(clickBuffer, '/Sounds/coin_drop.mp3'); // Fallback URL
+      playSound(confirmBuffer, '/Sounds/click_sound.wav'); // Fallback URL
     }
+    setPrize(id);
+    localStorage.setItem("prize", id);
     setActualPrize(id);
     setModalOpen(true);
   };
@@ -69,9 +71,9 @@ const Prize = () => {
 
   const handleConfirm = () => {
     if (confirmBuffer) {
-      playSound(confirmBuffer, '/Sounds/click_sound.wav'); // Fallback URL
+      playSound(clickBuffer, '/Sounds/coin_drop.mp3'); // Fallback URL
     }
-    router.push("/game");
+    router.push("/Home");
     setModalOpen(false);
     setActualPrize(0); // Reset to 0
   };
