@@ -9,6 +9,7 @@ import Round from '../Components/gameRound/gameRound';
 import Bottom from '../Components/homeBottom';
 import { useUser } from '../Context/userContext';
 import { useRouter } from 'next/navigation';
+import AnimatedSVG from '../Components/animateSvg';
 
 const Home = () => {
   const labels = ['current game', 'Leaderboard', 'Prizes', 'History'];
@@ -88,21 +89,21 @@ return (
         <p className='signed-in' style={{textAlign: "center"}}> You are successfully signed in</p>
       )
      }
-
+  <AnimatedSVG/>
      {
-      user == "true" && prize != null ? (
-        <h2>Countdown to Next Game: {formatTime(timer)}</h2>
+      user == "true" && prize != null && timer > 0  ? (
+        <h2 className='counting_down'>Countdown to Next Game: {formatTime(timer)}</h2>
       ) : ""
      }
 {
    prize == null ? <Bottom/> : prize != null && timer > 0 ? (
-    <div className="frozenButtonContainer" onClick={() => {
+    <div className="frozenHomeContainer" onClick={() => {
         setModalOpen(true);
     }}>
     <p className="frozen_text">Change My Prize</p>
   </div>
    ) : prize != null && timer <= 0 ? (
-    <div className="frozenButtonContainer" onClick={() => router.push("/game")}>
+    <div className="frozenHomeContainer" onClick={() => router.push("/game")}>
     <p className="frozen_text">Click To Enter Game</p>
   </div>
    ) : ""

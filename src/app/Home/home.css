@@ -167,7 +167,7 @@ border-radius: 8px;
     font-size: 14px;
     outline: none;
 }
-.frozenButtonContainer {
+.frozenHomeContainer {
     width: 100%;
     height: 94px;
     background-color: #a9d8f3;
@@ -180,7 +180,7 @@ border-radius: 8px;
     padding: 5px;
     overflow: hidden;
     transition: color 0.3s;
-    position: absolute;
+    position: fixed;
     bottom: 40px;
     left: 0
   }
@@ -228,6 +228,11 @@ border-radius: 8px;
   .continue-button {
     background-color: green;
     color: white;
+  }
+  .counting_down{
+    font-size: 16px;
+    text-align: center;
+    padding-top: 20px;
   }
 @media all and (max-width: 400px){
     .bullet-label {
