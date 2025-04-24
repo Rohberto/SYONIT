@@ -59,7 +59,7 @@ const Onboarding = () => {
       const ctx = getAudioContext();
       if (ctx && ctx.state === 'running') {
         playSound(audioBuffer, '/Sounds/SYON.mp3');
-        router.push("/Home");
+        router.push("/intro");
       } else {
         alert('AudioContext not running yet - click again after unlocking');
       }

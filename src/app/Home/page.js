@@ -9,7 +9,7 @@ import Round from '../Components/gameRound/gameRound';
 import Bottom from '../Components/homeBottom';
 import { useUser } from '../Context/userContext';
 import { useRouter } from 'next/navigation';
-import AnimatedSVG from '../Components/animateSvg';
+import ThinkingCharacters from '../Components/animateSvg';
 
 const Home = () => {
   const labels = ['current game', 'Leaderboard', 'Prizes', 'History'];
@@ -89,11 +89,11 @@ return (
         <p className='signed-in' style={{textAlign: "center"}}> You are successfully signed in</p>
       )
      }
-  <AnimatedSVG/>
+  <ThinkingCharacters/>
      {
-      user == "true" && prize != null && timer > 0  ? (
+       prize != null && timer > 0 && (
         <h2 className='counting_down'>Countdown to Next Game: {formatTime(timer)}</h2>
-      ) : ""
+      ) 
      }
 {
    prize == null ? <Bottom/> : prize != null && timer > 0 ? (

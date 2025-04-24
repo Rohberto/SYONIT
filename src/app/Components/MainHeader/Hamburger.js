@@ -8,11 +8,14 @@ const HamburgerMenu = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-  const {setUser} = useUser();
+  const {setUser, setPrize} = useUser();
 
   const logOut = () => {
     setUser(false);
-    localStorage.setItem("user", false);  }
+    setPrize(null);
+    localStorage.setItem("user", false);  
+    localStorage.removeItem("prize");
+  }
 
   return (
     <div className="hamburger-container">
