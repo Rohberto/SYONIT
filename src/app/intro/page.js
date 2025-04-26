@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { FaArrowRight } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import "./intro.css"
+import Link from 'next/link';
 
 const IntroPage = () => {
   const lineRefs = useRef([]);
@@ -53,13 +54,21 @@ const router = useRouter();
         <p ref={(el) => (lineRefs.current[3] = el)}>
           Thinking differently is the secret to winning.
         </p>
-        <button ref={buttonRef} className="continue-button" onClick={
+        <Link ref={(el) => (lineRefs.current[4] = el)} href="/about" style={{
+          marginTop: 20,
+        }}>
+          Read More...
+        </Link>
+       
+      </div>
+      <button ref={buttonRef} className="continue-button" onClick={
             () => router.push("/Home")
-        }>
+        } style={{
+          marginLeft: "auto",
+          marginRight: "auto"
+        }}>
         <FaArrowRight/>
       </button>
-      </div>
-     
     </div>
   );
 };
