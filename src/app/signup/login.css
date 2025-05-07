@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column;
 }
+
   /* Input Fields */
   .input-container {
     display: flex;
@@ -22,7 +23,28 @@ border: 1px solid #fff;
 border-radius: 36px;
 margin-bottom: 10px;
   }
-  
+  .terms-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px 20px;
+    color: #fff;
+  }
+  .terms-container input[type="checkbox"] {
+    margin-right: 8px;
+  }
+  .terms-container label {
+    font-size: 14px;
+    color: #fff;
+  }
+  .terms-link {
+    color: #0066cc;
+    text-decoration: underline;
+  }
+  .terms-link:hover {
+    color: #003366;
+  }
   .input-field {
     display: flex;
     flex-direction: column;

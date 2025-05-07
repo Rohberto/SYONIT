@@ -1,24 +1,28 @@
 "use client";
-import React, {useRef, useEffect} from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Header from '../Components/MainHeader/mainHeader';
 import "./login.css";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from 'react-icons/fa';
 import { useUser } from '../Context/userContext';
+import Button from '../Components/syonit_button/sign';
 
 const LoginScreen = () => {
-    const {user, setUser} = useUser();
+  const { user, setUser } = useUser();
   const router = useRouter();
   const picture = useRef();
   const input = useRef();
-
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const handleSubmit = () => {
-    setUser(true);
-    localStorage.setItem("user", true)
-    router.push("/Prize");
-  }
+    if (acceptedTerms) {
+      setUser(true);
+      localStorage.setItem("user", true);
+      router.push("/Home");
+    }
+  };
 
   useEffect(() => {
     input.current.addEventListener('change', (event) => {
@@ -33,29 +37,28 @@ const LoginScreen = () => {
     });
   }, []);
 
-
   return (
     <div className="sign-container">
-      <Header/>
+      <Header />
 
       {/* Input Fields */}
-    <div className="input-container">
-      <div className='profile_container'>
-      <div className="profile-picture" id="profilePicture">
-      <img src="/profile.png" alt="Profile Picture" id="profileImage" ref={picture}/>
-    </div>
-    </div>
+      <div className="input-container">
+        <div className='profile_container'>
+          <div className="profile-picture" id="profilePicture">
+            <img src="/profile.png" alt="Profile Picture" id="profileImage" ref={picture} />
+          </div>
+        </div>
         <div className="input-field">
           <label>First Name:</label>
-          <input type="email" placeholder="Enter your first name" />
+          <input type="text" placeholder="Enter your first name" />
         </div>
         <div className="input-field">
           <label>Last Name:</label>
-          <input type="email" placeholder="Enter your last name" />
+          <input type="text" placeholder="Enter your last name" />
         </div>
         <div className="input-field">
           <label>Profile Picture:</label>
-            <input type="file" id="fileInput" accept="image/*" ref={input}/>
+          <input type="file" id="fileInput" accept="image/*" ref={input} />
         </div>
         <div className="input-field">
           <label>Email:</label>
@@ -65,24 +68,36 @@ const LoginScreen = () => {
           <label>Password:</label>
           <input type="password" placeholder="Enter your password" />
         </div>
+        {/* Terms and Conditions Checkbox */}
+        <div className=" terms-container">
+          <input
+            type="checkbox"
+            id="terms"
+            checked={acceptedTerms}
+            onChange={(e) => setAcceptedTerms(e.target.checked)}
+          />
+          <label htmlFor="terms">
+            I accept the{' '}
+            <Link href="/terms" className="terms-link">
+              Terms and Conditions
+            </Link>
+          </label>
+        </div>
       </div>
 
-      {/* Sign in with Apple Button */}
+      {/* Sign in with Apple/Google Buttons */}
       <button className="apple-button">
-        <span className="apple-icon"><FcGoogle/> </span> Sign in with Google
+        <span className="apple-icon"><FcGoogle /></span> Sign in with Google
       </button>
       <button className="apple-button">
-        <span className="apple-icon"><FaApple/> </span> Sign in with Apple
+        <span className="apple-icon"><FaApple /></span> Sign in with Apple
       </button>
 
       <div className='sign_buttons_container'>
-          <button  className='sign_stroke_links' onClick={() => {router.push("/Home");
-      }}>Cancel</button>
-    <button className='sign_stroke_links' onClick={() => {handleSubmit()}}>Enter</button>
-  </div>
+        <Button handleSubmit={handleSubmit} disabled={!acceptedTerms} />
+      </div>
     </div>
   );
 };
 
 export default LoginScreen;
-

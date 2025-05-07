@@ -10,6 +10,12 @@ import Bottom from '../Components/homeBottom';
 import { useUser } from '../Context/userContext';
 import { useRouter } from 'next/navigation';
 import ThinkingCharacters from '../Components/animateSvg';
+import Button from '../Components/syonit_button/homebutton';
+import SignedButton from '../Components/syonit_button/loggedIn';
+import ImageSlider from './ImagesSlider';
+import PrizeButton from '../Components/syonit_button/prize';
+import QuoteSlider from './quoteSlider';
+import GameButton from '../Components/syonit_button/gamebutton';
 
 const Home = () => {
   const labels = ['current game', 'Leaderboard', 'Prizes', 'History'];
@@ -31,8 +37,8 @@ const Home = () => {
   //check if all round has been played
   const allRoundsPlayed = rounds.every(round => round.isPlayed);
 
-  const {user, prize} = useUser();
-console.log(user);
+  const {user, prize, prizes} = useUser();
+console.log(user, prize)
   
   useEffect(() => {
     if (prize === null || timer <= 0) return;
@@ -54,11 +60,18 @@ const formatTime = (secs) => {
 return (
     <div className='home_container'>
         <Header/>
-        <Points/>
+       {timer > 0 && (
+        <p className='possible'>Possible Game Rounds To Game Over: <b>5/7</b></p>
+       )}
+       {timer === 0 && (
+        <p className='possible'>Game ID: SYON_004 OVER!!!<br/>
+        NEW GAME STARTS.
+        </p>
+       )}
       <div>
       <div className='Home_slide'>
       <div className='Home_screen'>
-        <div className="current_game_header">GAME 0N</div>
+        <div className="current_game_header">Ongoing Game</div>
         <div className="current_game_info_buttons">
           <p>N.O.P: 4000</p>
           <p>OPP 3</p>
@@ -84,31 +97,51 @@ return (
       </div>
     </div>
 
-     {
+     {/*
       user === true && prize == null && (
         <p className='signed-in' style={{textAlign: "center"}}> You are successfully signed in</p>
       )
-     }
-  <ThinkingCharacters/>
+     */}
      {
+      prize === null && <ThinkingCharacters/>
+     }
+
+     {/*
        prize != null && timer > 0 && (
         <h2 className='counting_down'>Countdown to Next Game: {formatTime(timer)}</h2>
       ) 
+    */ }
+     {
+       prize != null && timer > 0 && (
+        <ImageSlider slides={prizes} prize={prize}/>
+      ) 
+     }
+     {
+       prize != null && timer <= 0 && (
+        <QuoteSlider/>
+      ) 
      }
 {
-   prize == null ? <Bottom/> : prize != null && timer > 0 ? (
-    <div className="frozenHomeContainer" onClick={() => {
-        setModalOpen(true);
-    }}>
-    <p className="frozen_text">Change My Prize</p>
-  </div>
-   ) : prize != null && timer <= 0 ? (
-    <div className="frozenHomeContainer" onClick={() => router.push("/game")}>
-    <p className="frozen_text">Click To Enter Game</p>
-  </div>
-   ) : ""
-   }
+   user === false &&  <div className='bottom_button'>
+   <Button/>
+   </div> 
+} 
+{prize === null && user == "true" || true  && timer >= 20 && (
+ <div className='bottom_button'>
+  <SignedButton/>
+</div>
+   ) }
 
+{
+       prize != null && timer > 0 && (
+       <PrizeButton Modal={setModalOpen}/>
+      ) 
+     }
+{
+       prize != null && timer <= 0 && (
+      <GameButton/>
+      ) 
+     }
 {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal">

@@ -5,6 +5,7 @@ import { FaArrowRight } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import "./intro.css"
 import Link from 'next/link';
+import Button from '../Components/syonit_button/intro';
 
 const IntroPage = () => {
   const lineRefs = useRef([]);
@@ -56,11 +57,19 @@ const router = useRouter();
         </p>
         <Link ref={(el) => (lineRefs.current[4] = el)} href="/about" style={{
           marginTop: 20,
+          width: 200,
+          backgroundColor: "#fff",
+          borderRadius: 20,
+          color: "#000",
+          padding: 5,
+         textAlign: "center",
+         fontWeight: "normal"
         }}>
           Read More...
         </Link>
        
       </div>
+      {/*
       <button ref={buttonRef} className="continue-button" onClick={
             () => router.push("/Home")
         } style={{
@@ -69,6 +78,11 @@ const router = useRouter();
         }}>
         <FaArrowRight/>
       </button>
+      */}
+
+        <div className='bottom_button' ref={buttonRef}>
+          <Button/>
+          </div>
     </div>
   );
 };

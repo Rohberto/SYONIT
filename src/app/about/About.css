@@ -57,5 +57,12 @@ font-weight: 400;
     font-weight: 400;
     padding: 15px 0;
 }
+.bottom_button{
+    width: 100vw;
+    position: fixed;
+    padding: 0 20px;
+    bottom: 50px;
+    left: 0;
+  }
 
 

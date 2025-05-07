@@ -14,14 +14,8 @@ const Prize = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [clickBuffer, setClickBuffer] = useState(null);
   const [confirmBuffer, setConfirmBuffer] = useState(null);
-  const {setPrize} = useUser();
-  const prize = [
-    { id: 1, prize: "/camera.jpg", points: 30 },
-    { id: 2, prize: "/car.jfif", points: 20 },
-    { id: 3, prize: "/laptop.jfif", points: 25 },
-    { id: 4, prize: "/phone.jpg", points: 15 },
-    { id: 5, prize: "/tv.webp", points: 30 }
-  ];
+  const {setPrize, prizes} = useUser();
+
 
   useEffect(() => {
     const ctx = getAudioContext();
@@ -85,7 +79,7 @@ const Prize = () => {
         <h1>You have To Select A Prize To Play.</h1>
 
         <div className='prize_grid'>
-          {prize.map((item) => (
+          {prizes.map((item) => (
             <div
               className={`prizes_container ${item.id === actualPrize ? "selected_prize" : ""}`}
               key={item.id}

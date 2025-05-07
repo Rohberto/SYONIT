@@ -1,6 +1,8 @@
+"use client"
 import React from 'react';
 import "./About.css";
 import Header from '../Components/MainHeader/mainHeader';
+import Button from '../Components/syonit_button/intro';
 
 
 const About = () => {
@@ -17,13 +19,6 @@ const About = () => {
         is a fast-paced, prize-based multiplayer mind game tourna-musement, 
         players must think critically and make lightning-quick Yes or No decisions. The key to winning? Thinking differently! This thrilling game challenges your ability to adapt, strategize, and outthink your opponents in a race against time.
     <br/>
-    <br/>
-        Each game room has an entry fee and a prize pool, 
-        making every round an exciting test of strategy, 
-        intuition, and risk-taking. 
-        The last player standing after the elimination rounds is crowned the <b>$YO₦AIR£</b>,
-         claiming the grand prize.
-         <br/>
          <br/>
          <b>SYONIT</b> is not just a game—it’s an <b>interactive decision-making challenge</b> 
          that rewards bold choices and quick thinking. 
@@ -64,6 +59,9 @@ const About = () => {
 <p className='bottom_overall-text'>Overall, SYONit! is an engaging, skill-based game that offers cognitive benefits, social interaction, and emotional investment, whereas lottery games are chance-based, individual activities with minimal cognitive benefits.</p>
       </div>
 
+      <div className='bottom_button'>
+          <Button/>
+          </div>
     </div>
   )
 }

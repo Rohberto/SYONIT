@@ -24,3 +24,10 @@
     letter-spacing: -0.5px;
     text-align: center;
   }
+  .bottom_button{
+    width: 100vw;
+    position: fixed;
+    padding: 0 20px;
+    bottom: 50px;
+    left: 0;
+  }
