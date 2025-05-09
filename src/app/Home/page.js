@@ -126,7 +126,7 @@ return (
    <Button/>
    </div> 
 } 
-{prize === null && user == "true" || true  && timer >= 20 && (
+{prize === null && user === true  && timer >= 20 && (
  <div className='bottom_button'>
   <SignedButton/>
 </div>

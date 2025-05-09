@@ -13,11 +13,7 @@ export const UserProvider = ({children}) => {
         { id: 4, prize: "/phone.jpg", points: 15 },
         { id: 5, prize: "/tv.webp", points: 30 }
       ];
-    const slides = [
-        { id: 1, image: "/quote.jpg", points: 30 },
-        { id: 2, image: "/quote1.jpg", points: 20 },
-        { id: 3, image: "/quote2.jpg", points: 25 }
-      ];
+  
 
     useEffect(() => {
         const savedUsername = localStorage.getItem("user");
