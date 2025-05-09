@@ -19,10 +19,10 @@ export const UserProvider = ({children}) => {
         const savedUsername = localStorage.getItem("user");
         const savedPrize = localStorage.getItem("prize");
         if (savedUsername) {
-            setUser(savedUsername);
+            setUser(savedUsername === "true" ? true : false);
         }
         if(savedPrize){
-            setPrize(savedPrize);
+            setPrize(JSON.parse(savedPrize));
         }
     }, []);
 
