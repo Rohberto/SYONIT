@@ -14,8 +14,14 @@ const Prize = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [clickBuffer, setClickBuffer] = useState(null);
   const [confirmBuffer, setConfirmBuffer] = useState(null);
-  const {setPrize, prizes} = useUser();
+  const {setPrize, prizes, user} = useUser();
 
+
+useEffect(() => {
+  if(!user) {
+    router.replace("/signup")
+  }
+})
 
   useEffect(() => {
     const ctx = getAudioContext();

@@ -14,7 +14,7 @@ const ImageSlider = ({ slides, prize }) => {
   }, [slides.length]);
 console.log(prize);
   return (
-    <div className={slides[currentIndex].id === prize ? "slider-container active" : "slider-container" }>
+    <div className={slides[currentIndex].id === prize ? "slider-containerr active" : "slider-containerr" }>
         {
          slides[currentIndex].id === prize && (
             <h1>Selected Prize</h1>
@@ -30,8 +30,8 @@ console.log(prize);
       </div>
 
       {/* Text Description */}
-      <div className="text-container">
-        <p className="slider-text">Points to go: {slides[currentIndex].points}</p>
+      <div className='sliding-content'>
+        <p>Points to go: {slides[currentIndex].points}</p>
       </div>
     </div>
   );
