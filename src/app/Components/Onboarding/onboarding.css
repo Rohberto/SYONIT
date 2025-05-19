@@ -1,11 +1,11 @@
 
 .new_onboarding_container {
   height: calc(var(--vh, 1vh) * 100);
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium4.png');
-    background-size: cover; /* Ensures the image covers the entire screen */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium5.png');
+    background-size: contain; /* Ensures the image covers the entire screen */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center;
-    color: #fff;
+    color: #26282a;
     padding: 40px 20px;
   }
   .onboarding_primary_text{
@@ -16,8 +16,8 @@
   
   .onboarding_primary_text h1{
   font-family: 'Helvetica Neue';
-  font-size: 85px;
-  line-height: 96px;
+  font-size: 36px;
+  line-height: 42px;
   text-transform: capitalize;
   width: 100%;
   white-space: nowrap;
@@ -25,13 +25,14 @@
   align-items: center;
   justify-content: center;
   font-weight: 300;
+  letter-spacing: 0.05em;
   }
   .illustration{
     background-color: #000;
   }
   .onboarding_primary_text h1 span{
     display: inline-flex;
-    width: 65px;
+    width: 24px;
     height: 100%;
     align-items: flex-end;
   }
@@ -89,23 +90,28 @@ justify-content: center;
     display: inline-block;
     transform: scaleX(-1);
   }
+  .play_container{
+    width: 100vw;
+    padding: 10px 20px;
+  }
   .play_container button{
-    width: 100px;
-    padding: 5px;
-    border-radius: 20px;
-    background-color: #fff;
-    color: lightgray;
-    margin: 5px 0;
-    border: none;
-    outline: none;
+    width: 100%;
+    background-color: transparent;
+  border: 1px solid #26282a;
+  border-radius: 9999px;
+  height: 80px;
+  overflow: hidden;
+  color: #26282a;
+  font-size: 32px;
+  text-transform: uppercase;
   }
   .flip-container {
     perspective: 1000px;
   }
   
   .flip-card {
-    width: 65px;
-    height: 65px;
+    width: 24px;
+    height: 32px;
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.6s;
@@ -160,10 +166,10 @@ justify-content: center;
       transform: rotateY(0deg);
     }
     50% {
-      transform: rotateY(180deg);
+      transform: rotateY(0deg);
     }
     100% {
-      transform: rotateY(360deg);
+      transform: rotateY(0deg);
     }
   }
   @media all and (max-width: 399px){

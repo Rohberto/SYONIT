@@ -1,10 +1,10 @@
 .home_container{
     min-height: 100vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium4.png'); /* Replace with the path to your image */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium5.png'); /* Replace with the path to your image */
     background-size: cover; /* Ensures the image covers the entire screen */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center;
-    color: #fff;
+    color: #26282a;
     padding: 0 20px 150px 20px;
     position: relative;
     display: flex;

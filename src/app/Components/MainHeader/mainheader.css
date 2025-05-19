@@ -9,7 +9,7 @@ font-size: 40px;
 line-height: 32px;
 leading-trim: both;
 text-edge: cap;
-color: #fff; /* Make the text fill transparent */
+color: #26282a; /* Make the text fill transparent */
   font-weight: 500; 
 }
 .header_time_text{
