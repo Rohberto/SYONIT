@@ -2,7 +2,7 @@
 .new_onboarding_container {
   height: calc(var(--vh, 1vh) * 100);
     background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium5.png');
-    background-size: contain; /* Ensures the image covers the entire screen */
+    background-size: cover; /* Ensures the image covers the entire screen */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center;
     color: #26282a;
