@@ -10,7 +10,7 @@ line-height: 32px;
 leading-trim: both;
 text-edge: cap;
 color: #26282a; /* Make the text fill transparent */
-  font-weight: 500; 
+  font-weight: 500;
 }
 .header_time_text{
     display: flex;

@@ -3,6 +3,7 @@ import React from 'react';
 import "./About.css";
 import Header from '../Components/MainHeader/mainHeader';
 import Button from '../Components/syonit_button/intro';
+import BackToTop from '../Components/utils/top';
 
 
 const About = () => {
@@ -62,6 +63,8 @@ const About = () => {
       <div className='bottom_button'>
           <Button/>
           </div>
+
+          <BackToTop/>
     </div>
   )
 }

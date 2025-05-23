@@ -7,6 +7,7 @@ import { getAudioContext, playSound } from '../../libs/audioContext';
 const Button = ({handleSubmit}) => {
 const [lines, setLines] = useState([]);
   const [audioBuffer, setAudioBuffer] = useState(null);
+const [clickBuffer, setClickBuffer] = useState(null);
 
 useEffect(() => {
     const ctx = getAudioContext();
@@ -22,6 +23,12 @@ useEffect(() => {
         const arrayBuffer = await response.arrayBuffer();
         const decodedBuffer = await ctx.decodeAudioData(arrayBuffer);
         setAudioBuffer(decodedBuffer);
+
+         const clickResponse = await fetch('/Sounds/coin_drop.mp3');
+        if (!clickResponse.ok) throw new Error('Failed to fetch coin_drop.mp3');
+        const clickArrayBuffer = await clickResponse.arrayBuffer();
+        const clickAudioBuffer = await ctx.decodeAudioData(clickArrayBuffer);
+        setClickBuffer(clickAudioBuffer);
       } catch (err) {
         console.error('Error loading click sound:', err);
       }
@@ -40,7 +47,7 @@ const router = useRouter();
   return (
     <div className="buttonsContainer">
     <button
-      className="game_stroke_links game_single_button"
+      className="game_stroke_links"
     onClick={() => {
            if (audioBuffer) {
               playSound(audioBuffer, '/Sounds/click_sound.wav');
@@ -50,14 +57,14 @@ const router = useRouter();
       Cancel
     </button>
     <button
-      className="game_stroke_links game_single_button"
+      className="game_stroke_links"
       onClick={() => {
            if (audioBuffer) {
-              playSound(audioBuffer, '/Sounds/click_sound.wav');
+               playSound(clickBuffer, '/Sounds/coin_drop.mp3'); // Fallback URL
             }
         handleSubmit()}}
     >
-    Continue
+   Signup
     </button>
     <div className="button_circle">
       <div className="lines" id="lines">

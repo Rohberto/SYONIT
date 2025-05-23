@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import AnimatedText from "../Components/AnimatedText";
 import { getAudioContext, playSound as playAudioContextSound } from "../libs/audioContext";
 import 'whatwg-fetch'; // Polyfill for older Safari
+import Button from "../Components/syonit_button/game";
 
 const GameConsole = () => {
   const [timer, setTimer] = useState(10); // Pre-game countdown
@@ -26,6 +27,7 @@ const GameConsole = () => {
   const [gameOverBuffer, setGameOverBuffer] = useState(null);
   const countdownSourceRef = useRef(null);
   const tickSourceRef = useRef(null);
+  const [text, setText] = useState("Countdown To Next Game");
   const [rounds, setRounds] = useState([
     { yesScore: 1000, noScore: 1000, nullScore: false, isPlayed: false },
     { yesScore: 1000, noScore: 1000, nullScore: false, isPlayed: false },
@@ -186,6 +188,7 @@ const GameConsole = () => {
       return () => clearInterval(countdown);
     } else {
       setIsFlipped(false);
+      setText("Move To Next Opportunity");
       pauseCountdownSound();
     }
   }, [timer]);
@@ -302,12 +305,10 @@ const GameConsole = () => {
           )}
           <div className="game-flip-card-back">
             <h1 className="big_timer">{formatTime(timer)}</h1>
-            <p>Count down to next game</p>
+            <p>{text}</p>
           </div>
           {frozen && (
-            <div className="frozenButtonContainer">
-              <p className="frozen_text">oops! You are frozen.</p>
-            </div>
+          <Button/>
           )}
         </div>
       </div>

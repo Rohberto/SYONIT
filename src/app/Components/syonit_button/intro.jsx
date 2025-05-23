@@ -40,7 +40,7 @@ const router = useRouter();
   return (
     <div className="buttonsContainer">
     <button
-      className="game_stroke_links game_single_button"
+      className="game_stroke_links"
     onClick={() => {
            if (audioBuffer) {
               playSound(audioBuffer, '/Sounds/click_sound.wav');
@@ -50,14 +50,14 @@ const router = useRouter();
       Cancel
     </button>
     <button
-      className="game_stroke_links game_single_button"
+      className="game_stroke_links "
       onClick={() => {
            if (audioBuffer) {
               playSound(audioBuffer, '/Sounds/click_sound.wav');
             }
         router.push("/Home")}}
     >
-     Cont
+    View Ongoing Game
     </button>
     <div className="button_circle">
       <div className="lines" id="lines">

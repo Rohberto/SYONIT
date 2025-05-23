@@ -21,6 +21,8 @@ const LoginScreen = () => {
       setUser(true);
       localStorage.setItem("user", true);
       router.push("/Home");
+    } else {
+      alert("Accept terms and conditions to proceed");
     }
   };
 
@@ -94,7 +96,7 @@ const LoginScreen = () => {
       </button>
 
       <div className='sign_buttons_container'>
-        <Button handleSubmit={handleSubmit} disabled={!acceptedTerms} />
+        <Button handleSubmit={handleSubmit} />
       </div>
     </div>
   );

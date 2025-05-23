@@ -31,9 +31,9 @@ export default function AnimatedText() {
 
   return (
     <p className="frozen_motivation" ref={textRef}>
-      <span className="never_give_up">Never give up!</span>{" "}
+      <span className="never_give_up">Oops!!!, You are frozen</span>{" "}
       <span className="rest_of_text">
-        You can still join the game if you stay alert to <b>Break-the-Tie.</b>{" "}
+        Never give up, You can still join the game if you stay alert to <b>Break-the-Tie.</b>{" "}
         Fastest finger joins next round.
       </span>
     </p>

@@ -1,6 +1,6 @@
 .home_container{
     min-height: 100vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium5.png'); /* Replace with the path to your image */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/bg.jpg');
     background-size: cover; /* Ensures the image covers the entire screen */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center;
@@ -14,6 +14,8 @@
   font-size: 24px;
   white-space: wrap;
   text-align: center;
+  font-weight: 700;
+  font-family: 'DM Sans';
 }
 .Home_screen{
     width: 100%;

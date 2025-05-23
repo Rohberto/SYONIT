@@ -23,11 +23,12 @@
         }
         .game_stroke_links{
           font-family: "Grimer";
+          width: 30%;
+          text-align: center;
           font-size: 18px;
           text-transform: uppercase;
-          color: transparent;
+          color: #fef4dcff;
           background-color: transparent;
-          -webkit-text-stroke: 0.5px #fff;
           outline: none;
           padding: 0 5px;
           border: none;
@@ -43,15 +44,4 @@
           .line.active {
             background-color: white;
           }
-          .game_single_button{
-            position: relative;
-          font-family: 'Grimer';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 20px;
-          white-space: wrap;
-          line-height: 108.88%;
-          text-align: center;
-          color: #F77332ff;
-          width: 45%;
-          }
+         

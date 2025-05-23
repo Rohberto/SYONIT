@@ -97,7 +97,7 @@ useEffect(() => {
               <div className='prize_img_container'>
                 <img src={item.prize} alt='prize Image' />
               </div>
-              <p>You need {item.points} points to redeem this prize.</p>
+              <p>Redeem with {item.points} points </p>
             </div>
           ))}
         </div>

@@ -41,16 +41,6 @@ const router = useRouter();
     <div className="buttonsContainer">
     <button
       className="game_stroke_links"
-    onClick={() => {
-           if (audioBuffer) {
-              playSound(audioBuffer, '/Sounds/click_sound.wav');
-            }
-        router.push("/signup")}}
-    >
-      Sign up
-    </button>
-    <button
-      className="game_stroke_links"
       onClick={() => {
            if (audioBuffer) {
               playSound(audioBuffer, '/Sounds/click_sound.wav');
@@ -58,6 +48,16 @@ const router = useRouter();
         router.push("/Prize")}}
     >
     Play Next Game
+    </button>
+    <button
+      className="game_stroke_links"
+      onClick={() => {
+           if (audioBuffer) {
+              playSound(audioBuffer, '/Sounds/click_sound.wav');
+            }
+        router.push("/Home")}}
+    >
+        Home page
     </button>
     <div className="button_circle">
       <div className="lines" id="lines">
