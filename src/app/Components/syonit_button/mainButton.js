@@ -45,7 +45,7 @@ const router = useRouter();
            if (audioBuffer) {
               playSound(audioBuffer, '/Sounds/click_sound.wav');
             }
-        router.push("/invite")}}
+        router.push("/Invite")}}
     >
         INVITE
     </button>
