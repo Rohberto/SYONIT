@@ -9,6 +9,7 @@ import "./page.css";
 import {IoGameControllerSharp} from "react-icons/io5";
 import { FcIdea } from 'react-icons/fc';
 import Button from '../Components/syonit_button/mainButton';
+import Header from '../Components/MainHeader';
 export default function Home() {
   const [currentTab, setCurrentTab] = useState('game'); // Tabs: 'game', 'idea', 'leaderboard', 'special'
   const [points, setPoints] = useState(1834);
@@ -206,11 +207,7 @@ export default function Home() {
 
   return (
     <div className="gameContainer">
-      <div className="header-section">
-        <div className="profile-icon"><FaRegUser/><span className='online'></span></div>
-        <h1 className="header">SYONIT</h1>
-        <div className="book-icon"><BsBook/></div>
-      </div>
+      <Header/>
       <div className="points-section">
         <div className='points-container'>
             <p><span>POINTS: </span>{points}</p>

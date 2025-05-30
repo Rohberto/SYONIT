@@ -1,0 +1,353 @@
+body {
+  margin: 0;
+}
+
+.inviteContainer {
+ min-height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/bg.jpg');
+    background-size: cover; /* Ensures the image covers the entire screen */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center;
+    padding: 20px ;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.subheader {
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-family: "DM Sans";
+  color: #faf6d9ff;
+}
+
+.invite-container {
+  background-color: transparent;
+  border-radius: 10px;
+  padding: 10px 20px;
+  width: 100%;
+    border: 1px solid #faf6d9ff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+.searchButton{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.searchButton input{
+    background-color: #faf6d9ff;
+    padding: 5px 20px;
+    text-align: center;
+    width: 100%;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+
+.tab-buttons {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.tab-button {
+  padding: 0 10px;
+  border: none;
+ background-color: rgb(218, 195, 152);
+ color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+
+
+.friend-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: transparent;
+ border-bottom: 1px solid #faf6d9ff;
+ font-family: "DM Sans";
+ font-size: 14px;
+ color: rgba(0, 0, 0, 0.4);
+}
+.friend-item:last-child{
+    border-bottom: none;
+}
+.friend-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status {
+  padding: 0 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.status.in-game {
+  background-color: #fb7b3cff;
+}
+
+.status.readied {
+  background-color: #faf6d9ff;
+}
+
+.points {
+  font-size: 12px;
+  font-family: "DM Sans";
+  font-weight: bold;
+ color: rgba(0, 0, 0, 0.5);
+ background-color: #faf6d9ff;
+ padding: 0 10px;
+ border-radius: 10px;
+}
+.add-friend{
+  font-size: 12px;
+  font-family: "DM Sans";
+  font-weight: bold;
+ color: rgba(0, 0, 0, 0.9);
+ background-color: #faf6d9ff;
+ padding: 0 10px;
+ border-radius: 10px;
+}
+.extra-info{
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 5px;
+}
+.status-circle{
+width: 20px;
+height: 20px;
+display: inline-block;
+border-radius: 50%;
+background-color: #faf6d9ff;
+}
+.status-active{
+background-color: #fb7b3cff;
+}
+.email-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.email-input input {
+   background-color: #faf6d9ff;
+    padding: 5px 20px;
+    text-align: center;
+    width: 100%;
+    border-radius: 15px;
+    outline: none;
+    border: none;
+    color: rgba(0, 0, 0, 0.5);
+    flex: 1;
+}
+
+.send-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #fb7b3cff;
+  color: #faf6d9ff;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "DM Sans";
+  cursor: pointer;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20px;
+  width: 80%;
+  max-width: 400px;
+}
+
+.action-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  background-color: #fff;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-button span:first-child {
+  font-size: 12px;
+  color: #666;
+}
+
+.action-button span:last-child {
+  font-size: 14px;
+}
+
+/* Existing styles from previous pages */
+.header-section .profile-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #e0e0e0;
+  border-radius: 50%;
+}
+
+.points-section {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.points-section span {
+  font-size: 14px;
+  margin: 0 10px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 5px;
+  background-color: #d3d3d3;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #ff6200;
+  transition: width 0.3s ease-in-out;
+}
+
+.game-container, .idea-container, .leaderboard-container, .special-container {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.question-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  height: 40px;
+}
+
+.slot-number {
+  width: 40px;
+  height: 100%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.slot-number.filled {
+  background-color: #000;
+  color: #fff;
+}
+
+.answer-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.answer-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+.idea-container h3, .leaderboard-container h3, .special-container h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.idea-container p, .leaderboard-container p, .special-container p {
+  font-size: 14px;
+  text-align: center;
+}
+
+.quote-author {
+  font-style: italic;
+  text-align: right;
+  margin-top: 10px;
+}
+
+.leaderboard-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.nav-button {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.nav-button.active {
+  opacity: 1;
+}
+
+.icon {
+  display: block;
+}
+.bottom-button{
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    padding: 0 20px;
+}

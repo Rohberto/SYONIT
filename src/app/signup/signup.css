@@ -1,7 +1,7 @@
 
 
 .signContainer {
-    height: 100vh;
+    min-height: 100vh;
     background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/bg.jpg');
     background-size: cover; /* Ensures the image covers the entire screen */
     background-repeat: no-repeat; /* Prevents the image from repeating */
@@ -203,7 +203,8 @@ input[type="checkbox"]:checked{
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: rgb(251, 123, 60, 0.3)
+  background-color: rgb(251, 123, 60, 0.3);
+  border: 1px solid transparent;
 }
 
 .progress-circles span.active {

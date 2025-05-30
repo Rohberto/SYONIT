@@ -74,7 +74,7 @@ const router = useRouter();
         />
       </div>
       <div className='bottom-button'>
-      <button className="action-button" onClick={() => {
+      <button className="profile-button" onClick={() => {
         playSound(clickBuffer, '/Sounds/coin_drop.mp3');
         router.push("/Home")
         }}>LET'S GET STARTED</button>

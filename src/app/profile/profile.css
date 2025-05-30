@@ -80,7 +80,6 @@ hr{
 .upload-label {
   background: none;
   border: none;
-  text-decoration: underline;
   cursor: pointer;
   font-size: 14px;
   display: flex;
@@ -95,7 +94,7 @@ hr{
  padding: 20px;
  width: 100%;
 }
-.action-button {
+.profile-button {
   width: 100%;
     height: 94px;
     background: transparent;
