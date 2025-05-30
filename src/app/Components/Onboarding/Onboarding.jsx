@@ -64,11 +64,7 @@ const Onboarding = () => {
   return (
     <div className="new_onboarding_container">
       <div className="onboarding_primary_text">
-        <h1>SY <div className="flip-container"><div className="flip-card"><div className="flip-card-front"><img src="/syonit_icon.png" alt="syonit logo" /></div> 
-        <div className="flip-card-back">
-          <img src='/dark_musketeer.png' alt='musketeeers' className="coin_musketeer"/>
-        </div>
-        </div></div>Nit!</h1>
+        <h1>SYONIT</h1>
       </div>
 
      <div className="progress-container">
@@ -80,10 +76,10 @@ const Onboarding = () => {
       </div>}
       {isComplete && (
        <div className="new_onboarding_bottom_content">
-               <img src='/main_musketeer.svg' alt='musketeeers' className="onboarding_musketeer"/>
-               <div className="new_onboarding_bottom_text">
+           <div className="new_onboarding_bottom_text">
                  <p className="think_differently">THINK <span className="flipped">D</span>IFFERENTLY</p>
                </div>
+               <img src='/musketeer.svg' alt='musketeeers' className="onboarding_musketeer"/>
                <div className="play_container">
                  <button id="game-button" ref={buttonRef} onClick={() => handlePlayClick()}>Let's Play</button>
                </div>

@@ -45,9 +45,9 @@ const router = useRouter();
            if (audioBuffer) {
               playSound(audioBuffer, '/Sounds/click_sound.wav');
             }
-        router.back()}}
+        router.push("/signup")}}
     >
-      Cancel
+      REGISTER
     </button>
     <button
       className="game_stroke_links "
@@ -55,9 +55,9 @@ const router = useRouter();
            if (audioBuffer) {
               playSound(audioBuffer, '/Sounds/click_sound.wav');
             }
-        router.push("/Home")}}
+        router.push("/login")}}
     >
-    View Ongoing Game
+    LOGIN
     </button>
     <div className="button_circle">
       <div className="lines" id="lines">
@@ -71,6 +71,7 @@ const router = useRouter();
       </div>
     </div>
   </div>
+
   )
 }
 

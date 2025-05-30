@@ -1,6 +1,7 @@
 
-.profileContainer {
- height: 100vh;
+
+.signContainer {
+    height: 100vh;
     background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/bg.jpg');
     background-size: cover; /* Ensures the image covers the entire screen */
     background-repeat: no-repeat; /* Prevents the image from repeating */
@@ -11,8 +12,8 @@
     flex-direction: column;
 }
 
-.profileHeader {
-    font-size: 24px;
+.signHeader {
+  font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
     font-family: 'DM Sans';
@@ -30,109 +31,44 @@
 }
 
 .subheader {
- font-size: 18px;
+  font-size: 24px;
   margin-bottom: 20px;
   text-align: center;
   font-family: "DM Sans";
   color: #faf6d9ff;
 }
 
-.profile-container {
+.form-container {
   background-color: transparent;
+  border: 1px solid #faf6d9ff;
   border-radius: 20px;
   padding: 20px;
   width: 100%;
- height: 350px;
- max-height: 400px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid #faf6d9ff;
-  margin-bottom: 20px;
-}
-hr{
-    width: 20px;
-    background-color: #FAF6D9FF;
-    margin-top: 5px;
-  }
-.profile-picture {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-bottom: 10px;
-  border: 1px solid #faf6d9ff;
-}
-
-.placeholder {
-  width: 100%;
-  height: 100%;
-  background-color: rgb(251, 118, 60, 0.1);
-}
-
-.profile-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.upload-label {
-  background: none;
-  border: none;
-  text-decoration: underline;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.bottom-button{
-  position: absolute;
-   bottom: 20px;
- left: 0;
- right: 0;
- padding: 20px;
- width: 100%;
-}
-.action-button {
-  width: 100%;
-    height: 94px;
-    background: transparent;
-    border-radius: 65px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
-    transition: color 0.3s;
-    aspect-ratio: 1/15;
-    transform: rotateY(0deg);
-    border: 2px solid #fb7b3cff;
-    color: #fb7b3cff;
-      font-family: "Grimer";
-          text-align: center;
-          font-size: 18px;
-          text-transform: uppercase;
-}
-
-.action-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Existing styles from previous pages */
-.form-container {
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  padding: 20px;
-  width: 80%;
-  max-width: 400px;
+height: 450px;
+max-height: 450px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-.form-container label {
+.form-spacer{
+     display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.form-container label, .resend-code p{
   display: block;
   font-size: 14px;
+  font-family: "DM Sans";
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+.social-login p{
+    font-size: 16px;
+  font-family: "DM Sans";
+  font-weight: 500;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
   margin-bottom: 5px;
 }
 
@@ -143,35 +79,38 @@ hr{
   padding: 10px;
   margin-bottom: 15px;
   border: none;
-  background-color: #e0e0e0;
+  background-color: rgb(224, 224, 224, 0.3);
   border-radius: 5px;
   font-size: 14px;
+  color: #faf6d9ff;
+}
+input::placeholder{
+    color: #faf6d9ff;
 }
 
 .social-login {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
-.social-login p {
-  font-size: 14px;
-  color: #666;
-}
+
 
 .social-buttons {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .social-button {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
+  padding: 10px;
+  font-size: 24px;
+  background-color: #faf6d9ff;
+  border-radius: 50%;
+color: #FB7B3Cff;
   cursor: pointer;
 }
 
@@ -188,12 +127,24 @@ hr{
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 14px;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.7);
+  font-family: "DM Sans";
+  font-weight: 500;
 }
-
+input[type="checkbox"]{
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #faf6d9ff;
+}
+input[type="checkbox"]:checked{
+    background-color: #FB7B3Cff;
+}
 .instruction-text {
   font-size: 12px;
-  color: #666;
+  color: rgba(0, 0, 0, 0.7);
   text-align: center;
   margin-top: 20px;
 }
@@ -205,55 +156,85 @@ hr{
 }
 
 .verification-box {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 100px;
   text-align: center;
   font-size: 20px;
-  border: none;
-  background-color: #e0e0e0;
-  border-radius: 5px;
+  margin-right: 5px;
+  background-color: transparent;
+  color: #faf6d9ff;
+    border: 1px solid #faf6d9ff !important;
+  border-radius: 20px;
+  outline: none;
+  box-shadow: none;
 }
 
 .resend-code {
   text-align: center;
-}
-
-.resend-code p {
-  font-size: 12px;
-  color: #666;
+ margin-bottom: 10px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
 }
 
 .resend-button {
   background: none;
   border: none;
-  text-decoration: underline;
   cursor: pointer;
   font-size: 14px;
+  margin-top: 10px;
+  color: #faf6d9ff;
 }
+ hr{
+    width: 20px;
+    background-color: #FAF6D9FF;
+  }
 
 .progress-circles {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
   margin: 20px 0;
+  width: 100%;
 }
 
 .progress-circles span {
-  width: 10px;
-  height: 10px;
-  border: 1px solid #000;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  background-color: transparent;
+  background-color: rgb(251, 123, 60, 0.3)
 }
 
 .progress-circles span.active {
-  background-color: #666;
+  background-color: #FB7B3Cff;
 }
 
 .button-group {
   display: flex;
   gap: 20px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
 }
 
+.action-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  background-color: #fff;
+  cursor: pointer;
+  outline: none;
+}
+
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Existing styles from the How to Play page */
 .slider-container {
   display: flex;
   flex-direction: column;
@@ -283,7 +264,7 @@ hr{
 .slider-progress {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: Indented 100%;
   align-items: center;
   margin-bottom: 20px;
 }

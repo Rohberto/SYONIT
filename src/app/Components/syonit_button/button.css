@@ -9,8 +9,9 @@
     transition: color 0.3s;
     aspect-ratio: 1/15;
     transform: rotateY(0deg);
+    border: 2px solid #fb7b3cff;
     }
-    .button_circle{
+    .button_circle, .home_circle{
         border-radius: 50%;
         position: absolute;
         width: 93.5px;
@@ -19,7 +20,29 @@
         top: 50%;
         background: transparent;
         transform: translate(-50%, -50%);
-        border: 1px solid #fff; /* Flash animation */
+     /* Flash animation */
+        }
+        .home_circle{
+          border: 1px solid #fb7b3cff;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background: radial-gradient(circle, #fb7b3cff, rgb(204, 169, 120) 50%);
+        }
+        .circle_info{
+          text-align: center;
+        }
+        .circle_info p{
+           font-size: 14px;
+  color: #fb7b3cff;
+  font-family: "DM Sans";
+  font-weight: 700;
+        }
+        .circle_info h1{
+          font-family: "Helvetica Neue";
+          color: #fafafa;
+          font-weight: 500;
         }
         .game_stroke_links{
           font-family: "Grimer";
@@ -27,21 +50,26 @@
           text-align: center;
           font-size: 18px;
           text-transform: uppercase;
-          color: #fef4dcff;
+          color: #fb7b3cff;
           background-color: transparent;
           outline: none;
           padding: 0 5px;
           border: none;
         }
+        .lines{
+              border: 2px solid #fb7b3cff;
+              border-radius: 50%;
+              overflow: hidden;
+        }
         .line {
             position: absolute;
             width: 2px;
             height: 20px;
-            background-color: gray;
+            background-color: #fb7b3cff;
             transition: background-color 0.3s;
           }
           
           .line.active {
-            background-color: white;
+            background-color: #fb7b3cff;
           }
-         
+      

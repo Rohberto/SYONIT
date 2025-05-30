@@ -1,148 +1,148 @@
 "use client"
-import React, { useEffect, useState} from 'react';
-import Header from '../Components/MainHeader/mainHeader';
-import "./home.css";
-import Points from '../Components/points';
-import "swiper/css";
-import "swiper/css/pagination";
-import Round from '../Components/gameRound/gameRound';
-import Bottom from '../Components/homeBottom';
-import { useUser } from '../Context/userContext';
-import { useRouter } from 'next/navigation';
-import ThinkingCharacters from '../Components/animateSvg';
-import Button from '../Components/syonit_button/homebutton';
-import SignedButton from '../Components/syonit_button/loggedIn';
-import ImageSlider from './ImagesSlider';
-import PrizeButton from '../Components/syonit_button/prize';
-import QuoteSlider from './quoteSlider';
-import GameButton from '../Components/syonit_button/gamebutton';
-import { playSound, getAudioContext } from '../libs/audioContext';
-
-const Home = () => {
-  const labels = ['current game', 'Leaderboard', 'Prizes', 'History'];
+import { useState, useEffect } from 'react';
+import "./styles.css";
+import { FaBook, FaBookOpen, FaFlagCheckered, FaHandsHelping, FaLightbulb, FaRegUser, FaUser } from 'react-icons/fa';
+import {BsBook} from "react-icons/bs";
+import Round from '../Components/Round';
+import { getAudioContext, playSound } from '../libs/audioContext';
+import "./page.css";
+import {IoGameControllerSharp} from "react-icons/io5";
+import { FcIdea } from 'react-icons/fc';
+import Button from '../Components/syonit_button/mainButton';
+export default function Home() {
+  const [currentTab, setCurrentTab] = useState('game'); // Tabs: 'game', 'idea', 'leaderboard', 'special'
+  const [points, setPoints] = useState(1834);
+  const [currentGame, setCurrentGame] = useState(3);
+    const [audioBuffer, setAudioBuffer] = useState(null);
+  const [round, setRound] = useState(6);
+  const [answers, setAnswers] = useState([true, false, null]); // Example: [true, false, null] for slots 1, 2, 3
+  const [timeLeft, setTimeLeft] = useState(750); // 12:30 in seconds (12*60 + 30)
   const [currentRound, setCurrentRound] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [whistle, setWhistle] = useState(null);
-  const [timer, setTimer] = useState(20);
-  const [betweenTimer, setBetweenTimer] = useState(5);
-  const [newTimer, setNewTimer] = useState(10);
-    const [isModalOpen, setModalOpen] = useState(false);
-  const router = useRouter();
+  // Timer for the game
+  useEffect(() => {
+    if (currentTab === 'game' && timeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [currentTab, timeLeft]);
 
-
-  
-
-  const [rounds, setRounds] = useState([
-    { yesScore: 1000, noScore: 1000, isPlayed: false },
-    { yesScore: 1000, noScore: 1000, isPlayed: false },
-    { yesScore: 1000, noScore: 1000, isPlayed: false },
-  ]);
-
-  //load game over whistle
-   useEffect(() => {
+  useEffect(() => {
       const ctx = getAudioContext();
       if (!ctx) {
         console.warn('Web Audio API not supported');
         return;
       }
   
-      const loadSounds = async () => {
+      const loadSound = async () => {
         try {
-          const clickResponse = await fetch('/Sounds/siren.wav');
-          if (!clickResponse.ok) throw new Error('Failed to fetch coin_drop.mp3');
-          const clickArrayBuffer = await clickResponse.arrayBuffer();
-          const clickAudioBuffer = await ctx.decodeAudioData(clickArrayBuffer);
-          setWhistle(clickAudioBuffer);
-  
-       
-        } catch (error) {
-          console.error('Error loading sounds:', error);
+          const response = await fetch('/Sounds/click_sound.wav');
+          if (!response.ok) throw new Error('Failed to fetch click sound');
+          const arrayBuffer = await response.arrayBuffer();
+          const decodedBuffer = await ctx.decodeAudioData(arrayBuffer);
+          setAudioBuffer(decodedBuffer);
+        } catch (err) {
+          console.error('Error loading click sound:', err);
         }
       };
   
-      loadSounds();
+      loadSound();
     }, []);
+  
+  
+  
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+  const [rounds, setRounds] = useState([
+    { yesScore: 1000, noScore: 1000, isPlayed: false },
+    { yesScore: 1000, noScore: 1000, isPlayed: false },
+    { yesScore: 1000, noScore: 1000, isPlayed: false },
+  ]);
   
   //check if all round has been played
   const allRoundsPlayed = rounds.every(round => round.isPlayed);
 
-  const {user, prize, prizes} = useUser();
+// Use refs to store the audio instances
 
-  
-  useEffect(() => {
-    if (prize === null || timer <= 0) return;
 
-    const Machine = setInterval(() => {
-      setTimer(prev => prev - 1);
-    }, 1000);
+  const handleNextRound = () => {
+    // Mark the current round as played
+    setRounds(prevRounds =>
+      prevRounds.map((round, index) =>
+        index === currentRound
+          ? { ...round, isPlayed: true }
+          : round
+      )
+    );
 
-    return () => clearInterval(Machine);
-  }, [prize, timer, user]);
-
-  useEffect(() => {
-    if (timer > 0 || betweenTimer <= 0) return;
-
-    const Machine = setInterval(() => {
-      setBetweenTimer(prev => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(Machine);
-  }, [prize, timer, betweenTimer]);
-
-  useEffect(() => {
-    if (timer > 0 || betweenTimer > 0  || newTimer <= 0) return;
-
-    const Machine = setInterval(() => {
-      setNewTimer(prev => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(Machine);
-  }, [prize, timer, betweenTimer, newTimer]);
-
-  useEffect(() => {
-   if (timer <= 0){
-      if(whistle) {
-        playSound(whistle, '/Sounds/siren.wav');
-      }
+    // Move to the next round if it's not the last round
+    if (currentRound < rounds.length - 1) {
+      setCurrentRound(prevRound => prevRound + 1);
     }
-  }, [timer])
-  
- 
-const formatTime = (secs) => {
+  };
+  const handleYesClick = () => {
+    if (audioBuffer) {
+                 playSound(audioBuffer, '/Sounds/click_sound.wav');
+               }
+    setRounds(prevRounds =>
+      prevRounds.map((round, index) =>
+        index === currentRound
+          ? { ...round, yesScore: round.yesScore + 1 }
+          : round
+      )
+    );
+    handleNextRound();
+  };
 
-  const mins = Math.floor(secs/60);
-  const secsLeft = secs % 60;
-  return `${mins.toString().padStart(2, '0')}: ${secsLeft.toString().padStart(2, '0')}`
-}
+  const handleNoClick = () => {
+    if (audioBuffer) {
+                 playSound(audioBuffer, '/Sounds/click_sound.wav');
+               }
+    setRounds(prevRounds =>
+      prevRounds.map((round, index) =>
+        index === currentRound
+          ? { ...round, noScore: round.noScore + 1 }
+          : round
+      )
+    );
+    handleNextRound();
+  };
 
-return (
-    <div className='home_container'>
-        <Header/>
-       {timer > 0 && (
-        <p className='possible'>Almost there! Round 5 out of 7 </p>
-       )}
-       {timer === 0 && betweenTimer > 0 && (
-        <p className='possible'>Game ID: SYON_004 OVER!!!<br/>
-        NEW GAME STARTS.
-        </p>
-       )}
-       {timer === 0 && betweenTimer <= 0 && (
-        <p className='possible'>New Game ID: SYON_004 Starts!!!<br/>
-        </p>
-       )}
-         {
-       prize != null && timer === 0 && betweenTimer <= 0 && (
-        <h2 className='counting_down'>Countdown to Next Game: {formatTime(newTimer)}</h2>
-      ) 
-    }
-      <div>
-      <div className='Home_slide'>
+   // Determine if "Yes" or "No" has the highest score for a given round
+   const getHighestScore = (yesScore, noScore) => {
+    if (yesScore > noScore) return 'Yes';
+    else if (noScore > yesScore) return 'No';
+    return 'Tie';
+  };
+
+
+
+  const renderContent = () => {
+    switch (currentTab) {
+      case 'game':
+        return (
+                 <div className='Home_slide'>
+                 <h1>Current Game</h1>
       <div className='Home_screen'>
-        <div className="current_game_header">Ongoing Game</div>
         <div className="current_game_info_buttons">
-          <p>N.O.P: 4000</p>
-          <p>OPP 3</p>
-          <p>Round {currentRound}</p>
+        <div className='game_info'>
+        <h4>Players</h4>
+        <p>1,000,000</p>
+        </div>
+        <div className='game_info'>
+        <h4>Opportunity</h4>
+        <p>3</p>
+        </div>
+        <div className='game_info'>
+        <h4>Round</h4>
+        <p>2</p>
+        </div>
+        <div className='divider'></div>
         </div>
       
         <div className="game">
@@ -160,72 +160,101 @@ return (
       ))}
 
         </div>
+
+        <div className='game_buttons'>
+          <button className='game_button y_button'  onClick={handleYesClick} disabled={allRoundsPlayed}>Y</button>
+          <button className='game_button y_button' onClick={handleNoClick} disabled={allRoundsPlayed}>N</button>
+        </div>
       </div>
       </div>
-    </div>
-
-     {/*
-      user === true && prize == null && (
-        <p className='signed-in' style={{textAlign: "center"}}> You are successfully signed in</p>
-      )
-     */}
-     {
-      prize === null && <ThinkingCharacters/>
-     }
-
-     {/*
-       prize != null && timer > 0 && (
-        <h2 className='counting_down'>Countdown to Next Game: {formatTime(timer)}</h2>
-      ) 
-    */ }
-     {
-       prize != null && timer > 0 && (
-        <ImageSlider slides={prizes} prize={prize}/>
-      ) 
-     }
-     {
-       prize != null && timer <= 0 && (
-        <QuoteSlider/>
-      ) 
-     }
-{
-   user === false &&  <div className='bottom_button'>
-   <Button/>
-   </div> 
-} 
-{prize === null && user === true  && timer >= 20 && (
- <div className='bottom_button'>
-  <SignedButton/>
-</div>
-   ) }
-
-{
-       prize != null && timer > 0 && (
-       <PrizeButton Modal={setModalOpen}/>
-      ) 
-     }
-{
-       prize != null && timer <= 0 && (
-      <GameButton/>
-      ) 
-     }
-{isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal">
-              <h2>Are you sure you want to change your prize?</h2>
-              <div className="modal-buttons">
-                <button className="no-button" onClick={() => setModalOpen(false)}>
-                  No
-                </button>
-                <button className="continue-button" onClick={() => router.push("/Prize")}>
-                  Continue
-                </button>
-              </div>
-            </div>
+        );
+      case 'idea':
+        return (
+          <div className="idea-container">
+            <h3>Motivation</h3>
+            <p>
+              "In any moment of decision, the best thing you can do is the right thing, the next best thing is the wrong thing, and the worst thing you can do is nothing."
+            </p>
+            <p className="quote-author">— Theodore Roosevelt</p>
           </div>
-        )}
-    </div>
-  )
-}
+        );
+      case 'leaderboard':
+        return (
+          <div className="leaderboard-container">
+            <h3>Leaderboard</h3>
+            <div className="leaderboard-header">
+              <div>RANK</div>
+              <div>NAME</div>
+              <div>POINTS</div>
+            </div>
+            {/* Placeholder for leaderboard */}
+            <p>No leaderboard data available.</p>
+          </div>
+        );
+      case 'special':
+        return (
+          <div className="special-container">
+            <h3>Upcoming Special Events</h3>
+            {/* Placeholder for special events */}
+            <p>No upcoming events at the moment.</p>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
-export default Home
+  return (
+    <div className="gameContainer">
+      <div className="header-section">
+        <div className="profile-icon"><FaRegUser/><span className='online'></span></div>
+        <h1 className="header">SYONIT</h1>
+        <div className="book-icon"><BsBook/></div>
+      </div>
+      <div className="points-section">
+        <div className='points-container'>
+            <p><span>POINTS: </span>{points}</p>
+            <p>2,500 <span> :PRIZE</span></p>
+        </div>
+        
+        <div className="progress-bar">
+          <div className="progress-fill" style={{ width: `${(points / 2500) * 100}%` }}></div>
+        </div>
+      </div>
+      {renderContent()}
+      <div className="nav-buttons">
+        <button
+          className={`nav-button ${currentTab === 'game' ? 'active' : ''}`}
+          onClick={() => setCurrentTab('game')}
+        >
+         <IoGameControllerSharp/>
+        </button>
+        <button
+          className={`nav-button ${currentTab === 'idea' ? 'active' : ''}`}
+          onClick={() => setCurrentTab('idea')}
+        >
+        <FaLightbulb/>
+        </button>
+        <button
+          className={`nav-button ${currentTab === 'leaderboard' ? 'active' : ''}`}
+          onClick={() => setCurrentTab('leaderboard')}
+        >
+          <FaFlagCheckered/>
+        </button>
+        <button
+          className={`nav-button ${currentTab === 'special' ? 'active' : ''}`}
+          onClick={() => setCurrentTab('special')}
+        >
+          <FaHandsHelping/>
+        </button>
+      </div>
+      <div className="bottom-button">
+      <div className='game_details'>
+        <p>ONLINE: 3</p>
+        <p>1: IN GAME</p>
+      </div>
+      <Button formatTime={formatTime} timeLeft={timeLeft}/>
+      </div>
+    </div>
+  );
+}

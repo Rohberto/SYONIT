@@ -1,8 +1,10 @@
+"use client";
 import React, {useState, useEffect} from 'react'; 
+
 
 const Round = ({round, currentRound, yesScore, noScore, isPlayed}) => {
   const [highlightY, setHighlightY] = useState(false);
-console.log(isPlayed);
+
   // Randomly assign a background color to either Y or N section on component load
   useEffect(() => {
     setHighlightY(Math.random() < 0.5); // Randomly sets highlight to Y or N

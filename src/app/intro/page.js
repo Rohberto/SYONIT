@@ -28,9 +28,9 @@ const router = useRouter();
     // Animate the button after the text animation
     gsap.fromTo(
       buttonRef.current,
-      { y: 20, opacity: 0 },
+      {  opacity: 0 },
       {
-        y: 0,
+
         opacity: 1,
         duration: 0.8,
         delay: 1.2,
@@ -40,8 +40,12 @@ const router = useRouter();
   }, []);
 
   return (
-    <div className="container">
+    <div className="intro_container">
      
+      <div className="onboarding_primary_text">
+        <h1>SYONIT</h1>
+      </div>
+
       <div className="text-container">
         <p ref={(el) => (lineRefs.current[0] = el)}>
           SYONIT is a fast paced, multiplayer mind-game
@@ -55,19 +59,10 @@ const router = useRouter();
         <p ref={(el) => (lineRefs.current[3] = el)}>
           Thinking differently is the secret to winning.
         </p>
-        <Link ref={(el) => (lineRefs.current[4] = el)} href="/about" style={{
-          marginTop: 20,
-          width: 200,
-          backgroundColor: "#fff",
-          borderRadius: 20,
-          color: "#000",
-          padding: 5,
-         textAlign: "center",
-         fontWeight: "normal"
-        }}>
-          Read More...
+        <Link ref={(el) => (lineRefs.current[4] = el)} href="/about" >
+          How To Play
         </Link>
-       
+       <hr/>
       </div>
       {/*
       <button ref={buttonRef} className="continue-button" onClick={
@@ -81,6 +76,12 @@ const router = useRouter();
       */}
 
         <div className='bottom_button' ref={buttonRef}>
+          <div className="new_intro_bottom_content">
+           <div className="new_intro_bottom_text">
+                 <p className="think_differently">THINK <span className="flipped">D</span>IFFERENTLY</p>
+               </div>
+               <img src='/musketeer.svg' alt='musketeeers' className="intro_musketeer"/>
+               </div>
           <Button/>
           </div>
     </div>

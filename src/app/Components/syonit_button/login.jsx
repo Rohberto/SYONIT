@@ -4,10 +4,9 @@ import { useRouter } from 'next/navigation';
 import "./button.css";
 import { getAudioContext, playSound } from '../../libs/audioContext';
 
-const Button = ({currentStep, handleBack, handleNext}) => {
+const Button = () => {
 const [lines, setLines] = useState([]);
   const [audioBuffer, setAudioBuffer] = useState(null);
-const [clickBuffer, setClickBuffer] = useState(null);
 
 useEffect(() => {
     const ctx = getAudioContext();
@@ -23,12 +22,6 @@ useEffect(() => {
         const arrayBuffer = await response.arrayBuffer();
         const decodedBuffer = await ctx.decodeAudioData(arrayBuffer);
         setAudioBuffer(decodedBuffer);
-
-         const clickResponse = await fetch('/Sounds/coin_drop.mp3');
-        if (!clickResponse.ok) throw new Error('Failed to fetch coin_drop.mp3');
-        const clickArrayBuffer = await clickResponse.arrayBuffer();
-        const clickAudioBuffer = await ctx.decodeAudioData(clickArrayBuffer);
-        setClickBuffer(clickAudioBuffer);
       } catch (err) {
         console.error('Error loading click sound:', err);
       }
@@ -37,10 +30,7 @@ useEffect(() => {
     loadSound();
   }, []);
 
-const handleSubmit = () => {
-  playSound(clickBuffer, '/Sounds/coin_drop.mp3');
-  router.push("/profile");
-}
+
 
 const router = useRouter();
      useEffect(() => {
@@ -51,25 +41,23 @@ const router = useRouter();
     <div className="buttonsContainer">
     <button
       className="game_stroke_links"
-    onClick={() => {
+      onClick={() => {
            if (audioBuffer) {
               playSound(audioBuffer, '/Sounds/click_sound.wav');
             }
-        handleBack()}}
-          disabled={currentStep === 1}
+        router.back()}}
     >
-      BACK
+        BACK
     </button>
     <button
       className="game_stroke_links"
       onClick={() => {
-            if (audioBuffer) {
+           if (audioBuffer) {
               playSound(audioBuffer, '/Sounds/click_sound.wav');
             }
-            console.log(currentStep)
-     currentStep === 3 ? handleSubmit() : handleNext() }}
+        router.push("/Home")}}
     >
-     {currentStep === 3 ? 'SUBMIT' : 'NEXT'}
+        LOGIN
     </button>
     <div className="button_circle">
       <div className="lines" id="lines">
