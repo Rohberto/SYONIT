@@ -117,6 +117,7 @@
   display: flex;
   border-radius: 50%;
   background: rgb(251, 123, 60, 0.2);
+  color: #faf6d9ff;
   font-size: 28px;
   cursor: pointer;
   justify-content: center;
