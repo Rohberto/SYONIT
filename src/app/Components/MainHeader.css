@@ -7,18 +7,13 @@
   margin-bottom: 10px;
 }
 
-.header_section .header {
+.header_section .headerr {
  font-size: 16px;
   font-weight: 700;
-  margin-bottom: 20px;
     font-family: 'Heebo', sans-serif;
   font-size: 16x;
   text-transform: capitalize;
   white-space: nowrap;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
   letter-spacing: 7.68px;
   color: rgba(255, 255, 255, 1);
   text-align: center;
