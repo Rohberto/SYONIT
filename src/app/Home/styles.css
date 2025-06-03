@@ -144,8 +144,8 @@ border: 1px solid rgba(255, 255, 255, 1);
 .idea-container p, .leaderboard-container p, .special-container p {
   font-size: 18px;
   text-align: center;
-  font-family: "DM Sans";
-  color: #faf6d9ff;
+  font-family: "Heebo", sans-serif;
+  color: rgba(254, 243, 218, 1);
   font-weight: 700;
 }
 
@@ -160,9 +160,16 @@ border: 1px solid rgba(255, 255, 255, 1);
 .leaderboard-header {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: 10px;
+  font-family: "Heebo", sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  color: rgba(0, 0, 0, 0.3);
   margin-bottom: 10px;
   margin-top: 20px;
+}
+.special-container p{
+  padding-top: 20px;
 }
 
 .nav-buttons {
