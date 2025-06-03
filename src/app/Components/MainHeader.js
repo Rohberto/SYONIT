@@ -3,10 +3,10 @@ import {BsBook} from "react-icons/bs";
 import "./MainHeader.css"
 const Header = () => {
     return (
-        <div className="header-section">
-                <div className="profile-icon"><FaRegUser/><span className='online'></span></div>
+        <div className="header_section">
+                <div className="profile_icon"><FaRegUser/><span className='online'></span></div>
                 <h1 className="header">SYONIT</h1>
-                <div className="book-icon"><BsBook/></div>
+                <div className="book_icon"><BsBook/></div>
               </div>
     )
 }

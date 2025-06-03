@@ -1,19 +1,19 @@
 
-.header-section {
+.header_section {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 10px;
 }
 
-.header-section .header {
+.header_section .header {
  font-size: 16px;
   font-weight: 700;
   margin-bottom: 20px;
     font-family: 'Heebo', sans-serif;
   font-size: 16x;
   text-transform: capitalize;
-  width: 100%;
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -24,7 +24,7 @@
   text-align: center;
 }
 
-.profile-icon, .book-icon {
+.profile_icon, .book_icon {
   width: 50px;
   height: 50px;
   background-color: rgba(249, 202, 124, 0.42);
