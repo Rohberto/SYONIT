@@ -52,7 +52,7 @@ export default function HowToPlay() {
   return (
     <div className="aboutContainer">
       <div className="iconContainer">
-        <img src="/icon.png" alt="Syonit Logo" className="logo" />
+        <img src="/Icon.png" alt="icon" className="logo" />
       </div>
       <h1 className="aboutHeader">SYONIT</h1>
       <h2 className="subheader">HOW TO PLAY</h2>
