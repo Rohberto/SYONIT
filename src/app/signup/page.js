@@ -85,12 +85,19 @@ export default function Signup() {
             <div className="social-login">
               <p>or sign in with:</p>
               <div className="social-buttons">
+                <div className="social-button-text">
+                  Apple
                 <button className="social-button">
                   <FaApple/>
                 </button>
+                </div>
+
+                <div className="social-button-text"> 
                 <button className="social-button">
                  <FcGoogle/> 
                 </button>
+                Google
+                </div>
               </div>
             </div>
           </div>

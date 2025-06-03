@@ -71,16 +71,7 @@ const router = useRouter();
     >
      {currentStep === 3 ? 'SUBMIT' : 'NEXT'}
     </button>
-    <div className="button_circle">
-      <div className="lines" id="lines">
-        {lines.map((line) => (
-          <div
-            key={line.id}
-            className={`line ${line.active ? "active" : ""}`}
-            style={{ transform: `rotate(${line.id * 6}deg) translateX(-50%)` }}
-          ></div>
-        ))}
-      </div>
+    <div className="button-circle">
     </div>
   </div>
   )
