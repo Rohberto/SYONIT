@@ -1,12 +1,12 @@
 
 .new_onboarding_container {
-  height: calc(var(--vh, 1vh) * 100);
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium5.png');
-    background-size: cover; /* Ensures the image covers the entire screen */
+  height: 100svh;
+    background-image:  url('/syonit_stadium5.png');
+    background-size: 300%; /* Ensures the image covers the entire screen */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center;
     color: #26282a;
-    padding: 40px 20px;
+    padding: 20px 20px 40px;
   }
   .onboarding_primary_text{
     width: 100%;
@@ -15,8 +15,8 @@
   }
   
   .onboarding_primary_text h1{
-  font-family: 'DM Sans';
-  font-size: 24px;
+  font-family: 'Heebo', sans-serif;
+  font-size: 16px;
   text-transform: capitalize;
   width: 100%;
   white-space: nowrap;
@@ -24,8 +24,8 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  letter-spacing: 0.30em;
-  color: #FAF6D9ff;
+  letter-spacing: 7.68px;
+  color: rgba(255, 255, 255, 1);
   }
   .illustration{
     background-color: #000;
@@ -65,17 +65,18 @@ gap: 0;
     height: 100%;
   }
   .onboarding_musketeer{
-   width: 70px;
-   height: 50px;
+   width: 44.42px;
+   height: 26px;
    margin-bottom: 0;
   }
   .new_onboarding_bottom_text{
     text-align: center;
     width: 100%;
-    font-family: "sf-display";
-    font-size: 14px;
-    letter-spacing: 0.5px;
-    color: rgb(209, 119, 74);
+    font-family: "Heebo", sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    color: rgba(247, 113, 47, 0.38);
   }
   .become_a_syonaire{
     font-family: "DM Sans";
@@ -94,14 +95,14 @@ gap: 0;
   .play_container button{
     width: 100%;
     background-color: transparent;
-  border: 1px solid rgb(209, 119, 74);
+  border: 1px solid rgba(247, 113, 47, 0.38);
   border-radius: 9999px;
   height: 80px;
   overflow: hidden;
-  color: rgb(209, 119, 74);
-  font-size: 24px;
+  color: rgba(247, 113, 47, 1);
+  font-size: 18px;
   font-weight: 700;
-  font-family: "DM Sans";
+  font-family: "Heebo", sans-serif;
   text-transform: uppercase;
   }
   .flip-container {

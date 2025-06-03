@@ -51,6 +51,9 @@ export default function HowToPlay() {
 
   return (
     <div className="aboutContainer">
+      <div className="iconContainer">
+        <img src="/icon.png" alt="Syonit Logo" className="logo" />
+      </div>
       <h1 className="aboutHeader">SYONIT</h1>
       <h2 className="subheader">HOW TO PLAY</h2>
       <div className="slider-container">
@@ -63,6 +66,7 @@ export default function HowToPlay() {
                 ))
             }
           </ul>
+          <span className="progress-text">{`${currentSlide}/${totalSlides}`}</span>
         </div>
         <div className="slider-progress">
           <div className="progress-bar">
@@ -71,7 +75,7 @@ export default function HowToPlay() {
               style={{ width: `${progressPercentage}%` }}
             ></div>
           </div>
-          <span className="progress-text">{`${currentSlide}/${totalSlides}`}</span>
+        
         </div>
         <div className="nav-buttons">
           <button

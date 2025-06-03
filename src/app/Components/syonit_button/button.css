@@ -1,24 +1,24 @@
 .buttonsContainer{
     width: 100%;
     height: 94px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 65px;
+    background: transparent;
+    border-radius: 79px;
     display: flex;
     justify-content: space-between;
     padding: 5px;
     transition: color 0.3s;
     aspect-ratio: 1/15;
     transform: rotateY(0deg);
-    border: 2px solid #fb7b3cff;
+    border: 1px solid rgba(248, 194, 158, 1);
     }
-    .button_circle, .home_circle{
+    .button-circle, .home_circle{
         border-radius: 50%;
         position: absolute;
         width: 93.5px;
         height: 93.5px;
         left: 50%;
         top: 50%;
-        background: transparent;
+        background: rgba(248, 194, 158, 1);
         transform: translate(-50%, -50%);
      /* Flash animation */
         }
@@ -45,12 +45,13 @@
           font-weight: 500;
         }
         .game_stroke_links{
-          font-family: "Grimer";
+          font-family: "Heebo";
           width: 30%;
           text-align: center;
           font-size: 18px;
+          font-weight: 700;
           text-transform: uppercase;
-          color: #fb7b3cff;
+          color: rgba(247, 113, 47, 1);
           background-color: transparent;
           outline: none;
           padding: 0 5px;

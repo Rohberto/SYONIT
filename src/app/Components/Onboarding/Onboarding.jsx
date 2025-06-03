@@ -79,7 +79,7 @@ const Onboarding = () => {
            <div className="new_onboarding_bottom_text">
                  <p className="think_differently">THINK <span className="flipped">D</span>IFFERENTLY</p>
                </div>
-               <img src='/musketeer.svg' alt='musketeeers' className="onboarding_musketeer"/>
+               <img src='/musketeer2.svg' alt='musketeeers' className="onboarding_musketeer"/>
                <div className="play_container">
                  <button id="game-button" ref={buttonRef} onClick={() => handlePlayClick()}>Let's Play</button>
                </div>

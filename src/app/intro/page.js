@@ -80,7 +80,7 @@ const router = useRouter();
            <div className="new_intro_bottom_text">
                  <p className="think_differently">THINK <span className="flipped">D</span>IFFERENTLY</p>
                </div>
-               <img src='/musketeer.svg' alt='musketeeers' className="intro_musketeer"/>
+               <img src='/musketeer2.svg' alt='musketeeers' className="intro_musketeer"/>
                </div>
           <Button/>
           </div>
