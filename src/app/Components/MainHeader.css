@@ -7,25 +7,31 @@
 }
 
 .header-section .header {
-   font-size: 24px;
-  font-weight: bold;
-    font-family: 'DM Sans';
-  font-size: 24px;
-  text-transform: capitalize;
+ font-size: 16px;
   font-weight: 700;
-  letter-spacing: 0.30em;
-  color: #faf6d9ff;
+  margin-bottom: 20px;
+    font-family: 'Heebo', sans-serif;
+  font-size: 16x;
+  text-transform: capitalize;
+  width: 100%;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  letter-spacing: 7.68px;
+  color: rgba(255, 255, 255, 1);
   text-align: center;
 }
 
 .profile-icon, .book-icon {
-  width: 50px;
-  height: 50px;
-  background-color: rgb(196, 186, 167);
+  width: 48px;
+  height: 48px;
+  background-color: rgba(249, 202, 124, 0.42);
   border-radius: 50%;
   position: relative;
   font-size: 24px;
-  color: #fb7b3cff;
+  color: rgba(247, 113, 47, 1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,9 +40,9 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: #fb7b3cff;
+    background-color: rgba(247, 113, 47, 1);
     display: inline-block;
     position: absolute;
-    top: 8px;
-    left: -2px;
+    top: 0;
+    left: 4px;
 }

@@ -127,9 +127,11 @@ export default function Home() {
     switch (currentTab) {
       case 'game':
         return (
-                 <div className='Home_slide'>
-                 <h1>Current Game</h1>
-      <div className='Home_screen'>
+          <>
+           <h3>Current Game</h3>
+                 <div className='Home-slide'>
+                
+   
         <div className="current_game_info_buttons">
         <div className='game_info'>
         <h4>Players</h4>
@@ -160,14 +162,13 @@ export default function Home() {
         />
       ))}
 
-        </div>
-
-        <div className='game_buttons'>
+      </div>
+         <div className='game_buttons'>
           <button className='game_button y_button'  onClick={handleYesClick} disabled={allRoundsPlayed}>Y</button>
           <button className='game_button y_button' onClick={handleNoClick} disabled={allRoundsPlayed}>N</button>
         </div>
       </div>
-      </div>
+      </>
         );
       case 'idea':
         return (
