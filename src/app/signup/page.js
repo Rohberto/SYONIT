@@ -4,6 +4,7 @@ import "./signup.css";
 import {FaApple, FaGoogle} from "react-icons/fa"
 import { FcGoogle } from 'react-icons/fc';
 import Button from '../Components/syonit_button/sign';
+import { useRouter } from 'next/navigation';
 
 export default function Signup() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -16,7 +17,7 @@ export default function Signup() {
     termsAccepted: false,
     verificationCode: ['', '', '', '']
   });
-
+  const router = useRouter();
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -38,7 +39,12 @@ export default function Signup() {
   };
 
   const handleBack = () => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1);
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    } else {
+      router.back(); // Navigate back if on the first step
+    }
+  
   };
 
   const handleResendCode = () => {

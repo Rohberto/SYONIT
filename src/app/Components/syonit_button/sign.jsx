@@ -56,7 +56,6 @@ const router = useRouter();
               playSound(audioBuffer, '/Sounds/click_sound.wav');
             }
         handleBack()}}
-          disabled={currentStep === 1}
     >
       BACK
     </button>
