@@ -7,7 +7,7 @@ import Button from '../Components/syonit_button/about';
 
 export default function HowToPlay() {
   const [currentSlide, setCurrentSlide] = useState(2); // Start at 2/10
-  const totalSlides = 3;
+  const totalSlides = 4;
 
   const handlePrev = () => {
     if (currentSlide > 1) setCurrentSlide(currentSlide - 1);
@@ -23,34 +23,58 @@ export default function HowToPlay() {
   const slides = [
     {
         title: "ABOUT SYONiT",
-        details: ["SYONIT (Simple Yes or No Interactive Tourna-musement.) is a fast-paced, prize-based multiplayer mind game tourna-musement, players must think critically and make lightning-quick Yes or No decisions. The key to winning? Thinking differently! This thrilling game challenges your ability to adapt, strategize, and outthink your opponents in a race against time.", "YONIT</b> is not just a game—it’s an interactive decision-making challenge that rewards bold choices and quick thinking.Whether you’re playing for fun, competition, or the thrill of the prize", 
-         "SYONIT delivers a unique and engaging experience every time."],
+        details: ["Syonit!™ is a fast-paced, no-questions-asked multiplayer game where players respond only 'Yes' or 'No' within strict time limits. The game challenges critical thinking, speed, and instinct. Outsmarting the crowd by thinking differently is the ultimate path to victory. Each round eliminates the majority, leaving only the sharpest minds in play. The tension builds through every round until one final contestant remains. That last player is crowned the SYONAIRE™."],
     },
     {
         title: "HOW TO PLAY SYONIT",
         details: [
-            "Pick a Prize - At the beginning of the game you are expected to pick a prize.",
-            "Join A Room - Enter a room with other players to compete for points that would be use to redeem your prize",
-            "Wait for Game Start - When the timer ends, no new players can join that room.",
-            "Choose Yes or No - Make your decisions each round, you are expected to be in the minority to win.",
-            "Top the Leaderboard - After 3 opportunities, the players with the most points advance to the next round."
-
+      "Registration: Each player registers before the game begins.",
+      "Mandatory Prize Selection: At registration, every player must select a prize from the prize pool without knowing the limited quantities.",
+      "Minimum of 3 players are required to start a game.",
+      "Each round consists of three opportunities: Chance™, Choice™, and Strategy™.",
+      "Players respond with only “Yes” or “No” within the strict time limit.",
+      "After each opportunity, all choices are revealed before moving to the next.",
+      "Prize Scarcity Reveal: After the first opportunity (Chance™), the limited prize quantities are revealed through infographics, and players are given a free chance to switch prizes if desired.",
+      "The minority batch earns points (10 pts each in the standard format).",
+      "Players with the highest cumulative points advance to the next round.",
+      "The majority batch is frozen and eliminated at the end of the round.",
+"If the minority advancing is an even number, the Break-the-Tie Joker™ alarm gives one frozen majority player a chance to return.",
+"Play continues through individual, duo, and trio Tournamusements™.",
+"The last remaining player is crowned the SYONAIRE™"
         ]
     },
     {
         title: "Benefits of Playing Syonit",
         details: [
-            "Improves Critical Thinking - SYONit! requires players to think critically and make quick decisions, which can help improve their critical thinking skills.",
-            "Enhance Creativity -  By encouraging players to think differently, SYONit! can help improve creative thinking and problem-solving skills.",
-            "Boosted Cognitive Flexibility -  The game's fast-paced nature and unpredictable gameplay can help improve cognitive flexibility, which is the ability to adapt to new information and situations.",
-            "Better Decision Making - SYONit! requires players to make quick decisions, which can help improve decision-making skills and reduce analysis paralysis.",
-            "Fun and Engaging - Most importantly, SYONit! is a fun and engaging game that can provide hours of entertainment and enjoyment!"
+          "Builds critical thinking under pressure",
+          "Encourages creative decision-making",
+          "Trains quick judgment and reduces procrastination",
+          "Engages individuals, duos, and trios in dynamic rounds",
+          "Minimum of 3 players required to start a game"
+        ]
+    },
+     {
+        title: "Key Differenting Features Of Syonit",
+        details: [
+    "No-questions-asked Yes/No gameplay",
+    "Three opportunities per round: Chance™, Choice™ & Strategy™",
+      "Players advance by being in the minority batch",
+      "Individual, Duo, and Trio Tournamusements™",
+      "Break-the-Tie Joker™ for frozen majority comeback",
+      "Sound-proof transparent glass box with frosted timer panels",
+      "Visual revelation of team discussions (live show feature)",
+      "Feedback discussion after each Tournamusement™",
+      "Minority batch scores 10 pts per opportunity",
+      "Players can also accumulate points toward prizes",
+      "Banking system retains 29% when saving points",
+      "Limited prize quantities revealed after Chance"
         ]
     }
   ];
 
   return (
     <div className="aboutContainer">
+      <div className='glassy-panel'>
       <div className="iconContainer">
         <img src="/Icon.png" alt="icon" className="logo" />
       </div>
@@ -99,7 +123,7 @@ export default function HowToPlay() {
              <Button/>
       </div>
 
-   
+   </div>
     </div>
   );
 }

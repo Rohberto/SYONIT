@@ -3,56 +3,82 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import "./profile.css";
 import { getAudioContext, playSound } from '../libs/audioContext';
-
-
+import { useUser } from '../Context/userContext';
 export default function Welcome() {
   const [profileImage, setProfileImage] = useState(null);
-    const [audioBuffer, setAudioBuffer] = useState(null);
   const [clickBuffer, setClickBuffer] = useState(null);
+  const router = useRouter();
+  const {user} = useUser();
 
-useEffect(() => {
+  useEffect(() => {
     const ctx = getAudioContext();
-    if (!ctx) {
-      console.warn('Web Audio API not supported');
-      return;
-    }
+    if (!ctx) return;
 
     const loadSound = async () => {
       try {
-        const response = await fetch('/Sounds/click_sound.wav');
-        if (!response.ok) throw new Error('Failed to fetch click sound');
-        const arrayBuffer = await response.arrayBuffer();
-        const decodedBuffer = await ctx.decodeAudioData(arrayBuffer);
-        setAudioBuffer(decodedBuffer);
-
-         const clickResponse = await fetch('/Sounds/coin_drop.mp3');
+        const clickResponse = await fetch('/Sounds/coin_drop.mp3');
         if (!clickResponse.ok) throw new Error('Failed to fetch coin_drop.mp3');
         const clickArrayBuffer = await clickResponse.arrayBuffer();
         const clickAudioBuffer = await ctx.decodeAudioData(clickArrayBuffer);
         setClickBuffer(clickAudioBuffer);
       } catch (err) {
-        console.error('Error loading click sound:', err);
+        console.error('Error loading sounds:', err);
       }
     };
 
     loadSound();
   }, []);
 
-
-const router = useRouter();
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
+    if (!file) return;
+
+    // Preview locally
+    const imageUrl = URL.createObjectURL(file);
+    setProfileImage(imageUrl);
+
+    try {
+      // Upload to Cloudinary
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "Syonit"); // from cloudinary dashboard
+
+      const res = await fetch("https://api.cloudinary.com/v1_1/dxurv6mps/image/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.secure_url) {
+        console.log("Uploaded Image URL:", data.secure_url);
+
+        // Send URL to backend to update user
+      const res =  await fetch("http://localhost:4000/api/profile", { // change endpoint
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user?.id, // assuming you saved after signup
+            image_url: data.secure_url,
+          }),
+        });
+      }
+      if(res.ok){
+       alert("Image updated successfully");
+      }
+       router.push("/Home");
+    } catch (err) {
+      console.error("Error uploading image:", err);
+      alert("error uploading image");
     }
   };
 
   return (
     <div className="profileContainer">
-     
       <h1 className="profileHeader">SYONIT</h1>
       <h2 className="subheader">WELCOME SYONNAIRE JOHN!</h2>
+
       <div className="profile-container">
         <div className="profile-picture">
           {profileImage ? (
@@ -61,6 +87,7 @@ const router = useRouter();
             <div className="placeholder"></div>
           )}
         </div>
+
         <label htmlFor="image-upload" className="upload-label">
           UPDATE PROFILE PICTURE
           <hr/>
@@ -73,12 +100,15 @@ const router = useRouter();
           style={{ display: 'none' }}
         />
       </div>
+
       <div className='bottom-button'>
-      <button className="profile-button" onClick={() => {
-        playSound(clickBuffer, '/Sounds/coin_drop.mp3');
-        router.push("/Home")
-        }}>LET'S GET STARTED</button>
-    </div>
+        <button className="profile-button" onClick={() => {
+          playSound(clickBuffer, '/Sounds/coin_drop.mp3');
+          router.push("/Home");
+        }}>
+          LET'S GET STARTED
+        </button>
+      </div>
     </div>
   );
 }

@@ -26,7 +26,7 @@ const LoginScreen = () => {
     }
   };
 
-  useEffect(() => {
+ /* useEffect(() => {
     input.current.addEventListener('change', (event) => {
       const file = event.target.files[0];
       if (file) {
@@ -38,6 +38,7 @@ const LoginScreen = () => {
       }
     });
   }, []);
+*/
 
   return (
     <div className="sign-container">
@@ -45,11 +46,7 @@ const LoginScreen = () => {
 
       {/* Input Fields */}
       <div className="input-container">
-        <div className='profile_container'>
-          <div className="profile-picture" id="profilePicture">
-            <img src="/profile.png" alt="Profile Picture" id="profileImage" ref={picture} />
-          </div>
-        </div>
+        
         <div className="input-field">
           <label>First Name:</label>
           <input type="text" placeholder="Enter your first name" />
@@ -58,10 +55,7 @@ const LoginScreen = () => {
           <label>Last Name:</label>
           <input type="text" placeholder="Enter your last name" />
         </div>
-        <div className="input-field">
-          <label>Profile Picture:</label>
-          <input type="file" id="fileInput" accept="image/*" ref={input} />
-        </div>
+        
         <div className="input-field">
           <label>Email:</label>
           <input type="email" placeholder="Enter your email" />

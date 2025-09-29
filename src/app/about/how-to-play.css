@@ -2,10 +2,10 @@
 .aboutContainer {
     height: 100svh;
     background-image: url('/bg.jpg');
-    background-size: 400%; /* Ensures the image covers the entire screen */
+    background-size: 350%; /* Ensures the image covers the entire screen */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center;
-    padding: 20px  20px;
+    padding: 0;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -86,7 +86,7 @@
 }
 .slider-content ul li{
     margin-bottom: 5px;
-    list-style: none;
+    list-style: decimal;
 }
 .slider-progress {
   display: flex;

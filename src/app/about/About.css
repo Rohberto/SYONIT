@@ -5,7 +5,6 @@
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center;
     color: #26282a;
-    padding: 0 20px 150px 20px;
     position: relative;
     display: flex;
     flex-direction: column;

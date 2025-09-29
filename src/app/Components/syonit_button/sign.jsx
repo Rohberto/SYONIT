@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import "./button.css";
 import { getAudioContext, playSound } from '../../libs/audioContext';
 
-const Button = ({currentStep, handleBack, handleNext}) => {
+const Button = ({currentStep, handleBack, handleNext, handleVerifyOtp}) => {
 const [lines, setLines] = useState([]);
   const [audioBuffer, setAudioBuffer] = useState(null);
 const [clickBuffer, setClickBuffer] = useState(null);
@@ -39,7 +39,7 @@ useEffect(() => {
 
 const handleSubmit = () => {
   playSound(clickBuffer, '/Sounds/coin_drop.mp3');
-  router.push("/profile");
+ handleVerifyOtp();
 }
 
 const router = useRouter();

@@ -10,6 +10,12 @@ import {IoGameControllerSharp} from "react-icons/io5";
 import { FcIdea } from 'react-icons/fc';
 import Button from '../Components/syonit_button/mainButton';
 import Header from '../Components/MainHeader';
+import { useSocket } from '../Context/SocketContext';
+import { useUser } from '../Context/userContext';
+import { useTournament } from '../Context/tournament';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+
 export default function Home() {
   const [currentTab, setCurrentTab] = useState('game'); // Tabs: 'game', 'idea', 'leaderboard', 'special'
   const [points, setPoints] = useState(1834);
@@ -17,17 +23,110 @@ export default function Home() {
     const [audioBuffer, setAudioBuffer] = useState(null);
   const [round, setRound] = useState(6);
   const [answers, setAnswers] = useState([true, false, null]); // Example: [true, false, null] for slots 1, 2, 3
-  const [timeLeft, setTimeLeft] = useState(750); // 12:30 in seconds (12*60 + 30)
+  const [timeLeft, setTimeLeft] = useState(0); // 12:30 in seconds (12*60 + 30)
   const [currentRound, setCurrentRound] = useState(0);
-  // Timer for the game
-  useEffect(() => {
-    if (currentTab === 'game' && timeLeft > 0) {
-      const timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [currentTab, timeLeft]);
+  const {socket, tournament, setTournament, noOfPlayers, setNoOfPlayers} = useSocket();
+  const [joined, setJoined] = useState(false);
+  const [breakATie, setBreakATie] = useState(false)
+  const [tournamentId, setTournamentId] = useState(null);
+const {user} = useUser();
+const {setGameTimer} = useTournament();
+const router = useRouter();
+
+    useEffect(() => {
+    if (!socket) return;
+
+    console.log("Homepage", tournament);
+    socket.on("tournament:created", (data) => {
+     setTournament(data);
+    });
+
+    socket.on("tournament:newPlayer", (data) => {
+     console.log(data);
+    });
+
+    socket.on("vote:error", (err) => {
+      console.error("Vote error:", err.message);
+    });
+     const onJoined = ({ tid, room }) => {
+      // server confirmed room join
+      setJoined(true);
+      console.log(`✅ Joined room ${room} for tournament ${tid}`);
+    };
+
+    const onError = (payload) => {
+      console.warn('❌ tournament:error', payload?.message || payload);
+      setJoined(false);
+    };
+
+    
+    const onStarted = ({ tid }) => {
+      console.log("did it kickstart");
+      console.log(tournament);
+      // only navigate if this tournament is the one on the screen
+      const currentTid = tournament?.tid;
+      console.log(currentTid);
+      console.log("tid", tid);
+      if (!currentTid) return;
+      if (tid === currentTid) {
+        console.log('✅ Tournament started, moving to game…');
+        router.push(`/game`);
+      }
+    };
+
+    const onCancelled = ({ tid }) => {
+      const currentTid = tournament?.tid ?? tournament?.id;
+      if (tid === currentTid) {
+        console.log('⚠️ Tournament cancelled');
+        setJoined(false);
+      }
+    };
+
+    socket.on('tournament:joined', onJoined);
+    socket.on('tournament:error', onError);
+    //socket.on('tournament:started', onStarted);   // <-- matches your backend emit name
+    socket.on('tournament:cancelled', onCancelled);
+    socket.on('tournament-starting', (data) => {
+      console.log(data);
+      toast.info(`Tournament starting in ${data.startsIn / 1000}s...`);
+      setNoOfPlayers(data.playersCount);
+       setGameTimer(data.startsIn);
+         router.push(`/game/${data.tid}`);
+      });
+
+    return () => {
+      socket.off("vote:cast");
+      socket.off("vote:error");
+      socket.off('tournament:joined', onJoined);
+      socket.off('tournament:error', onError);
+      socket.off('tournament:cancelled', onCancelled);
+      socket.off('tournament-starting');
+    };
+  }, [socket, tournament]);
+
+
+
+  // ⏳ Set initial timeLeft from tournament
+useEffect(() => {
+  if (!tournament || !tournament.lobbyEndsAt) return;
+
+  const endTime = new Date(tournament.lobbyEndsAt).getTime();
+  const now = Date.now();
+  const diff = Math.max(0, Math.floor((endTime - now) / 1000));
+
+  setTimeLeft(diff);
+}, [tournament]);
+
+useEffect(() => {
+  if (!tournament || tournament.status !== "waiting" || timeLeft <= 0) return;
+
+  const timer = setInterval(() => {
+    setTimeLeft((prev) => Math.max(0, prev - 1));
+  }, 1000);
+
+  return () => clearInterval(timer);
+}, [tournament, timeLeft]);
+
 
   useEffect(() => {
       const ctx = getAudioContext();
@@ -50,6 +149,10 @@ export default function Home() {
   
       loadSound();
     }, []);
+
+    useEffect(() => {
+
+    }, []);
   
   
   
@@ -59,6 +162,7 @@ export default function Home() {
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
   };
+
   const [rounds, setRounds] = useState([
     { yesScore: 1000, noScore: 1000, isPlayed: false },
     { yesScore: 1000, noScore: 1000, isPlayed: false },
@@ -121,6 +225,15 @@ export default function Home() {
     return 'Tie';
   };
 
+  //Break a tie handler
+  const handleBreakATie = () => {
+    // Logic to break the tie, e.g., open a modal or navigate to a tie-breaking screen
+   socket.emit("tie:attempt", { tid: tournamentId, userId: user.id });
+
+    toast.info("Tie-breaking process initiated.");
+    setBreakATie(false); // Hide the button after initiating tie-break
+  };
+
 
 
   const renderContent = () => {
@@ -130,9 +243,9 @@ export default function Home() {
           <>
            <h3>Current Game</h3>
                  <div className='Home-slide'>
-                
    
         <div className="current_game_info_buttons">
+
         <div className='game_info'>
         <h4>Players</h4>
         <p>1,000,000</p>
@@ -208,6 +321,7 @@ export default function Home() {
 
   return (
     <div className="gameContainer">
+    <div className='glassy-panel'>
       <Header/>
       <div className="points-section">
         <div className='points-container'>
@@ -251,7 +365,9 @@ export default function Home() {
         <p>ONLINE: 3</p>
         <p>1: IN GAME</p>
       </div>
-      <Button formatTime={formatTime} timeLeft={timeLeft}/>
+
+      {<Button formatTime={formatTime} timeLeft={timeLeft} tournament={tournament} user={user} joined={joined} setJoined={setJoined}/>}
+      </div>
       </div>
     </div>
   );

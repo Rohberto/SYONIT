@@ -1,0 +1,173 @@
+/*.game-console {
+   min-height: 100svh;
+    background-image: url('/bg.jpg');
+    background-size: 300%; 
+    background-repeat: no-repeat; 
+    background-position: center;
+    padding: 20px ;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.round-info {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.timer {
+  font-size: 20px;
+  margin: 15px 0;
+  font-family: monospace;
+}
+
+.vote-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.vote-buttons button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.vote-buttons button:first-child {
+  background: #28a745;
+  color: white;
+}
+
+.vote-buttons button:first-child:hover {
+  background: #218838;
+}
+
+.vote-buttons button:last-child {
+  background: #dc3545;
+  color: white;
+}
+
+.vote-buttons button:last-child:hover {
+  background: #c82333;
+}
+
+.results {
+  margin-top: 15px;
+  padding: 10px;
+  background: #222;
+  border-radius: 6px;
+}
+
+.game-over {
+  font-size: 20px;
+  font-weight: bold;
+  color: gold;
+}
+*/
+.game-console {
+   min-height: 100svh;
+    background-image: url('/bg.jpg');
+    background-size: 300%; 
+    background-repeat: no-repeat; 
+    background-position: center;
+    padding: 20px ;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.round-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  padding: 10px;
+  border: 2px solid white;
+  border-radius: 15px;
+  background: rgba(255, 153, 0, 0.7);
+}
+
+.round-section.active {
+  background: rgba(255, 204, 102, 0.9);
+}
+
+.round-player, .round-opportunity, .round-votes {
+  flex: 1;
+}
+
+.vote-yes, .vote-no {
+  margin: 0 10px;
+}
+
+.vote-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.vote-yes-btn, .vote-no-btn {
+  font-size: 24px;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 50px;
+  background: #ff9900;
+  color: white;
+  cursor: pointer;
+}
+
+.vote-yes-btn:hover, .vote-no-btn:hover {
+  background: #ffcc66;
+}
+
+.timer {
+  font-size: 20px;
+  margin-top: 10px;
+}
+.gamebuttonsContainer{
+position: fixed;
+bottom: 10px;
+right: 0;
+left: 0;
+}
+.game_buttons{
+  position: relative;
+}
+.button-circle{
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #ff9900;
+  color: white;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.Home-slide h1{
+     font-size: 10px;
+        font-weight: 700;
+        font-family: "Heebo", sans-serif;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+        color: rgba(0, 0, 0, 0.3);
+        text-align: center;
+        margin-bottom: 15px;
+}

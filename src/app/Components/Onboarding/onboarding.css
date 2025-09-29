@@ -1,20 +1,55 @@
-
+/* Fullscreen background holder */
 .new_onboarding_container {
-  height: 100svh;
-    background-image:  url('/syonit_stadium5.png');
-    background-size: 300%; /* Ensures the image covers the entire screen */
-    background-repeat: no-repeat; /* Prevents the image from repeating */
-    background-position: center;
-    color: #26282a;
-    padding: 20px 20px 40px;
-  }
-  .onboarding_primary_text{
-    width: 100%;
-    position: relative;
-    text-align: center;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background-image: url('/syonit_stadium5.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 0; /* stays behind glass panels */
+}
+
+/* Glassy overlay panel */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.15); /* translucent white */
+
+width: 100vw;
+height: 100vh;
+
   
-  .onboarding_primary_text h1{
+  backdrop-filter: blur(6px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%); /* Safari support */
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+
+  color: #fff; /* white text to pop on background */
+  text-align: center;
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(12px)) {
+  .new_onboarding_container {
+    background-color: rgba(255, 255, 255, 0.4); /* Solid fallback with more opacity */
+  }
+}
+
+.onboarding_primary_text {
+  width: 100%;
+  position: relative;
+  text-align: center;
+}
+
+.onboarding_primary_text h1 {
   font-family: 'Heebo', sans-serif;
   font-size: 16px;
   text-transform: capitalize;
@@ -26,75 +61,88 @@
   font-weight: 700;
   letter-spacing: 7.68px;
   color: rgba(255, 255, 255, 1);
-  }
-  .illustration{
-    background-color: #000;
-  }
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Stronger shadow for readability */
+}
 
+.illustration {
+  background-color: #000;
+}
 
-  .onboarding_primary_text p{
-    font-family: "DM Sans";
-    font-size: 16px;
-    letter-spacing: 0.5px;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-  .new_onboarding_bottom_content{
-position: absolute;
-bottom: 0;
-left: 0;
-width: 100%;
-padding: 20px 0;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-gap: 0;
-  }
-  .new_onboarding_illustration{
-    width: 150px;
+.onboarding_primary_text p {
+  font-family: "DM Sans";
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Added for readability */
+}
+
+.new_onboarding_bottom_content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.new_onboarding_illustration {
+  width: 150px;
   height: 150px;
   display: flex;
   justify-content: center;
-    visibility: visible;
+  visibility: visible;
   opacity: 1;
   transition: visibility 0s .5s, opacity 1s .5s;
-  }
-  .new_onboarding_illustration img{
-    width: 100%;
-    height: 100%;
-  }
-  .onboarding_musketeer{
-   width: 44.42px;
-   height: 26px;
-   margin-bottom: 0;
-  }
-  .new_onboarding_bottom_text{
-    text-align: center;
-    width: 100%;
-    font-family: "Heebo", sans-serif;
-    font-weight: 700;
-    font-size: 10px;
-    letter-spacing: 1.8px;
-    color: rgba(247, 113, 47, 0.38);
-  }
-  .become_a_syonaire{
-    font-family: "DM Sans";
-    font-size: 10px;
-    font-weight: 200;
-    letter-spacing: -0.5px;
-  }
-  .flipped{
-    display: inline-block;
-    transform: scaleX(-1);
-  }
-  .play_container{
-    width: 100vw;
-    padding: 10px 20px;
-  }
-  .play_container button{
-    width: 100%;
-    background-color: transparent;
+}
+
+.new_onboarding_illustration img {
+  width: 100%;
+  height: 100%;
+}
+
+.onboarding_musketeer {
+  width: 44.42px;
+  height: 26px;
+  margin-bottom: 0;
+}
+
+.new_onboarding_bottom_text {
+  text-align: center;
+  width: 100%;
+  font-family: "Heebo", sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  color: rgba(247, 113, 47, 0.38);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Added for readability */
+}
+
+.become_a_syonaire {
+  font-family: "DM Sans";
+  font-size: 10px;
+  font-weight: 200;
+  letter-spacing: -0.5px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Added for readability */
+}
+
+.flipped {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+
+.play_container {
+  width: 100vw;
+  padding: 10px 20px;
+}
+
+.play_container button {
+  width: 100%;
+  background-color: transparent;
   border: 1px solid rgba(247, 113, 47, 0.38);
   border-radius: 9999px;
   height: 80px;
@@ -104,79 +152,84 @@ gap: 0;
   font-weight: 700;
   font-family: "Heebo", sans-serif;
   text-transform: uppercase;
-  }
-  .flip-container {
-    perspective: 1000px;
-  }
-  
-  .flip-card {
-    width: 40px;
-    height: 40px;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.6s;
-    animation: flip-animation 4s infinite; /* Animation applied here */
-  }
-  
-  .flip-card:hover {
-    transform: rotateY(180deg);
-  }
-  
-  .flip-card-front,
-  .flip-card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-  }
-  
-  .flip-card-front {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-    width: 100%;
-    height: 100%;
-  }
-  .flip-card-front img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .flip-card-back {
-    background: #f7EE25;
-    border-radius: 50%;
-    border: 1px solid #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    transform: rotateY(180deg);
-  }
-  
-  .coin_musketeer{
-    width: 50px;
-    height: 50px;
-    stroke: #000;
-    fill: #000;
-    object-fit: contain; 
-  }
-  @keyframes flip-animation {
-    0% {
-      transform: rotateY(0deg);
-    }
-    50% {
-      transform: rotateY(0deg);
-    }
-    100% {
-      transform: rotateY(0deg);
-    }
-  }
-  @media all and (max-width: 399px){
-    .new_onboarding_bottom_content{
-      width: 100%;
-      padding: 10px 0;
-      justify-content: flex-end;
-        }
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Added for readability */
+}
 
+.flip-container {
+  perspective: 1000px;
+}
+
+.flip-card {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  animation: flip-animation 4s infinite; /* Animation applied here */
+}
+
+.flip-card:hover {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+}
+
+.flip-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flip-card-back {
+  background: #f7EE25;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  transform: rotateY(180deg);
+}
+
+.coin_musketeer {
+  width: 50px;
+  height: 50px;
+  stroke: #000;
+  fill: #000;
+  object-fit: contain; 
+}
+
+@keyframes flip-animation {
+  0% {
+    transform: rotateY(0deg);
   }
+  50% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+@media all and (max-width: 399px) {
+  .new_onboarding_bottom_content {
+    width: 100%;
+    padding: 10px 0;
+    justify-content: flex-end;
+  }
+}

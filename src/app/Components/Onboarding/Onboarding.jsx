@@ -63,6 +63,7 @@ const Onboarding = () => {
 
   return (
     <div className="new_onboarding_container">
+      <div className="glass-panel">
       <div className="onboarding_primary_text">
         <h1>SYONIT</h1>
       </div>
@@ -85,6 +86,7 @@ const Onboarding = () => {
                </div>
              </div>
       )}
+    </div>
     </div>
     </div>
   );

@@ -41,23 +41,20 @@ const router = useRouter();
 
   return (
     <div className="intro_container">
-     
+     <div className='glassy-panel'>
       <div className="onboarding_primary_text">
         <h1>SYONIT</h1>
       </div>
 
       <div className="text-container">
         <p ref={(el) => (lineRefs.current[0] = el)}>
-          SYONIT is a fast paced, multiplayer mind-game
-        </p>
-        <p ref={(el) => (lineRefs.current[1] = el)}>
-          where players must think critically and make
-        </p>
-        <p ref={(el) => (lineRefs.current[2] = el)}>
-          lightning quick Yes or No decisions.
-        </p>
-        <p ref={(el) => (lineRefs.current[3] = el)}>
-          Thinking differently is the secret to winning.
+        Syonit!™ is a fast-paced, no-questions-asked multiplayer game
+where players respond only 'Yes' or 'No' within strict time limits.
+The game challenges critical thinking, speed, and instinct.
+Outsmarting the crowd by thinking differently is the ultimate path to victory.
+Each round eliminates the majority, leaving only the sharpest minds in play.
+The tension builds through every round until one final contestant remains.
+That last player is crowned the SYONAIRE™
         </p>
         <Link ref={(el) => (lineRefs.current[4] = el)} href="/about" >
           How To Play
@@ -83,6 +80,7 @@ const router = useRouter();
                <img src='/musketeer2.svg' alt='musketeeers' className="intro_musketeer"/>
                </div>
           <Button/>
+          </div>
           </div>
     </div>
   );
