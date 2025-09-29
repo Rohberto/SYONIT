@@ -11,6 +11,16 @@
     flex-direction: column;
 }
 
+.gameContainer {
+    height: 100svh;
+    background-image: url('/bg.jpg');
+    background-size: 300%; /* Ensures the image covers the entire screen */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
 .Home_screen{
     width: 100%;
     min-height: 200px;
