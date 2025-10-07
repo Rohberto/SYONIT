@@ -25,12 +25,10 @@ export default function Home() {
   const [answers, setAnswers] = useState([true, false, null]); // Example: [true, false, null] for slots 1, 2, 3
 
   const [currentRound, setCurrentRound] = useState(0);
-  const {socket, tournament, setTournament, noOfPlayers, setNoOfPlayers, timeLeft, setTimeLeft, formatTime} = useSocket();
-  const [joined, setJoined] = useState(false);
+  const {socket, tournament, setTournament, noOfPlayers, setNoOfPlayers, timeLeft, setTimeLeft, formatTime, joined, setJoined, setGameTimer} = useSocket();
   const [breakATie, setBreakATie] = useState(false)
   const [tournamentId, setTournamentId] = useState(null);
 const {user} = useUser();
-const {setGameTimer} = useTournament();
 const router = useRouter();
 
 
@@ -227,7 +225,6 @@ const router = useRouter();
 
   return (
     <div className="gameContainer">
-    <div className='glassy-panel'>
       <Header/>
       <div className="points-section">
         <div className='points-container'>
@@ -242,25 +239,25 @@ const router = useRouter();
       {renderContent()}
       <div className="nav-buttons">
         <button
-          className={`nav-button ${currentTab === 'game' ? 'active' : ''}`}
+          className={`nav-button  ${currentTab === 'game' ? 'active' : ''}`}
           onClick={() => setCurrentTab('game')}
         >
          <IoGameControllerSharp/>
         </button>
         <button
-          className={`nav-button ${currentTab === 'idea' ? 'active' : ''}`}
+          className={`nav-button  ${currentTab === 'idea' ? 'active' : ''}`}
           onClick={() => setCurrentTab('idea')}
         >
         <FaLightbulb/>
         </button>
         <button
-          className={`nav-button ${currentTab === 'leaderboard' ? 'active' : ''}`}
+          className={`nav-button  ${currentTab === 'leaderboard' ? 'active' : ''}`}
           onClick={() => setCurrentTab('leaderboard')}
         >
           <FaFlagCheckered/>
         </button>
         <button
-          className={`nav-button ${currentTab === 'special' ? 'active' : ''}`}
+          className={`nav-button  ${currentTab === 'special' ? 'active' : ''}`}
           onClick={() => setCurrentTab('special')}
         >
           <FaHandsHelping/>
@@ -273,7 +270,6 @@ const router = useRouter();
       </div>
 
       {<Button formatTime={formatTime} timeLeft={timeLeft} tournament={tournament} user={user} joined={joined} setJoined={setJoined}/>}
-      </div>
       </div>
     </div>
   );

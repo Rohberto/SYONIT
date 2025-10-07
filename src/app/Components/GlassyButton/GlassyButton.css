@@ -1,0 +1,51 @@
+.glass-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.glassy-btn {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s ease;
+  filter: url(#btn-glass);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    0 0 15px rgba(255, 255, 255, 0.15);
+}
+
+/* subtle internal light diffusion */
+.glassy-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0.05) 70%
+  );
+  mix-blend-mode: screen;
+  opacity: 0.9;
+}
+
+/* hovering glow pulse */
+.glassy-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 0 25px rgba(255, 255, 255, 0.25),
+    0 0 50px rgba(255, 255, 255, 0.15);
+  transform: scale(1.08);
+}
+
+.glassy-btn:active {
+  transform: scale(0.97);
+}

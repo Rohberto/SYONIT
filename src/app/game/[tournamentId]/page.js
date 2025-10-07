@@ -54,7 +54,7 @@ const [isWinner, setIsWinner] = useState(false);
     if (!socket || !socket.connected) return;
 
     console.log("Joining tournament:", tournamentId, userId);
-    socket.emit("tournament:join", { tid: tournamentId, userId });
+   // socket.emit("tournament:join", { tid: tournamentId, userId });
 
     const handleTournamentStarting = ({ startsIn, playersCount }) => {
       setRoundTimer(startsIn);

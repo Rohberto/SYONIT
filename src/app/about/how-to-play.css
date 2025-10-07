@@ -2,10 +2,10 @@
 .aboutContainer {
     height: 100svh;
     background-image: url('/bg.jpg');
-    background-size: 350%; /* Ensures the image covers the entire screen */
+    background-size: 600%; /* Ensures the image covers the entire screen */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center;
-    padding: 0;
+    padding: 40px 20px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -55,6 +55,8 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  position: relative  ;
+  height: 500px;
 }
 
 .slider-content {
@@ -70,9 +72,23 @@
   flex-direction: column;
   border: 1px solid rgba(255, 255, 255, 1);
   border-radius: 24px;
-  overflow-y: scroll;
-}
 
+}
+.slider-inner-content{
+  height: 100%;
+    overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.slider-scrollable {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  /* If you want to limit the height: */
+  max-height: calc(100% - 40px); /* adjust as needed */
+}
+.slider-content::-webkit-scrollbar {
+  display: none;
+}
 .slider-content h1 {
   margin: 0;
   font-size: 18px;
@@ -115,7 +131,6 @@
 }
 
 .progress-text {
-  margin-left: 10px;
   font-size: 10px;
   position: absolute;
   bottom: 20px;

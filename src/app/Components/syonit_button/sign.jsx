@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import "./button.css";
 import { getAudioContext, playSound } from '../../libs/audioContext';
+import Glass from '../GlassyButton/Glass';
 
 const Button = ({currentStep, handleBack, handleNext, handleVerifyOtp}) => {
 const [lines, setLines] = useState([]);
@@ -48,7 +49,7 @@ const router = useRouter();
         setLines(newLines);
       }, []);
   return (
-    <div className="buttonsContainer">
+    <div className="buttonsContainer glassContainer">
     <button
       className="game_stroke_links"
     onClick={() => {
@@ -70,8 +71,9 @@ const router = useRouter();
     >
      {currentStep === 3 ? 'SUBMIT' : 'NEXT'}
     </button>
-    <div className="button-circle">
+    <div className="button-circle glassBtn">
     </div>
+    <Glass />
   </div>
   )
 }

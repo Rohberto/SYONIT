@@ -74,7 +74,6 @@ export default function HowToPlay() {
 
   return (
     <div className="aboutContainer">
-      <div className='glassy-panel'>
       <div className="iconContainer">
         <img src="/Icon.png" alt="icon" className="logo" />
       </div>
@@ -82,6 +81,7 @@ export default function HowToPlay() {
       <h2 className="subheader">HOW TO PLAY</h2>
       <div className="slider-container">
         <div className="slider-content">
+          <div className='slider-inner-content'>
           <h1>{slides[currentSlide - 1].title}</h1>
           <ul>
             {
@@ -90,6 +90,7 @@ export default function HowToPlay() {
                 ))
             }
           </ul>
+          </div>
           <span className="progress-text">{`${currentSlide}/${totalSlides}`}</span>
         </div>
         <div className="slider-progress">
@@ -123,7 +124,6 @@ export default function HowToPlay() {
              <Button/>
       </div>
 
-   </div>
     </div>
   );
 }

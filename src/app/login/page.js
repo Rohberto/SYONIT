@@ -59,7 +59,6 @@ console.log(data, data.token, data.user);
 
   return (
     <div className="signContainer">
-      <div className="glassy-panel">
       <h1 className="signHeader">SYONIT</h1>
       <h2 className="subheader">LOGIN TO YOUR PROFILE</h2>
 
@@ -103,7 +102,6 @@ console.log(data, data.token, data.user);
           <Button text={loading ? "Logging in..." : "Login"} disabled={loading} />
         </div>
       </form>
-      </div>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import './button.css';
 import { getAudioContext, playSound } from '../../libs/audioContext';
 import axios from 'axios';
 import { useSocket } from '../../Context/SocketContext';
+import Glass from '../GlassyButton/Glass';
 
 const Button = ({ formatTime, timeLeft, tournament, user , joined, setJoined}) => {
   const [lines, setLines] = useState([]);
@@ -44,7 +45,7 @@ const Button = ({ formatTime, timeLeft, tournament, user , joined, setJoined}) =
     joined ||
     !user?.id;
 
-  const handleReadyUp = async () => {
+  /*const handleReadyUp = async () => {
     if (disableReadyUp) return;
     if (audioBuffer) playSound(audioBuffer, '/Sounds/click_sound.wav');
 
@@ -84,9 +85,10 @@ const Button = ({ formatTime, timeLeft, tournament, user , joined, setJoined}) =
       setJoined(false);
     }
   };
+  */
 
   return (
-    <div className="buttonsContainer">
+    <div className="buttonsContainer glassContainer">
       {/* Invite button */}
       <button
         className="game_stroke_links"
@@ -102,13 +104,18 @@ const Button = ({ formatTime, timeLeft, tournament, user , joined, setJoined}) =
       <button
         className="game_stroke_links"
         disabled={disableReadyUp}
-        onClick={handleReadyUp}
+        onClick={() => {
+          if (disableReadyUp) return;
+    if (audioBuffer) playSound(audioBuffer, '/Sounds/click_sound.wav');
+    router.push('/Prize');
+        }
+        }
       >
         {joined ? 'JOINED ✔' : 'READY UP'}
       </button>
 
       {/* Countdown circle */}
-      <div className="home_circle">
+      <div className="home_circle homeglassBtn">
         <div className="circle_info">
           <p>NEXT</p>
           <h1>
@@ -119,6 +126,7 @@ const Button = ({ formatTime, timeLeft, tournament, user , joined, setJoined}) =
           <p>GAME</p>
         </div>
       </div>
+      <Glass />
     </div>
   );
 };

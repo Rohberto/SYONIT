@@ -307,7 +307,6 @@ export default function Signup() {
 
   return (
     <div className="signContainer">
-      <div className='glassy-panel'>
       <h1 className="signHeader">SYONIT</h1>
       <h2 className="subheader">CREATE YOUR PROFILE</h2>
       {renderStep()}
@@ -323,7 +322,6 @@ export default function Signup() {
           handleNext={handleNext}
           handleVerifyOtp={handleVerifyOtp}
         />
-      </div>
       </div>
     </div>
   );
