@@ -77,9 +77,7 @@ const Onboarding = () => {
       {isComplete && (
        <div className="new_onboarding_bottom_content">
            <div className="new_onboarding_bottom_text">
-                <div className="glass-text">
                    <p className="think_differently">THINK <span className="flipped">D</span>IFFERENTLY</p>
-                </div>
                </div>
                <img src='/musketeer2.svg' alt='musketeeers' className="onboarding_musketeer"/>
                <div className="play_container">
