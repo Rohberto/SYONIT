@@ -41,7 +41,6 @@ const router = useRouter();
 
   return (
     <div className="intro_container">
-     <div className='glassy-panel'>
       <div className="onboarding_primary_text">
         <h1>SYONIT</h1>
       </div>
@@ -82,7 +81,6 @@ That last player is crowned the SYONAIRE™
           <Button/>
           </div>
           </div>
-    </div>
   );
 };
 
