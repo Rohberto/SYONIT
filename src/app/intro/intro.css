@@ -1,7 +1,7 @@
 .intro_container{
     height: 100svh;
-    background-image: url('/bg.jpg');
-    background-size: 500%; /* Ensures the image covers the entire screen */
+    background:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/bg.jpg');
+    background-size: 350%; /* Ensures the image covers the entire screen */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center;
     position: relative;
