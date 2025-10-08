@@ -7,9 +7,9 @@
   height: 100svh;
 
   background-image: url('/syonit_stadium5.png');
-  background-size: 500%;
+  background-size: 300%;
   background-repeat: no-repeat;
-  background-position: center -200px;
+  background-position: center;
 
   display: flex;
   flex-direction: column ;

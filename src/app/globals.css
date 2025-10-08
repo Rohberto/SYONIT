@@ -133,32 +133,56 @@ a {
   -webkit-backdrop-filter: blur(10px); /* Safari support */
   position: relative;
 }
-
 .glassContainer {
-  display: -webkit-box;
-  display: -ms-flexbox;
+  position: relative;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 0 40px;
   height: 70px;
   border-radius: 30px;
+  
+  /* Slightly darker tint so it stands out */
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(220, 220, 220, 0.6);
+
+  /* Depth and realistic shadows */
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.15),    /* main shadow */
+    inset 0 1px 2px rgba(255, 255, 255, 0.6), /* highlight inside */
+    inset 0 -1px 3px rgba(0, 0, 0, 0.05);     /* base dark edge */
+
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
 }
 
-.glassContainer::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    border-radius: 30px;
-    -webkit-box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7), inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
-            box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7), inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
+.glassContainer:hover {
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
 }
+
+/* Gloss highlight across top edge */
+.glassContainer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.05) 60%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
 
 .glassContainer::after {
     content: '';
@@ -168,8 +192,8 @@ a {
     border-radius: 30px;
     -webkit-backdrop-filter: blur(0px);
             backdrop-filter: blur(0px);
-    -webkit-filter: url(#container-glass);
-            filter: url(#container-glass);
+    -webkit-filter: url(#btn-glass);
+            filter: url(#btn-glass);
     overflow: hidden;
     isolation: isolate;
 }
