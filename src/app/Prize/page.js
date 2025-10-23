@@ -8,11 +8,11 @@ import {useRouter} from "next/navigation";
 import "./prize.css";
 
 const PrizePage = () => {
-  const { socket, tournament, timeLeft, handleReadyUp } = useSocket();
+  const { socket, tournament, timeLeft, handleReadyUp, setSelectedPrize } = useSocket();
   const { user } = useUser();
 
   const [prizes, setPrizes] = useState([]);
-  const [selectedPrize, setSelectedPrize] = useState(null);
+ 
   const [showModal, setShowModal] = useState(false);
   const [pendingPrize, setPendingPrize] = useState(null);
   const router = useRouter();
@@ -59,8 +59,9 @@ const PrizePage = () => {
   };
 
   // ✅ Show confirmation modal
-  const confirmPrizeSelection = (prizeId) => {
+  const confirmPrizeSelection = (prizeId, prizeName) => {
     setPendingPrize(prizeId);
+    setSelectedPrize(prizeName);
     setShowModal(true);
   };
 
@@ -68,6 +69,7 @@ const PrizePage = () => {
   const handleConfirm = () => {
     if (pendingPrize) {
    handleReadyUp(user, pendingPrize);
+  
     }
     setShowModal(false);
     setPendingPrize(null);
@@ -78,11 +80,11 @@ const PrizePage = () => {
   const handleCancel = () => {
     setShowModal(false);
     setPendingPrize(null);
+    setSelectedPrize(null);
   };
 
   return (
     <div className="gameContainer">
-      <div className="glassy-panel">
         <Header />
 
         <h3>Prizes Available</h3>
@@ -90,8 +92,8 @@ const PrizePage = () => {
           {prizes.map((prize) => (
             <div
               key={prize.id}
-              className={`prize-item ${selectedPrize === prize.id ? "selected" : ""}`}
-              onClick={() => confirmPrizeSelection(prize.id)}
+              className={`prize-item ${pendingPrize === prize.id ? "selected" : ""}`}
+              onClick={() => confirmPrizeSelection(prize.id, prize.name)}
             >
               <img src={prize.imageUrl} alt={prize.name} className="prize-image" />
               <div className="prize-info">
@@ -106,14 +108,14 @@ const PrizePage = () => {
         <div className="bottom-button">
           <div className="game_details">
             <p>ONLINE: 3</p>
-            <p>1: IN GAME</p>
+            <p>IN GAME: 1</p>
           </div>
 
-          <div className="prize-button buttonsContainer">
+          <div className="prize-button buttonsContainer glassBtn">
             {`Next Tournament Starts In : ${timeLeft}`}
           </div>
         </div>
-      </div>
+      
 
       {/* ✅ Confirmation Modal */}
       {showModal && (

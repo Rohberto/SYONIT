@@ -1,12 +1,14 @@
 .gameContainer {
     height: 100svh;
-    background-image: url('/bg.jpg');
-    background-size: 300%; /* Ensures the image covers the entire screen */
+ background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/bg.jpg');
+  background-size: 300%;
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center;
     position: relative;
     display: flex;
     flex-direction: column;
+    padding: 20px;
+    align-items: center;
 }
 .Home-slide {
   background-color: transparent;
@@ -94,6 +96,12 @@
     left: 0;
     right: 0;
     padding: 0 20px;
+}
+.game_details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 10px;
 }
 .prize-button{
   display: flex;

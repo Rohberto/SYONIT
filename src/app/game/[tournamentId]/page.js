@@ -7,11 +7,12 @@ import { useUser } from "@/app/Context/userContext";
 import Header from "@/app/Components/MainHeader";
 import Round from "@/app/Components/Round";
 import { getAudioContext, playSound } from "@/app/libs/audioContext";
+import PrizeChangeModal from "@/app/Components/PrizeChangeModal";
 import "./game.css";
 
 const GameConsole = () => {
   const router = useRouter();
-  const { socket, noOfPlayers } = useSocket();
+  const { socket, noOfPlayers, prizeWindow,  } = useSocket();
   const { tournamentId } = useParams();
   const { user } = useUser();
 
@@ -250,6 +251,11 @@ const [isWinner, setIsWinner] = useState(false);
         <p>Winner: {winner}</p>
       </>
     )}
+
+    {
+
+    }
+
     <button onClick={() => router.push("/Home")}>Go Home</button>
   </div>
       ) : (
@@ -278,6 +284,11 @@ const [isWinner, setIsWinner] = useState(false);
               />
             );
           })}
+
+           <PrizeChangeModal
+        prizeStats={prizeWindow.stats || []}
+        endsAt={prizeWindow.endsAt}
+      />
 
           <div className="gamebuttonsContainer">
             <div className="buttonsContainer">

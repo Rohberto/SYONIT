@@ -10,11 +10,12 @@ import { useUser } from '../Context/userContext';
 export default function Signup() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    fullName: '',
     email: '',
     password: '',
     displayName: '',
+    gender: '', // ✅ added
+    ageBracket: '', // ✅ added
     termsAccepted: false,
     verificationCode: ['', '', '', '']
   });
@@ -47,8 +48,8 @@ export default function Signup() {
       alert("Please accept Terms & Conditions to proceed");
       return;
     }
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
-      alert("Please fill in all required fields (first name, last name, email, password)");
+    if (!formData.fullName || !formData.email || !formData.password || !formData.gender || !formData.ageBracket) {
+      alert("Please fill in all required fields (first name, last name, email, password, gender, age bracket)");
       return;
     }
     setSubmitting(true);
@@ -57,11 +58,12 @@ export default function Signup() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
+          fullName: formData.fullName,
           email: formData.email,
           password: formData.password,
           username: formData.displayName || formData.email.split('@')[0],
+          gender: formData.gender, // ✅ added
+          ageBracket: formData.ageBracket // ✅ added
         }),
       });
 
@@ -191,21 +193,13 @@ export default function Signup() {
       case 1:
         return (
           <div className="form-container form-spacer">
-            <label>First Name:</label>
+            <label>Full Name:</label>
             <input
               type="text"
-              name="firstName"
-              value={formData.firstName}
+              name="fullName"
+              value={formData.fullName}
               onChange={handleInputChange}
-              placeholder="John"
-            />
-            <label>Last Name:</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              placeholder="Osami"
+              placeholder="John Doe"
             />
             <label>Email:</label>
             <input
@@ -223,6 +217,24 @@ export default function Signup() {
               onChange={handleInputChange}
               placeholder="••••••••••••••••"
             />
+
+            {/* ✅ Added gender and age bracket */}
+            <label>Gender:</label>
+            <select name="gender" value={formData.gender} onChange={handleInputChange}>
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="prefer_not_to_say">Prefer not to say</option>
+            </select>
+
+            <label>Age Bracket:</label>
+            <select name="ageBracket" value={formData.ageBracket} onChange={handleInputChange}>
+              <option value="">Select Age Range</option>
+              <option value="7-12">7 - 12</option>
+              <option value="13-17">13 - 17</option>
+              <option value="18+">18 and above</option>
+            </select>
+
             <div className="social-login">
               <p>or sign in with:</p>
               <div className="social-buttons">

@@ -25,7 +25,7 @@ export default function Home() {
   const [answers, setAnswers] = useState([true, false, null]); // Example: [true, false, null] for slots 1, 2, 3
 
   const [currentRound, setCurrentRound] = useState(0);
-  const {socket, tournament, setTournament, noOfPlayers, setNoOfPlayers, timeLeft, setTimeLeft, formatTime, joined, setJoined, setGameTimer} = useSocket();
+  const {socket, tournament, setTournament, noOfPlayers, setNoOfPlayers, timeLeft, setTimeLeft, formatTime, joined, setJoined, setGameTimer, onlineCount} = useSocket();
   const [breakATie, setBreakATie] = useState(false)
   const [tournamentId, setTournamentId] = useState(null);
 const {user} = useUser();
@@ -265,11 +265,11 @@ const router = useRouter();
       </div>
       <div className="bottom-button">
       <div className='game_details'>
-        <p>ONLINE: 3</p>
+        <p>ONLINE: {onlineCount}</p>
         <p>1: IN GAME</p>
       </div>
 
-      {<Button formatTime={formatTime} timeLeft={timeLeft} tournament={tournament} user={user} joined={joined} setJoined={setJoined}/>}
+      {<Button formatTime={formatTime} timeLeft={timeLeft} tournament={tournament} user={user} />}
       </div>
     </div>
   );

@@ -45,9 +45,8 @@
   border-radius: 20px;
   padding: 20px;
   width: 100%;
-height: 359px;
-max-height: 360px;
-max-height: 450px;
+height: 450px;
+max-height: 500px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .form-spacer{
@@ -77,7 +76,7 @@ max-height: 450px;
 
 .form-container input[type="text"],
 .form-container input[type="email"],
-.form-container input[type="password"] {
+.form-container input[type="password"], .form-container select {
   width: 100%;
   padding: 10px;
   margin-bottom: 5px;
