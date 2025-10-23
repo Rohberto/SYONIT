@@ -218,6 +218,14 @@ export default function Signup() {
               placeholder="••••••••••••••••"
             />
 
+          <label>Age Bracket:</label>
+            <select name="ageBracket" value={formData.ageBracket} onChange={handleInputChange}>
+              <option value="">Select Age Range</option>
+              <option value="7-12">7 - 12</option>
+              <option value="13-17">13 - 17</option>
+              <option value="18+">18 and above</option>
+            </select>
+
             {/* ✅ Added gender and age bracket */}
             <label>Gender:</label>
             <select name="gender" value={formData.gender} onChange={handleInputChange}>
@@ -227,13 +235,6 @@ export default function Signup() {
               <option value="prefer_not_to_say">Prefer not to say</option>
             </select>
 
-            <label>Age Bracket:</label>
-            <select name="ageBracket" value={formData.ageBracket} onChange={handleInputChange}>
-              <option value="">Select Age Range</option>
-              <option value="7-12">7 - 12</option>
-              <option value="13-17">13 - 17</option>
-              <option value="18+">18 and above</option>
-            </select>
 
             <div className="social-login">
               <p>or sign in with:</p>
