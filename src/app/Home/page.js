@@ -224,7 +224,7 @@ const router = useRouter();
   };
 
   return (
-    <div className="gameContainer">
+    <div className="homeContainer">
       <Header/>
       <div className="points-section">
         <div className='points-container'>

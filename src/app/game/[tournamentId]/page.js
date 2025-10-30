@@ -120,7 +120,7 @@ const [isWinner, setIsWinner] = useState(false);
     setIsWinner(false);
   }
     };
-
+/*
     // ✅ scores
     socket.on("score:updated", ({ score }) => {
       setScores(score);
@@ -159,7 +159,7 @@ const [isWinner, setIsWinner] = useState(false);
     socket.on("opportunity:ended", handleOpportunityEnded);
     socket.on("round:ended", handleRoundEnded);
     socket.on("tournament:ended", handleTournamentEnded);
-
+*/
     return () => {
       socket.off("tournament:starting", handleTournamentStarting);
       socket.off("round:started", handleRoundStarted);
@@ -230,7 +230,7 @@ const [isWinner, setIsWinner] = useState(false);
     <div className="game-console">
       <Header />
 
-      {isEliminated && !gameOver ? (
+      {/*isEliminated && !gameOver ? (
         <div className="eliminated-screen">
           <h2>🚫 You’ve been eliminated</h2>
           {showTieBreaker ? (
@@ -258,9 +258,9 @@ const [isWinner, setIsWinner] = useState(false);
 
     <button onClick={() => router.push("/Home")}>Go Home</button>
   </div>
-      ) : (
-        <div className="Home-slide">
-          <h1 className="title">Current Game</h1>
+      ) :*
+       (*/}
+        <div className="game-slide">
           <div className="current_game_info_buttons">
             <div className="game_info"><h4>Players</h4><p>{noOfPlayers}</p></div>
             <div className="game_info"><h4>Opportunity</h4><p>{opportunityNumber}</p></div>
@@ -269,6 +269,7 @@ const [isWinner, setIsWinner] = useState(false);
             <div className="divider"></div>
           </div>
 
+          <div className="game_round_container">
           {[1, 2, 3].map((opp) => {
             const roundResult = results[opp];
             return (
@@ -284,6 +285,7 @@ const [isWinner, setIsWinner] = useState(false);
               />
             );
           })}
+          </div>
 
            <PrizeChangeModal
         prizeStats={prizeWindow.stats || []}
@@ -324,7 +326,7 @@ const [isWinner, setIsWinner] = useState(false);
             </div>
           </div>
         </div>
-      )}
+      {/*)}*/}
     </div>
   );
 };

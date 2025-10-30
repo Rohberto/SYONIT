@@ -1,5 +1,5 @@
 
-.gameContainer {
+.homeContainer {
     height: 100svh;
 background:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/bg.jpg');
     background-size: 350%; /* Ensures the image covers the entire screen */
@@ -79,7 +79,7 @@ border: 1px solid rgba(255, 255, 255, 1);
         text-align: center;
         margin-top: -45px;
 }
-.gameContainer h3{
+.homeContainer h3{
       font-size: 10px;
         font-weight: 700;
         font-family: "Heebo", sans-serif;

@@ -158,6 +158,7 @@ export const SocketProvider = ({ children }) => {
       router.push(`/game/${data.tid}`);
     });
 
+    /*
     // 🎁 PRIZE CHANGE WINDOW OPENED ---
     socket.on("prize:change:window:opened", (data) => {
       console.log("🎁 Prize change window opened:", data);
@@ -179,7 +180,7 @@ export const SocketProvider = ({ children }) => {
         stats: null,
       });
     });
-
+*/
     // --- Attach handlers ---
     socket.on("tournament:joined", onJoined);
     socket.on("tournament:error", onError);
