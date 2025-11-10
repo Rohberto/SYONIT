@@ -1,15 +1,16 @@
 "use client";
-
 import { createContext, useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useUser } from "./userContext";
 
 const SocketContext = createContext(null);
-let socketInstance = null; // ✅ Prevents duplicate sockets
+let socketInstance = null;
 
 export const SocketProvider = ({ children }) => {
+  const { user } = useUser();
   const [socket, setSocket] = useState(null);
   const [connected, setConnected] = useState(false);
   const [tournament, setTournament] = useState(null);
@@ -25,15 +26,14 @@ export const SocketProvider = ({ children }) => {
   });
   const [selectedPrize, setSelectedPrize] = useState(null);
   const [onlineCount, setOnlineCount] = useState(0);
-
   const router = useRouter();
 
-  // ✅ Initialize socket (after client mounts + token available)
+  // Initialize socket
   useEffect(() => {
     const initSocket = async () => {
       const token = localStorage.getItem("token");
-      if (!token) {
-        console.warn("⚠️ No token found — socket not initialized yet.");
+      if (!user || !token) {
+        console.warn("⚠️ No user/token found — socket not initialized yet.");
         return;
       }
 
@@ -43,11 +43,15 @@ export const SocketProvider = ({ children }) => {
         return;
       }
 
-      const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "https://syonit-js.onrender.com", {
-        autoConnect: true,
-        transports: ["websocket"], // ✅ Stable connection
-        auth: { token },
-      });
+      console.log("🔌 Initializing socket connection...");
+      const newSocket = io(
+        process.env.NEXT_PUBLIC_SOCKET_URL || "https://syonit-js.onrender.com",
+        {
+          autoConnect: true,
+          transports: ["websocket"],
+          auth: { token },
+        }
+      );
 
       socketInstance = newSocket;
       setSocket(newSocket);
@@ -55,90 +59,107 @@ export const SocketProvider = ({ children }) => {
       newSocket.on("connect", () => {
         console.log("✅ Connected to socket server:", newSocket.id);
         setConnected(true);
-
         const token = localStorage.getItem("token");
-  if (token) {
-    newSocket.emit("user:register", { token });
-  }
+        if (token) {
+          newSocket.emit("user:register", { token });
+        }
+        if (tournament?.tid && user?.id) {
+          console.log(`🔄 Checking participation for tournament ${tournament.tid}`);
+          newSocket.emit("checkParticipation", { tid: tournament.tid, userId: user.id });
+        }
       });
 
-       newSocket.on("online:count", (data) => {
-    console.log("👥 Players online:", data.count);
-    setOnlineCount(data.count);
-  });
-
- 
+      newSocket.on("online:count", (data) => {
+        console.log("👥 Players online:", data.count);
+        setOnlineCount(data.count);
+      });
 
       newSocket.on("reconnect", () => {
-  console.log("🔁 Reconnected to socket server");
-  const token = localStorage.getItem("token");
-  if (token) newSocket.emit("user:register", { token });
-});
-
+        console.log("🔁 Reconnected to socket server");
+        const token = localStorage.getItem("token");
+        if (token) newSocket.emit("user:register", { token });
+        if (tournament?.tid && user?.id) {
+          console.log(`🔄 Re-checking participation for tournament ${tournament.tid}`);
+          newSocket.emit("checkParticipation", { tid: tournament.tid, userId: user.id });
+        }
+      });
 
       newSocket.on("disconnect", () => {
         console.log("❌ Disconnected from socket server");
         setConnected(false);
+        setJoined(false);
       });
 
       newSocket.on("connect_error", (err) => {
         console.error("⚠️ Socket connection error:", err.message);
       });
 
-      // initial tournaments
       newSocket.on("tournament:list", (data) => {
-        console.log("📋 available tournaments:", data);
+        console.log("📋 Available tournaments:", data);
         setTournament(data);
+        if (data?.tid && user?.id) {
+          console.log(`🔄 Checking participation for new tournament ${data.tid}`);
+          newSocket.emit("checkParticipation", { tid: data.tid, userId: user.id });
+        }
       });
+
+      return () => {
+        if (socketInstance) {
+          console.log("🔌 Cleaning up socket connection");
+          socketInstance.disconnect();
+          socketInstance = null;
+        }
+        if (socket) socket.off("online:count");
+      };
     };
 
-    // Delay slightly to allow hydration + localStorage
-    setTimeout(initSocket, 200);
+    initSocket();
+  }, [user]);
 
-    return () => {
-      if (socketInstance) {
-        console.log("🔌 Cleaning up socket connection");
-        socketInstance.disconnect();
-        socketInstance = null;
-      }
-       socket.off("online:count");
-    };
-  }, []);
-
-  // 🎮 Register socket listeners when socket is ready
+  // Register event listeners
   useEffect(() => {
-    if (!socket) return;
+    if (!socket || !user?.id) return;
 
-    // --- TOURNAMENT CREATED ---
     socket.on("tournament:created", (data) => {
-      console.log("🎯 Tournament created", data);
+      console.log("🎯 Tournament created:", data);
       setTournament((prev) => ({ ...prev, ...data }));
+      if (user?.id) {
+        console.log(`🔄 Checking participation for created tournament ${data.tid}`);
+        socket.emit("checkParticipation", { tid: data.tid, userId: user.id });
+      }
     });
 
-    // --- NEW PLAYER JOINED ---
     socket.on("tournament:newPlayer", (data) => {
-      console.log("👥 New player joined", data);
+      console.log("👥 New player joined:", data);
+      if (data.tournamentId === tournament?.tid) {
+        socket.emit("getPlayerCount", { tid: data.tournamentId });
+      }
     });
 
-    // --- VOTE ERROR ---
+    socket.on("tournament:playerCount", ({ playersCount }) => {
+      console.log("👥 Player count updated:", playersCount);
+      setNoOfPlayers(playersCount);
+    });
+
     socket.on("vote:error", (err) => {
       console.error("Vote error:", err.message);
+      toast.error(err.message);
     });
 
-    // --- JOIN SUCCESS ---
-    const onJoined = ({ tid, room }) => {
-      setJoined(true);
+    socket.on("tournament:joined", ({ tid, room }) => {
       console.log(`✅ Joined room ${room} for tournament ${tid}`);
-    };
+      setJoined(true);
+      // Verify room membership
+      socket.emit("debugRooms", { userId: user.id });
+    });
 
-    // --- JOIN ERROR ---
-    const onError = (payload) => {
-      console.warn("❌ tournament:error", payload?.message || payload);
+    socket.on("tournament:error", (payload) => {
+      console.warn("❌ tournament:error:", payload?.message || payload);
       setJoined(false);
-    };
+      toast.error(payload?.message || "Failed to join tournament");
+    });
 
-    // --- TOURNAMENT CANCELLED ---
-    const onCancelled = ({ tid }) => {
+    socket.on("tournament:cancelled", ({ tid }) => {
       setTournament((prev) => {
         if (prev?.tid === tid || prev?.id === tid) {
           console.log("⚠️ Tournament cancelled");
@@ -147,63 +168,64 @@ export const SocketProvider = ({ children }) => {
         }
         return prev;
       });
-    };
+      toast.warn("Tournament cancelled");
+    });
 
-    // --- TOURNAMENT STARTING ---
-    socket.on("tournament-starting", (data) => {
+    socket.on("tournament:starting", (data) => {
       console.log("🚀 Tournament starting:", data);
       toast.info(`Tournament starting in ${data.startsIn / 1000}s...`);
       setNoOfPlayers(data.playersCount);
-      setGameTimer(data.startsIn);
-      router.push(`/game/${data.tid}`);
+      setGameTimer(data.startsIn / 1000);
+      if (tournament?.tid && user?.id) {
+        console.log(`🔄 Verifying participation for tournament ${data.tid}`);
+        socket.emit("checkParticipation", { tid: data.tid, userId: user.id });
+      }
     });
 
+    socket.on("participationStatus", ({ isParticipant }) => {
+      console.log("🎮 Participation status:", isParticipant);
+      setJoined(isParticipant);
+      if (isParticipant && tournament?.tid) {
+        console.log("🎮 Confirmed participant, routing to /game/", tournament.tid);
+        router.push(`/game/${tournament.tid}`);
+      }
+    });
 
-    // 🎁 PRIZE CHANGE WINDOW OPENED ---
     socket.on("prize:change:window:opened", (data) => {
       console.log("🎁 Prize change window opened:", data);
       toast.info("🎁 Prize change window is now open! Hurry up!");
-      setPrizeWindow({
-        open: true,
-        endsAt: data.endsAt,
-        stats: data.stats,
-      });
+      setPrizeWindow({ open: true, endsAt: data.endsAt, stats: data.stats });
     });
 
-    // 🎁 PRIZE CHANGE WINDOW CLOSED ---
     socket.on("prize:change:window:closed", (data) => {
       console.log("⏰ Prize change window closed:", data);
       toast.warn("⏰ Prize change window closed!");
-      setPrizeWindow({
-        open: false,
-        endsAt: null,
-        stats: null,
-      });
+      setPrizeWindow({ open: false, endsAt: null, stats: null });
     });
 
-    // --- Attach handlers ---
-    socket.on("tournament:joined", onJoined);
-    socket.on("tournament:error", onError);
-    socket.on("tournament:cancelled", onCancelled);
+    socket.on("debugRoomsResponse", ({ rooms }) => {
+      console.log("🏠 Current socket rooms:", rooms);
+    });
 
-    // --- Cleanup ---
     return () => {
       socket.off("tournament:created");
       socket.off("tournament:newPlayer");
+      socket.off("tournament:playerCount");
       socket.off("vote:error");
-      socket.off("tournament:joined", onJoined);
-      socket.off("tournament:error", onError);
-      socket.off("tournament:cancelled", onCancelled);
-      socket.off("tournament-starting");
+      socket.off("tournament:joined");
+      socket.off("tournament:error");
+      socket.off("tournament:cancelled");
+      socket.off("tournament:starting");
+      socket.off("participationStatus");
       socket.off("prize:change:window:opened");
       socket.off("prize:change:window:closed");
+      socket.off("debugRoomsResponse");
     };
-  }, [socket]);
+  }, [socket, user?.id, tournament?.tid, router]);
 
-  // 🕓 Compute remaining lobby time
+  // Compute remaining lobby time
   useEffect(() => {
     if (!tournament || !tournament.lobbyEndsAt) return;
-
     const endTime = new Date(tournament.lobbyEndsAt).getTime();
     const now = Date.now();
     const diff = Math.max(0, Math.floor((endTime - now) / 1000));
@@ -211,7 +233,7 @@ export const SocketProvider = ({ children }) => {
     setTimeLeft(diff);
   }, [tournament]);
 
-  // ⏳ Countdown timer
+  // Countdown timer
   useEffect(() => {
     if (!tournament || tournament.status !== "waiting" || timeLeft <= 0) return;
     const timer = setInterval(() => {
@@ -220,45 +242,44 @@ export const SocketProvider = ({ children }) => {
     return () => clearInterval(timer);
   }, [tournament?.status, timeLeft]);
 
-  // 🧮 Format time
+  // Format time
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
-  // 🟢 READY UP HANDLER
+  // READY UP HANDLER
   const disableReadyUp =
     !tournament || tournament.status !== "waiting" || timeLeft <= 0 || joined;
 
   const handleReadyUp = async (user, prizeId) => {
     if (disableReadyUp) return;
-
     const tid = tournament?.tid;
     if (!tid) return console.warn("⚠️ No tournament ID found");
     if (!user?.id) return console.warn("⚠️ No user ID found");
 
     try {
-      const res = await axios.post("https://syonit-js.onrender.com/api/tournament/join", {
-        userId: user.id,
-        tid: tournament.tid,
-      });
+      const res = await axios.post(
+        "https://syonit-js.onrender.com/api/tournament/join",
+        { userId: user.id, tid: tournament.tid }
+      );
 
       if (res.data?.ok) {
-        setJoined(true);
         console.log("✅ Joined tournament in DB");
         setPrizeId(prizeId);
-
+        setSelectedPrize(prizeId);
         socket.emit("tournament:join", { tid, userId: user.id, prizeId });
-        socket.emit("subscribe", `tournament-${tid}`);
       } else {
         console.warn("Join response not ok:", res.data);
         setSelectedPrize(null);
+        toast.error("Failed to join tournament");
       }
     } catch (err) {
       console.error("Join error:", err?.response?.data || err.message);
       setJoined(false);
       setSelectedPrize(null);
+      toast.error("Failed to join tournament");
     }
   };
 
@@ -278,6 +299,7 @@ export const SocketProvider = ({ children }) => {
         prizeId,
         setPrizeId,
         prizeWindow,
+        setPrizeWindow,
         selectedPrize,
         setSelectedPrize,
         joined,

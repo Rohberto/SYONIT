@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useSocket } from "@/app/Context/SocketContext";
 import { useUser } from "@/app/Context/userContext";
 import Header from "@/app/Components/MainHeader";
-import Round from "@/app/Components/Round";
+import Round from "@/app/Components/TournamentRound";
 import { getAudioContext, playSound } from "@/app/libs/audioContext";
 import PrizeChangeModal from "@/app/Components/PrizeChangeModal";
 import "./game.css";
@@ -126,6 +126,7 @@ const GameConsole = () => {
     const handleRoundEnded = () => setIsVoting(false);
 
     const handleTournamentEnded = ({ winnerId, winnerName }) => {
+      console.log("Tournament ended. Winner:", winnerName);
       setGameOver(true);
       setWinner(winnerName);
       setIsWinner(userId && userId === winnerId);

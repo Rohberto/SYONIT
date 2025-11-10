@@ -1,193 +1,217 @@
-"use client"
-import { useState, useEffect } from 'react';
+"use client";
+import { useState, useEffect, useRef } from "react";
 import "./styles.css";
-import { FaBook, FaBookOpen, FaFlagCheckered, FaHandsHelping, FaLightbulb, FaRegUser, FaUser } from 'react-icons/fa';
-import {BsBook} from "react-icons/bs";
-import Round from '../Components/Round';
-import { getAudioContext, playSound } from '../libs/audioContext';
+import { FaFlagCheckered, FaHandsHelping, FaLightbulb } from "react-icons/fa";
+import { BsBook } from "react-icons/bs";
+import Round from "../Components/Round";
+import { getAudioContext, playSound } from "../libs/audioContext";
 import "./page.css";
-import {IoGameControllerSharp} from "react-icons/io5";
-import { FcIdea } from 'react-icons/fc';
-import Button from '../Components/syonit_button/mainButton';
-import Header from '../Components/MainHeader';
-import { useSocket } from '../Context/SocketContext';
-import { useUser } from '../Context/userContext';
-import { useTournament } from '../Context/tournament';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
+import { IoGameControllerSharp } from "react-icons/io5";
+import Button from "../Components/syonit_button/mainButton";
+import Header from "../Components/MainHeader";
+import { useSocket } from "../Context/SocketContext";
+import { useUser } from "../Context/userContext";
+import { useRouter } from "next/navigation";
+import Results from "../game/[tournamentId]/Results";
 
 export default function Home() {
-  const [currentTab, setCurrentTab] = useState('game'); // Tabs: 'game', 'idea', 'leaderboard', 'special'
-  const [points, setPoints] = useState(1834);
-  const [currentGame, setCurrentGame] = useState(3);
-    const [audioBuffer, setAudioBuffer] = useState(null);
-  const [round, setRound] = useState(6);
-  const [answers, setAnswers] = useState([true, false, null]); // Example: [true, false, null] for slots 1, 2, 3
-
+  const [currentTab, setCurrentTab] = useState("game");
+  const [points, setPoints] = useState(0);
   const [currentRound, setCurrentRound] = useState(0);
-  const {socket, tournament, setTournament, noOfPlayers, setNoOfPlayers, timeLeft, setTimeLeft, formatTime, joined, setJoined, setGameTimer, onlineCount} = useSocket();
-  const [breakATie, setBreakATie] = useState(false)
-  const [tournamentId, setTournamentId] = useState(null);
-const {user} = useUser();
-const router = useRouter();
+  const [opportunityNumber, setOpportunityNumber] = useState(0);
+  const [roundTimer, setRoundTimer] = useState(0);
+  const [results, setResults] = useState({ 1: null, 2: null, 3: null });
+  const [showVoteResultOverlay, setShowVoteResultOverlay] = useState(null);
+  const [gameOver, setGameOver] = useState(false);
+  const [winner, setWinner] = useState(null);
+  const [audioBuffer, setAudioBuffer] = useState(null);
+  const [sirenBuffer, setSirenBuffer] = useState(null);
 
-
-
-
-
-
+  const { socket, tournament, noOfPlayers, onlineCount, timeLeft, formatTime, setNoOfPlayers } = useSocket();
+  const { user } = useUser();
+  const router = useRouter();
+  const opportunityRef = useRef(opportunityNumber);
 
   useEffect(() => {
-      const ctx = getAudioContext();
-      if (!ctx) {
-        console.warn('Web Audio API not supported');
-        return;
-      }
-  
-      const loadSound = async () => {
-        try {
-          const response = await fetch('/Sounds/click_sound.wav');
-          if (!response.ok) throw new Error('Failed to fetch click sound');
-          const arrayBuffer = await response.arrayBuffer();
-          const decodedBuffer = await ctx.decodeAudioData(arrayBuffer);
-          setAudioBuffer(decodedBuffer);
-        } catch (err) {
-          console.error('Error loading click sound:', err);
-        }
-      };
-  
-      loadSound();
-    }, []);
+    opportunityRef.current = opportunityNumber;
+  }, [opportunityNumber]);
 
-    useEffect(() => {
-
-    }, []);
-  
-  
-  
-
- 
-  const [rounds, setRounds] = useState([
-    { yesScore: 1000, noScore: 1000, isPlayed: false },
-    { yesScore: 1000, noScore: 1000, isPlayed: false },
-    { yesScore: 1000, noScore: 1000, isPlayed: false },
-  ]);
-  
-  //check if all round has been played
-  const allRoundsPlayed = rounds.every(round => round.isPlayed);
-
-// Use refs to store the audio instances
-
-
-  const handleNextRound = () => {
-    // Mark the current round as played
-    setRounds(prevRounds =>
-      prevRounds.map((round, index) =>
-        index === currentRound
-          ? { ...round, isPlayed: true }
-          : round
-      )
-    );
-
-    // Move to the next round if it's not the last round
-    if (currentRound < rounds.length - 1) {
-      setCurrentRound(prevRound => prevRound + 1);
+  useEffect(() => {
+    const ctx = getAudioContext();
+    if (!ctx) {
+      console.warn("Web Audio API not supported");
+      return;
     }
-  };
-  const handleYesClick = () => {
-    if (audioBuffer) {
-                 playSound(audioBuffer, '/Sounds/click_sound.wav');
-               }
-    setRounds(prevRounds =>
-      prevRounds.map((round, index) =>
-        index === currentRound
-          ? { ...round, yesScore: round.yesScore + 1 }
-          : round
-      )
-    );
-    handleNextRound();
-  };
 
-  const handleNoClick = () => {
-    if (audioBuffer) {
-                 playSound(audioBuffer, '/Sounds/click_sound.wav');
-               }
-    setRounds(prevRounds =>
-      prevRounds.map((round, index) =>
-        index === currentRound
-          ? { ...round, noScore: round.noScore + 1 }
-          : round
-      )
-    );
-    handleNextRound();
-  };
+    const loadSound = async () => {
+      try {
+        const clickRes = await fetch("/Sounds/click_sound.wav");
+        if (!clickRes.ok) throw new Error("Failed to fetch click sound");
+        const clickBuf = await clickRes.arrayBuffer();
+        setAudioBuffer(await ctx.decodeAudioData(clickBuf));
 
-   // Determine if "Yes" or "No" has the highest score for a given round
-   const getHighestScore = (yesScore, noScore) => {
-    if (yesScore > noScore) return 'Yes';
-    else if (noScore > yesScore) return 'No';
-    return 'Tie';
-  };
+        const sirenRes = await fetch("/Sounds/siren.wav");
+        const sirenBuf = await sirenRes.arrayBuffer();
+        setSirenBuffer(await ctx.decodeAudioData(sirenBuf));
+      } catch (err) {
+        console.error("Error loading sounds:", err);
+      }
+    };
 
-  //Break a tie handler
-  const handleBreakATie = () => {
-    // Logic to break the tie, e.g., open a modal or navigate to a tie-breaking screen
-   socket.emit("tie:attempt", { tid: tournamentId, userId: user.id });
+    loadSound();
+  }, []);
 
-    toast.info("Tie-breaking process initiated.");
-    setBreakATie(false); // Hide the button after initiating tie-break
-  };
+  useEffect(() => {
+    if (!socket?.connected) return;
 
+    // Join the lobby room when the game tab is active
+    const joinLobby = () => {
+      if (currentTab === "game") {
+        socket.emit("joinLobby");
+        console.log("✅ Joined lobby room");
+      } else {
+        socket.emit("leaveLobby");
+        console.log("✅ Left lobby room");
+      }
+    };
 
+    joinLobby();
+
+    const handleRoundStarted = ({ roundNumber }) => {
+      setCurrentRound(roundNumber);
+      setResults({ 1: null, 2: null, 3: null });
+      setOpportunityNumber(0);
+    };
+
+    const handleOpportunityStarted = ({ opportunityNumber, endsAt }) => {
+      setOpportunityNumber(opportunityNumber);
+      if (sirenBuffer) playSound(sirenBuffer, "/Sounds/siren.wav");
+      setResults((prev) => ({
+        ...prev,
+        [opportunityNumber]: null,
+      }));
+      const msLeft = new Date(endsAt).getTime() - Date.now();
+      setRoundTimer(Math.floor(msLeft / 1000));
+    };
+
+    const handleOpportunityEnded = ({ yesVotes, noVotes, minority, voters }) => {
+      setResults((prev) => ({
+        ...prev,
+        [opportunityRef.current]: {
+          yesVotes: yesVotes ?? 0,
+          noVotes: noVotes ?? 0,
+          minority: minority ?? "none",
+        },
+      }));
+      setShowVoteResultOverlay({ voters, yesVotes, noVotes, minority });
+      setTimeout(() => setShowVoteResultOverlay(null), 5000);
+    };
+
+    const handleRoundEnded = () => {};
+
+    const handleTournamentEnded = ({ winnerName }) => {
+      setGameOver(true);
+      setWinner(winnerName);
+    };
+
+    const handleTournamentNewPlayer = () => {
+      if (tournament?.tid) {
+        socket.emit("getPlayerCount", { tid: tournament.tid });
+      }
+    };
+
+    const handlePlayerCount = ({ playersCount }) => {
+      setNoOfPlayers(playersCount);
+    };
+
+    socket.on("round:started", handleRoundStarted);
+    socket.on("opportunity:started", handleOpportunityStarted);
+    socket.on("opportunity:ended", handleOpportunityEnded);
+    socket.on("round:ended", handleRoundEnded);
+    socket.on("tournament:ended", handleTournamentEnded);
+    socket.on("tournament:newPlayer", handleTournamentNewPlayer);
+    socket.on("tournament:playerCount", handlePlayerCount);
+
+    return () => {
+      socket.off("round:started", handleRoundStarted);
+      socket.off("opportunity:started", handleOpportunityStarted);
+      socket.off("opportunity:ended", handleOpportunityEnded);
+      socket.off("round:ended", handleRoundEnded);
+      socket.off("tournament:ended", handleTournamentEnded);
+      socket.off("tournament:newPlayer", handleTournamentNewPlayer);
+      socket.off("tournament:playerCount", handlePlayerCount);
+      socket.emit("leaveLobby");
+    };
+  }, [socket, currentTab, sirenBuffer, tournament?.tid, setNoOfPlayers]);
+
+  useEffect(() => {
+    if (roundTimer <= 0) return;
+    const interval = setInterval(() => {
+      setRoundTimer((t) => (t > 0 ? t - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [roundTimer]);
 
   const renderContent = () => {
     switch (currentTab) {
-      case 'game':
+      case "game":
         return (
           <>
-           <h3>Current Game</h3>
-                 <div className='Home-slide'>
-   
-        <div className="current_game_info_buttons">
+            <h3>Current Game</h3>
+            <div className="Home-slide">
+              <div className="current_game_info_buttons">
+                <div className="game_info">
+                  <h4>Players</h4>
+                  <p>{noOfPlayers || "N/A"}</p>
+                </div>
+                <div className="game_info">
+                  <h4>Opportunity</h4>
+                  <p>{opportunityNumber || 0}</p>
+                </div>
+                <div className="game_info">
+                  <h4>Round</h4>
+                  <p>{currentRound || 0}</p>
+                </div>
+                <div className="game_info">
+                  <h4>Time Left</h4>
+                  <p>{roundTimer > 0 ? `${roundTimer}s` : "N/A"}</p>
+                </div>
+                <div className="divider"></div>
+              </div>
 
-        <div className='game_info'>
-        <h4>Players</h4>
-        <p>1,000,000</p>
-        </div>
-        <div className='game_info'>
-        <h4>Opportunity</h4>
-        <p>3</p>
-        </div>
-        <div className='game_info'>
-        <h4>Round</h4>
-        <p>2</p>
-        </div>
-        <div className='divider'></div>
-        </div>
-      
-        <div className="game">
-
-        {rounds.map((round, index) => (
-        <Round
-          key={index}
-          round={index + 1}
-          yesScore={round.yesScore}
-          noScore={round.noScore}
-          isPlayed={round.isPlayed}
-          isActive={index === currentRound}
-         currentRound={currentRound} 
-        />
-      ))}
-
-      </div>
-         <div className='game_buttons'>
-          <button className='game_button y_button'  onClick={handleYesClick} disabled={allRoundsPlayed}>Y</button>
-          <button className='game_button y_button' onClick={handleNoClick} disabled={allRoundsPlayed}>N</button>
-        </div>
-      </div>
-      </>
+              {gameOver ? (
+                <div className="game-over">
+                  <h2>Game Over</h2>
+                  <p>Winner: {winner || "N/A"}</p>
+                  <button onClick={() => router.push("/Home")}>Go Home</button>
+                </div>
+              ) : (
+                <>
+                  {showVoteResultOverlay && <Results results={showVoteResultOverlay} />}
+                  <div className="game">
+                    {[1, 2, 3].map((opp) => {
+                      const roundResult = results[opp];
+                      return (
+                        <Round
+                          key={opp}
+                          round={opp}
+                          yesScore={roundResult ? roundResult.yesVotes : 0}
+                          noScore={roundResult ? roundResult.noVotes : 0}
+                          isPlayed={!!roundResult && roundResult.minority !== null}
+                          isActive={opportunityNumber === opp}
+                          currentRound={currentRound}
+                          minority={roundResult ? roundResult.minority : null}
+                          roundId={opp}
+                        />
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
+          </>
         );
-      case 'idea':
+      case "idea":
         return (
           <div className="idea-container">
             <h3>Motivation</h3>
@@ -197,7 +221,7 @@ const router = useRouter();
             <p className="quote-author">— Theodore Roosevelt</p>
           </div>
         );
-      case 'leaderboard':
+      case "leaderboard":
         return (
           <div className="leaderboard-container">
             <h3>Leaderboard</h3>
@@ -206,15 +230,13 @@ const router = useRouter();
               <div>NAME</div>
               <div>POINTS</div>
             </div>
-            {/* Placeholder for leaderboard */}
             <p>No leaderboard data available.</p>
           </div>
         );
-      case 'special':
+      case "special":
         return (
           <div className="special-container">
             <h3>Upcoming Special Events</h3>
-            {/* Placeholder for special events */}
             <p>No upcoming events at the moment.</p>
           </div>
         );
@@ -225,13 +247,17 @@ const router = useRouter();
 
   return (
     <div className="homeContainer">
-      <Header/>
+      <Header />
       <div className="points-section">
-        <div className='points-container'>
-            <p><span>POINTS: </span>{points}</p>
-            <p>2,500 <span> :PRIZE</span></p>
+        <div className="points-container">
+          <p>
+            <span>POINTS: </span>
+            {points}
+          </p>
+          <p>
+            2,500 <span>:PRIZE</span>
+          </p>
         </div>
-        
         <div className="progress-bar">
           <div className="progress-fill" style={{ width: `${(points / 2500) * 100}%` }}></div>
         </div>
@@ -239,37 +265,36 @@ const router = useRouter();
       {renderContent()}
       <div className="nav-buttons">
         <button
-          className={`nav-button  ${currentTab === 'game' ? 'active' : ''}`}
-          onClick={() => setCurrentTab('game')}
+          className={`nav-button ${currentTab === "game" ? "active" : ""}`}
+          onClick={() => setCurrentTab("game")}
         >
-         <IoGameControllerSharp/>
+          <IoGameControllerSharp />
         </button>
         <button
-          className={`nav-button  ${currentTab === 'idea' ? 'active' : ''}`}
-          onClick={() => setCurrentTab('idea')}
+          className={`nav-button ${currentTab === "idea" ? "active" : ""}`}
+          onClick={() => setCurrentTab("idea")}
         >
-        <FaLightbulb/>
+          <FaLightbulb />
         </button>
         <button
-          className={`nav-button  ${currentTab === 'leaderboard' ? 'active' : ''}`}
-          onClick={() => setCurrentTab('leaderboard')}
+          className={`nav-button ${currentTab === "leaderboard" ? "active" : ""}`}
+          onClick={() => setCurrentTab("leaderboard")}
         >
-          <FaFlagCheckered/>
+          <FaFlagCheckered />
         </button>
         <button
-          className={`nav-button  ${currentTab === 'special' ? 'active' : ''}`}
-          onClick={() => setCurrentTab('special')}
+          className={`nav-button ${currentTab === "special" ? "active" : ""}`}
+          onClick={() => setCurrentTab("special")}
         >
-          <FaHandsHelping/>
+          <FaHandsHelping />
         </button>
       </div>
       <div className="bottom-button">
-      <div className='game_details'>
-        <p>ONLINE: {onlineCount}</p>
-        <p>1: IN GAME</p>
-      </div>
-
-      {<Button formatTime={formatTime} timeLeft={timeLeft} tournament={tournament} user={user} />}
+        <div className="game_details">
+          <p>ONLINE: {onlineCount}</p>
+          <p>{tournament ? "1: IN GAME" : "0: IN GAME"}</p>
+        </div>
+        <Button formatTime={formatTime} timeLeft={timeLeft} tournament={tournament} user={user} />
       </div>
     </div>
   );

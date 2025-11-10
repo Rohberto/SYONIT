@@ -112,7 +112,30 @@ align-items: center;
 justify-content: space-between;
 border: 1px solid rgba(255, 255, 255, 1);
     }
- 
+ .section_highlight{
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 36px;
+  box-shadow: 0px 2px 15.9px 0px rgba(255, 177, 53, 1);
+
+box-shadow: 0px 1px 5.6px 0px rgba(255, 255, 255, 0.8);
+
+ }
+ .played{
+  display: flex;
+justify-content: center;
+align-items: center;
+ }
+ .played p{
+  color: rgba(152, 145, 132, 1);
+  font-weight: 700;
+  font-family: "Heebo";
+  font-size: 32px;
+  text-align: center;
+  z-index: 1;
+ }
+ .section_highlight p{
+  color: rgba(247, 113, 47, 1);
+ }
 .y1section::before, .y2section::before, .y3section::before {
   content: "Y";
   position: absolute;
@@ -120,8 +143,9 @@ border: 1px solid rgba(255, 255, 255, 1);
   left: 50%;
   transform: translate(-50%, -50%);
   font-weight: 900;
-  color: rgba(41, 40, 40, 0.17);
+   color: rgba(255, 255, 255, 0.07); /* much lighter and lower opacity */
   z-index: 0;
+  pointer-events: none;
 }
 .n1section::before, .n2section::before, .n3section::before {
   content: "N";
@@ -130,8 +154,17 @@ border: 1px solid rgba(255, 255, 255, 1);
   left: 50%;
   transform: translate(-50%, -50%);
   font-weight: 900;
-  color: rgba(41, 40, 40, 0.17);
+  color: rgba(112, 54, 16, 0.14);
   z-index: 0;
+}
+.played .y1section::before, .played .n1section::before{
+ opacity: 0.1;
+}
+.played .y2section::before, .played .n2section::before{
+  opacity: 0.1;
+}
+.played .y3section::before, .played .n3section::before{
+ opacity: 0.1;
 }
 .y1section::before, .n1section::before{
   font-size: 3.5rem;
@@ -319,6 +352,16 @@ left: 0;
           justify-content: center;
          background: radial-gradient(50% 50% at 50% 50%, #F66E2C 0%, #FC9249 23.08%, #FC9C51 40.87%, #FCC772 61.06%, #FCEFC8 79.81%, #F7F4E8 100%);
           z-index: 100;
+}
+.timer_text{
+  display: flex;
+  flex-direction: column ;
+  align-items: center;
+  justify-content: center;
+  font-family: "Heebo";
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 1);
 }
 .game_buttons{
   position: relative;

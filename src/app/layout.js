@@ -23,8 +23,8 @@ export default function RootLayout({ children }) {
 <link href="https://fonts.cdnfonts.com/css/helvetica-neue-55" rel="stylesheet"/>
   </head>
       <body>
+         <UserProvider>
         <SocketProvider>
-        <UserProvider>
           <TournamentProvider>
         <AudioProvider>
         <ToastContainer
@@ -34,8 +34,8 @@ export default function RootLayout({ children }) {
         {children}
         </AudioProvider>
         </TournamentProvider>
-        </UserProvider>
         </SocketProvider>
+                </UserProvider>
       </body>
     </html>
   );
