@@ -20,7 +20,7 @@ const PrizePage = () => {
   useEffect(() => {
     const fetchPrizes = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/prizes"); // GET all prizes
+        const res = await fetch("https://syonit-js.onrender.com/api/prizes"); // GET all prizes
         if (!res.ok) throw new Error("Failed to fetch prizes");
         const data = await res.json();
         setPrizes(data);
@@ -37,7 +37,7 @@ const PrizePage = () => {
     setSelectedPrize(prizeId);
 
     try {
-      const res = await fetch("http://localhost:4000/api/prizes", {
+      const res = await fetch("https://syonit-js.onrender.com/api/prizes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

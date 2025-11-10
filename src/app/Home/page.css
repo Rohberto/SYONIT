@@ -134,7 +134,7 @@ justify-content: space-between;
 border: 1px solid rgba(255, 255, 255, 1);
     }
 
-    .round_section{
+  .homeContainer .round_section{
 font-family: 'Heebo';
 font-style: normal;
 font-weight: 700;

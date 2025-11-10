@@ -53,7 +53,7 @@ export default function Welcome() {
         console.log("Uploaded Image URL:", data.secure_url);
 
         // Send URL to backend to update user
-      const res =  await fetch("http://localhost:4000/api/profile", { // change endpoint
+      const res =  await fetch("https://syonit-js.onrender.com/api/profile", { // change endpoint
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

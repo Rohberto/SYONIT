@@ -54,7 +54,7 @@ export default function Signup() {
     }
     setSubmitting(true);
     try {
-      const res = await fetch("http://localhost:4000/api/signup", {
+      const res = await fetch("https://syonit-js.onrender.com/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -143,7 +143,7 @@ export default function Signup() {
 
     setVerifying(true);
     try {
-      const res = await fetch("http://localhost:4000/api/verify", {
+      const res = await fetch("https://syonit-js.onrender.com/api/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: uid, otp: code }),

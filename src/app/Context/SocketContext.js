@@ -43,7 +43,7 @@ export const SocketProvider = ({ children }) => {
         return;
       }
 
-      const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000", {
+      const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "https://syonit-js.onrender.com", {
         autoConnect: true,
         transports: ["websocket"], // ✅ Stable connection
         auth: { token },
@@ -158,7 +158,7 @@ export const SocketProvider = ({ children }) => {
       router.push(`/game/${data.tid}`);
     });
 
-    /*
+
     // 🎁 PRIZE CHANGE WINDOW OPENED ---
     socket.on("prize:change:window:opened", (data) => {
       console.log("🎁 Prize change window opened:", data);
@@ -180,7 +180,7 @@ export const SocketProvider = ({ children }) => {
         stats: null,
       });
     });
-*/
+
     // --- Attach handlers ---
     socket.on("tournament:joined", onJoined);
     socket.on("tournament:error", onError);
@@ -239,7 +239,7 @@ export const SocketProvider = ({ children }) => {
     if (!user?.id) return console.warn("⚠️ No user ID found");
 
     try {
-      const res = await axios.post("http://localhost:4000/api/tournament/join", {
+      const res = await axios.post("https://syonit-js.onrender.com/api/tournament/join", {
         userId: user.id,
         tid: tournament.tid,
       });

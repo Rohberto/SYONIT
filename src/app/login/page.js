@@ -29,7 +29,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:4000/api/login", { // 👈 change this to your API
+      const res = await fetch("https://syonit-js.onrender.com/api/login", { // 👈 change this to your API
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

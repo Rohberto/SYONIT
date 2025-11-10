@@ -104,7 +104,7 @@ border: 1px solid rgba(255, 255, 255, 1);
  .game-console .game_round{
 width: 100%;
 height: 64px;
- background-color: rgba(226, 226, 226, 0.5);
+ background-color: transparent;
 border-radius: 36px;
 margin: 10px 0;
 display: flex;
@@ -112,7 +112,130 @@ align-items: center;
 justify-content: space-between;
 border: 1px solid rgba(255, 255, 255, 1);
     }
+ 
+.y1section::before, .y2section::before, .y3section::before {
+  content: "Y";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 900;
+  color: rgba(41, 40, 40, 0.17);
+  z-index: 0;
+}
+.n1section::before, .n2section::before, .n3section::before {
+  content: "N";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 900;
+  color: rgba(41, 40, 40, 0.17);
+  z-index: 0;
+}
+.y1section::before, .n1section::before{
+  font-size: 3.5rem;
+}
+.y2section::before, .n2section::before{
+  font-size: 2.5rem;
+}
+.y3section::before, .n3section::before{
+  font-size: 1.5rem;
+}
+.game-console .round_section{
+  width: 60px;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Heebo';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 24px;
+text-align: center;
+color: rgba(152, 146, 132, 1);
+overflow: hidden;
+position: relative;
+}
+  .game-console .round_section::before{
+     content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px; /* thickness of the border */
+  background: linear-gradient(90deg, rgba(255, 177, 53, 1), rgba(255, 255, 255, 0.8));
+  
+  /* Make only the border area visible */
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
 
+  /* Soft glow */
+  filter: blur(3px);
+  z-index: -1;
+    }
+
+    .round_played_section{
+      font-family: 'Heebo';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 24px;
+text-align: center;
+color: rgba(255, 255, 255, 1);
+    }
+.game_opportunity_info{
+        font-size: 10px;
+        font-weight: 700;
+        font-family: "Heebo";
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 1);
+        text-align: center;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+}
+.game_info_circle{
+  border: 1px solid rgba(255, 255, 255, 1);
+  border-radius: 24px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 10px;
+}
+.game_info_circle h4{
+   font-size: 10px;
+        font-weight: 400;
+        font-family: "Heebo";
+        color: rgba(0, 0, 0, 0.3);
+        text-align: center;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+}
+.game_info_circle p{
+  color: rgba(255, 255, 255, 1);
+   font-size: 10px;
+        font-weight: 400;
+        font-family: "Heebo";
+        text-align: center;
+        letter-spacing: 1.8px;
+}
+.game_info_large{
+    color: rgba(255, 255, 255, 1);
+   font-size: 16px;
+        font-weight: 400;
+        font-family: "Heebo";
+        text-align: center;
+        letter-spacing: 1.8px;
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+}
 .round-section {
   display: flex;
   justify-content: space-between;
@@ -167,6 +290,36 @@ bottom: 10px;
 right: 0;
 left: 0;
 }
+.game_buttons_container{
+  width: 100%;
+    height: 94px;
+    background: transparent;
+    border-radius: 200px;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    transition: color 0.3s;
+    aspect-ratio: 1/15;
+    transform: rotateY(0deg);
+  border: 1px solid rgba(248, 194, 158, 1);
+  position: relative;
+}
+.game_buttons_container .game_circle{
+   border-radius: 50%;
+        position: absolute;
+        width: 93.5px;
+        height: 93.5px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+         border: 1px solid rgba(248, 194, 158, 1);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+         background: radial-gradient(50% 50% at 50% 50%, #F66E2C 0%, #FC9249 23.08%, #FC9C51 40.87%, #FCC772 61.06%, #FCEFC8 79.81%, #F7F4E8 100%);
+          z-index: 100;
+}
 .game_buttons{
   position: relative;
 }
@@ -187,7 +340,29 @@ left: 0;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   transition: background-color 0.3s, transform 0.2s;
 }
+.game_y_button, .game_n_button{
+    font-family: "Heebo";
+          width: 50%;
+          text-align: center;
+          font-size: 32px;
+          font-weight: 700;
+          text-transform: uppercase;
+          outline: none;
+          padding: 0 5px;
+          border: none;
+          z-index: 100;
+}
+.game_y_button{
+  color: rgba(247, 113, 47, 1);
+     background-color: transparent;
+}
+.game_n_button{
+  color: rgba(255, 255, 255, 1);
+  background: linear-gradient(358.2deg, #F7F4E8 -72.73%, #FCEFC8 -23.78%, #FCC772 21.67%, #FC9C51 70.62%, #FC9249 113.74%, #F66E2C 169.67%);
+  border-top-right-radius: 200px;
+  border-bottom-right-radius: 200px;
 
+}
 .Home-slide h1{
      font-size: 10px;
         font-weight: 700;

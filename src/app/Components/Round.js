@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-const Round = ({ round, currentRound, yesScore, noScore, isPlayed, minority }) => {
+const Round = ({ round, currentRound, yesScore, noScore, isPlayed, minority, roundId}) => {
   const [highlightY, setHighlightY] = useState(false);
 
   // Randomly assign background before play
@@ -19,8 +19,7 @@ const Round = ({ round, currentRound, yesScore, noScore, isPlayed, minority }) =
   return (
     <div className="game_round">
       <div
-        className={`y-section 
-          ${!isPlayed && highlightY ? "highlight" : ""} 
+        className={`y-section y${roundId}section
           ${isPlayed && minority === "yes" ? "highlight" : ""} 
           ${isPlayed ? "played" : ""}`}
       >
@@ -30,14 +29,13 @@ const Round = ({ round, currentRound, yesScore, noScore, isPlayed, minority }) =
         </p>
       </div>
 
-      <div className="round_section">
+      <div className={`${isPlayed ? "round_played_section" : "round_section"}`}>
         {showNone ? <div className="none_label">None</div> : minority ? minority : round}
-        
       </div>
 
       <div
-        className={`n-section 
-          ${!isPlayed && !highlightY ? "highlight" : ""} 
+        className={`n-section n${roundId}section
+         
           ${isPlayed && minority === "no" ? "highlight" : ""} 
           ${isPlayed ? "played" : ""}`}
       >
