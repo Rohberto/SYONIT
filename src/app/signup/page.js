@@ -1,7 +1,7 @@
-"use client"
-import { useState, useContext } from 'react';
+"use client";
+import { useState, useRef } from 'react';
 import "./signup.css";
-import {FaApple, FaGoogle} from "react-icons/fa"
+import { FaApple, FaGoogle } from "react-icons/fa";
 import { FcGoogle } from 'react-icons/fc';
 import Button from '../Components/syonit_button/sign';
 import { useRouter } from 'next/navigation';
@@ -14,8 +14,8 @@ export default function Signup() {
     email: '',
     password: '',
     displayName: '',
-    gender: '', // ✅ added
-    ageBracket: '', // ✅ added
+    gender: '',
+    ageBracket: '',
     termsAccepted: false,
     verificationCode: ['', '', '', '']
   });
@@ -23,7 +23,10 @@ export default function Signup() {
   const [verifying, setVerifying] = useState(false);
   const [pendingUserId, setPendingUserId] = useState(null);
   const router = useRouter();
-  const {user, setUser, setToken} = useUser();
+  const { user, setUser, setToken } = useUser();
+
+  // Create refs for OTP input fields
+  const inputRefs = useRef([null, null, null, null].map(() => useRef(null)));
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -33,17 +36,25 @@ export default function Signup() {
     });
   };
 
-  const handleVerificationCodeChange = (index, value) => {
+  const handleVerificationCodeChange = (index, value, e) => {
     if (/^\d?$/.test(value)) { // Allow only single digits
       const newCode = [...formData.verificationCode];
       newCode[index] = value;
       setFormData({ ...formData, verificationCode: newCode });
+
+      // Move focus to next input if a digit was entered and not the last input
+      if (value && index < 3) {
+        inputRefs.current[index + 1].current.focus();
+      }
+
+      // Move focus to previous input on backspace if the field is empty
+      if (!value && e.key === 'Backspace' && index > 0) {
+        inputRefs.current[index - 1].current.focus();
+      }
     }
   };
 
-  // Submit signup on Step 2
   const handleSubmit = async () => {
-    // basic validation
     if (!formData.termsAccepted) {
       alert("Please accept Terms & Conditions to proceed");
       return;
@@ -62,29 +73,25 @@ export default function Signup() {
           email: formData.email,
           password: formData.password,
           username: formData.displayName || formData.email.split('@')[0],
-          gender: formData.gender, // ✅ added
-          ageBracket: formData.ageBracket // ✅ added
+          gender: formData.gender,
+          ageBracket: formData.ageBracket
         }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        // backend should send helpful message
         alert(data.message || "Signup failed");
         setSubmitting(false);
         return;
       }
 
-      // try multiple shapes: { userId } or { user: { id } } or { user }
       const uid = data.userId || (data.user && (data.user.id || data.user.userId)) || data.id || null;
       if (!uid) {
-        // fallback: maybe backend returned user object directly with id
         if (data.user && data.user.id) {
           setPendingUserId(data.user.id);
           localStorage.setItem("userId", String(data.user.id));
         } else {
-          // still proceed but store nothing (verify endpoint needs userId or email)
           console.warn("No userId returned by signup response", data);
         }
       } else {
@@ -92,7 +99,6 @@ export default function Signup() {
         localStorage.setItem("pendingUserId", String(uid));
       }
 
-      // go to OTP screen
       setCurrentStep(3);
     } catch (err) {
       console.error("Signup error:", err);
@@ -109,7 +115,6 @@ export default function Signup() {
         alert("No pending user to resend code for.");
         return;
       }
-      // optional endpoint; implement /api/auth/resend-otp on backend
       const res = await fetch("/api/auth/resend-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -127,7 +132,6 @@ export default function Signup() {
     }
   };
 
-  // Verify the 4-digit code (Step 3)
   const handleVerifyOtp = async () => {
     const code = formData.verificationCode.join("");
     if (code.length !== 4) {
@@ -149,22 +153,17 @@ export default function Signup() {
         body: JSON.stringify({ userId: uid, otp: code }),
       });
       const data = await res.json();
-      
-    if (res.ok) {
-  // store token (or use cookie)
-  localStorage.setItem("token", data.token);
-  setToken(data.token);
-  localStorage.setItem("user", JSON.stringify(data.user));
-  setUser(data.user);
-  // navigate to home
-} else {
-  alert(data.message || "OTP verification failed");
-  setVerifying(false);
-}
 
-      // success: clear pending and navigate to Home (or login)
-      alert("Account verified! Redirecting...");
-      router.push("/profile");
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        setToken(data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setUser(data.user);
+        alert("Account verified! Redirecting...");
+        router.push("/profile");
+      } else {
+        alert(data.message || "OTP verification failed");
+      }
     } catch (err) {
       console.error("Verify OTP error:", err);
       alert("Verification failed");
@@ -173,18 +172,19 @@ export default function Signup() {
     }
   };
 
-  // Navigation - keep your original function names and flow
   const handleNext = () => {
     if (currentStep === 2) {
-      handleSubmit(); // submit signup + trigger OTP
-    } else if (currentStep < 3) {setCurrentStep(currentStep + 1)};
+      handleSubmit();
+    } else if (currentStep < 3) {
+      setCurrentStep(currentStep + 1);
+    }
   };
 
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     } else {
-      router.back(); // Navigate back if on the first step
+      router.back();
     }
   };
 
@@ -200,6 +200,7 @@ export default function Signup() {
               value={formData.fullName}
               onChange={handleInputChange}
               placeholder="John Doe"
+              required
             />
             <label>Email:</label>
             <input
@@ -208,6 +209,7 @@ export default function Signup() {
               value={formData.email}
               onChange={handleInputChange}
               placeholder="johnosami@email.com"
+              required
             />
             <label>Password:</label>
             <input
@@ -216,41 +218,36 @@ export default function Signup() {
               value={formData.password}
               onChange={handleInputChange}
               placeholder="••••••••••••••••"
+              required
             />
-
-          <label>Age Bracket:</label>
-            <select name="ageBracket" value={formData.ageBracket} onChange={handleInputChange}>
+            <label>Age Bracket:</label>
+            <select name="ageBracket" value={formData.ageBracket} onChange={handleInputChange} required>
               <option value="">Select Age Range</option>
               <option value="7-12">7 - 12</option>
               <option value="13-17">13 - 17</option>
               <option value="18+">18 and above</option>
             </select>
-
-            {/* ✅ Added gender and age bracket */}
             <label>Gender:</label>
-            <select name="gender" value={formData.gender} onChange={handleInputChange}>
+            <select name="gender" value={formData.gender} onChange={handleInputChange} required>
               <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="prefer_not_to_say">Prefer not to say</option>
             </select>
-
-
             <div className="social-login">
               <p>or sign in with:</p>
               <div className="social-buttons">
                 <div className="social-button-text">
                   Apple
-                <button className="social-button">
-                  <FaApple/>
-                </button>
+                  <button className="social-button">
+                    <FaApple />
+                  </button>
                 </div>
-
-                <div className="social-button-text"> 
-                <button className="social-button">
-                 <FcGoogle/> 
-                </button>
-                Google
+                <div className="social-button-text">
+                  <button className="social-button">
+                    <FcGoogle />
+                  </button>
+                  Google
                 </div>
               </div>
             </div>
@@ -260,14 +257,14 @@ export default function Signup() {
         return (
           <div className="form-container form-spacer">
             <div>
-            <label>Display Name:</label>
-            <input
-              type="text"
-              name="displayName"
-              value={formData.displayName}
-              onChange={handleInputChange}
-              placeholder="John"
-            />
+              <label>Display Name:</label>
+              <input
+                type="text"
+                name="displayName"
+                value={formData.displayName}
+                onChange={handleInputChange}
+                placeholder="John"
+              />
             </div>
             <div className="legal-section">
               <label>Legal:</label>
@@ -297,8 +294,11 @@ export default function Signup() {
                   type="text"
                   maxLength="1"
                   value={digit}
-                  onChange={(e) => handleVerificationCodeChange(index, e.target.value)}
+                  onChange={(e) => handleVerificationCodeChange(index, e.target.value, e)}
+                  onKeyDown={(e) => handleVerificationCodeChange(index, e.target.value, e)}
                   className="verification-box"
+                  ref={inputRefs.current[index]}
+                  autoFocus={index === 0} // Auto-focus first input
                 />
               ))}
             </div>
@@ -307,9 +307,7 @@ export default function Signup() {
               <button onClick={handleResendCode} className="resend-button" disabled={submitting}>
                 RESEND CODE
               </button>
-              <hr/>
-            </div>
-            <div style={{ marginTop: 12 }}>
+              <hr />
             </div>
           </div>
         );

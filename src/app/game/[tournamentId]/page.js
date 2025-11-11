@@ -132,12 +132,21 @@ const GameConsole = () => {
       setIsWinner(userId && userId === winnerId);
     };
 
+    // New listener for score updates
+    const handleScoreUpdated = ({ score, playerId }) => {
+      if (playerId === userId) {
+        console.log(`📊 Score updated for user ${userId}: ${score}`);
+        setScores(score);
+      }
+    };
+
     socket.on("tournament:starting", handleTournamentStarting);
     socket.on("round:started", handleRoundStarted);
     socket.on("opportunity:started", handleOpportunityStarted);
+    socket.on("score:updated", handleScoreUpdated);
     socket.on("opportunity:ended", handleOpportunityEnded);
     socket.on("round:ended", handleRoundEnded);
-    socket.on("tournament:ended", handleTournamentEnded);
+socket.on("tournament:ended:participant", handleTournamentEnded);
 
     return () => {
       socket.off("tournament:starting", handleTournamentStarting);

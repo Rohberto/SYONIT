@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
         <ToastContainer
         toastClassName="custom-toast"
         className="custom-toast-container"
-        position="bottom-center"/>
+        position="top-center"/>
         {children}
         </AudioProvider>
         </TournamentProvider>
