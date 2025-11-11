@@ -146,7 +146,7 @@ const GameConsole = () => {
     socket.on("score:updated", handleScoreUpdated);
     socket.on("opportunity:ended", handleOpportunityEnded);
     socket.on("round:ended", handleRoundEnded);
-socket.on("tournament:ended:participant", handleTournamentEnded);
+socket.on("tournament:ended", handleTournamentEnded);
 
     return () => {
       socket.off("tournament:starting", handleTournamentStarting);

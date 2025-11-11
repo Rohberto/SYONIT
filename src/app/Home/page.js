@@ -110,6 +110,7 @@ export default function Home() {
     const handleRoundEnded = () => {};
 
     const handleTournamentEnded = ({ winnerName }) => {
+      console.log("Tournament ended. Winner:", winnerName);
       setGameOver(true);
       setWinner(winnerName);
     };

@@ -27,7 +27,7 @@ export const SocketProvider = ({ children }) => {
   const [selectedPrize, setSelectedPrize] = useState(null);
   const [onlineCount, setOnlineCount] = useState(0);
   const router = useRouter();
-
+  const url = "https://syonit-js.onrender.com";
   // Initialize socket
   useEffect(() => {
     const initSocket = async () => {
@@ -45,7 +45,7 @@ export const SocketProvider = ({ children }) => {
 
       console.log("🔌 Initializing socket connection...");
       const newSocket = io(
-        process.env.NEXT_PUBLIC_SOCKET_URL || "https://syonit-js.onrender.com",
+        url || "https://syonit-js.onrender.com",
         {
           autoConnect: true,
           transports: ["websocket"],
