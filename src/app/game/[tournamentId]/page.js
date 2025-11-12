@@ -7,6 +7,7 @@ import Header from "@/app/Components/MainHeader";
 import Round from "@/app/Components/TournamentRound";
 import { getAudioContext, playSound } from "@/app/libs/audioContext";
 import PrizeChangeModal from "@/app/Components/PrizeChangeModal";
+import confetti from "canvas-confetti";
 import "./game.css";
 import { toast } from "react-toastify";
 import Results from "./Results";
@@ -27,25 +28,25 @@ const GameConsole = () => {
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
   const [isWinner, setIsWinner] = useState(false);
-
   const [audioBuffer, setAudioBuffer] = useState(null);
   const [celebrationBuffer, setCelebrationBuffer] = useState(null);
   const [sirenBuffer, setSirenBuffer] = useState(null);
   const [lastVote, setLastVote] = useState(null);
   const [scores, setScores] = useState(0);
-
   const [isEliminated, setIsEliminated] = useState(false);
   const [showTieBreaker, setShowTieBreaker] = useState(false);
   const [option, setOption] = useState(null);
   const [showVoteResultOverlay, setShowVoteResultOverlay] = useState(null);
-
+  // New state to track if vote has been submitted
+  const [hasVoted, setHasVoted] = useState(false);
 
   const opportunityRef = useRef(opportunityNumber);
 
   const handleSelectOption = (option) => {
     setOption(option);
-    toast.success("click on the center button to lock your decision.")
-  }
+    toast.success("Click on the center button to lock your decision.");
+    if (audioBuffer) playSound(audioBuffer, "/Sounds/click_sound.wav");
+  };
 
   useEffect(() => {
     opportunityRef.current = opportunityNumber;
@@ -59,80 +60,89 @@ const GameConsole = () => {
   }, [user]);
 
   useEffect(() => {
-    if (!socket || !socket.connected) return;
+    if (!socket || !socket.connected || !tournamentId || !userId) {
+      console.log("Socket not ready:", { socket: !!socket, connected: socket?.connected, tournamentId, userId });
+      return;
+    }
 
-    console.log("Joining tournament:", tournamentId, userId);
+    console.log(`🎮 Joining tournament ${tournamentId} for user ${userId}, socket ID: ${socket.id}`);
+    socket.emit("checkParticipation", { tid: tournamentId, userId });
 
     const handleTournamentStarting = ({ startsIn }) => {
-      setRoundTimer(startsIn);
+      console.log(`🚀 Tournament starting in ${startsIn / 1000}s`);
+      setRoundTimer(startsIn / 1000);
       setIsVoting(false);
     };
 
     const handleRoundStarted = ({ roundNumber }) => {
+      console.log(`🔄 Round ${roundNumber} started`);
       setCurrentRound(roundNumber);
       setResults({ 1: null, 2: null, 3: null });
       setOpportunityNumber(0);
     };
 
     const handleOpportunityStarted = ({ oid, opportunityNumber, endsAt }) => {
+      console.log(`🎯 Opportunity ${opportunityNumber} started, oid: ${oid}`);
       setOpportunityId(oid);
       setOpportunityNumber(opportunityNumber);
-      if (sirenBuffer) playSound(sirenBuffer, "/Sounds/siren.wav");
+      if (sirenBuffer) playSound(sirenBuffer, "/Sounds/celebration.wav");
       setIsVoting(true);
       setLastVote(null);
-
+      setHasVoted(false); // Reset hasVoted for new voting opportunity
       setResults((prev) => ({
         ...prev,
         [opportunityNumber]: null,
       }));
-
       const msLeft = new Date(endsAt).getTime() - Date.now();
       setRoundTimer(Math.floor(msLeft / 1000));
     };
 
     const handleOpportunityEnded = ({ voters, yesVotes, noVotes, minority }) => {
+      console.log(`🏁 Opportunity ${opportunityRef.current} ended`, { yesVotes, noVotes, minority });
       setIsVoting(false);
-      console.log("Voters:", voters);
       setResults((prev) => ({
         ...prev,
-        [opportunityRef.current]: { 
-          yesVotes: yesVotes ?? 0, 
-          noVotes: noVotes ?? 0, 
+        [opportunityRef.current]: {
+          yesVotes: yesVotes ?? 0,
+          noVotes: noVotes ?? 0,
           minority: minority ?? "none",
         },
       }));
-// ✅ Show overlay UI with voters + votes
-  setShowVoteResultOverlay({
-    voters,
-    yesVotes,
-    noVotes,
-    minority
-  });
-
-  // Auto-hide after 5 seconds
-  setTimeout(() => {
-    setShowVoteResultOverlay(null);
-  }, 5000);
-
+      setShowVoteResultOverlay({ voters, yesVotes, noVotes, minority });
+      setTimeout(() => setShowVoteResultOverlay(null), 5000);
       if (lastVote) {
         if (lastVote === minority) {
           if (celebrationBuffer) playSound(celebrationBuffer, "/Sounds/celebration.wav");
         } else {
-          alert("Oops, you are not in the minority!");
+          toast.warn("Oops, you are not in the minority!");
         }
       }
     };
 
-    const handleRoundEnded = () => setIsVoting(false);
-
-    const handleTournamentEnded = ({ winnerId, winnerName }) => {
-      console.log("Tournament ended. Winner:", winnerName);
-      setGameOver(true);
-      setWinner(winnerName);
-      setIsWinner(userId && userId === winnerId);
+    const handleRoundEnded = () => {
+      console.log("🔚 Round ended");
+      setIsVoting(false);
     };
 
-    // New listener for score updates
+    const handlePlayerEliminated = ({ message, tournamentId: tid }) => {
+      console.log(`🚫 Player eliminated: ${message}`);
+      setIsEliminated(true);
+    };
+
+    const handleTieBreaker = () => {
+      console.log("🔥 Tie-breaker opportunity opened");
+      setShowTieBreaker(true);
+    };
+
+    const handleTournamentEnded = ({ tid, winnerId, winnerName }) => {
+      console.log(`🏆 Tournament ${tid} ended. Winner: ${winnerName} (ID: ${winnerId})`);
+      setGameOver(true);
+      setWinner(winnerName || "No Winner");
+      setIsWinner(userId && userId === winnerId);
+      setIsEliminated(false);
+      setShowTieBreaker(false);
+    };
+
     const handleScoreUpdated = ({ score, playerId }) => {
       if (playerId === userId) {
         console.log(`📊 Score updated for user ${userId}: ${score}`);
@@ -143,10 +153,12 @@ const GameConsole = () => {
     socket.on("tournament:starting", handleTournamentStarting);
     socket.on("round:started", handleRoundStarted);
     socket.on("opportunity:started", handleOpportunityStarted);
-    socket.on("score:updated", handleScoreUpdated);
     socket.on("opportunity:ended", handleOpportunityEnded);
     socket.on("round:ended", handleRoundEnded);
-socket.on("tournament:ended", handleTournamentEnded);
+    socket.on("player:eliminated", handlePlayerEliminated);
+    socket.on("tie:breaker", handleTieBreaker);
+    socket.on("tournament:ended", handleTournamentEnded);
+    socket.on("score:updated", handleScoreUpdated);
 
     return () => {
       socket.off("tournament:starting", handleTournamentStarting);
@@ -154,9 +166,12 @@ socket.on("tournament:ended", handleTournamentEnded);
       socket.off("opportunity:started", handleOpportunityStarted);
       socket.off("opportunity:ended", handleOpportunityEnded);
       socket.off("round:ended", handleRoundEnded);
+      socket.off("player:eliminated", handlePlayerEliminated);
+      socket.off("tie:breaker", handleTieBreaker);
       socket.off("tournament:ended", handleTournamentEnded);
+      socket.off("score:updated", handleScoreUpdated);
     };
-  }, [socket, tournamentId, userId, lastVote, celebrationBuffer, isEliminated]);
+  }, [socket, tournamentId, userId, lastVote, celebrationBuffer, sirenBuffer]);
 
   useEffect(() => {
     if (roundTimer <= 0) return;
@@ -167,8 +182,10 @@ socket.on("tournament:ended", handleTournamentEnded);
   }, [roundTimer]);
 
   const handleVote = (choice) => {
-    if (!opportunityId) return;
+    if (!opportunityId || !isVoting || !choice || hasVoted) return;
+    console.log(`🗳️ Casting vote: ${choice} for opportunity ${opportunityId}`);
     setLastVote(choice);
+    setHasVoted(true); // Disable voting until next opportunity
     socket.emit("vote", {
       tid: tournamentId,
       opportunityId,
@@ -176,10 +193,13 @@ socket.on("tournament:ended", handleTournamentEnded);
       choice,
     });
     setIsVoting(false);
+    // Play click sound on vote submission
+    if (audioBuffer) playSound(audioBuffer, "/Sounds/click_sound.wav");
   };
 
   const handleBreakTie = () => {
-    socket.emit("tie:attempt", { tid: tournamentId});
+    console.log("🔥 Attempting tie-breaker");
+    socket.emit("tie:attempt", { tid: tournamentId });
     setShowTieBreaker(false);
     setIsEliminated(false);
   };
@@ -187,17 +207,14 @@ socket.on("tournament:ended", handleTournamentEnded);
   useEffect(() => {
     const ctx = getAudioContext();
     if (!ctx) return;
-
     (async () => {
       try {
         const clickRes = await fetch("/Sounds/click_sound.wav");
         const clickBuf = await clickRes.arrayBuffer();
         setAudioBuffer(await ctx.decodeAudioData(clickBuf));
-
         const celebrateRes = await fetch("/Sounds/celebration.wav");
         const celebrateBuf = await celebrateRes.arrayBuffer();
         setCelebrationBuffer(await ctx.decodeAudioData(celebrateBuf));
-
         const sirenRes = await fetch("/Sounds/celebration.wav");
         const sirenBuf = await sirenRes.arrayBuffer();
         setSirenBuffer(await ctx.decodeAudioData(sirenBuf));
@@ -207,10 +224,21 @@ socket.on("tournament:ended", handleTournamentEnded);
     })();
   }, []);
 
+  // Confetti Effect for Winners
+  useEffect(() => {
+    if (gameOver && isWinner) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ["#FFD700", "#FF4500", "#1E90FF"],
+      });
+    }
+  }, [gameOver, isWinner]);
+
   return (
     <div className="game-console">
       <Header />
-
       {isEliminated && !gameOver ? (
         <div className="eliminated-screen">
           <h2>🚫 You’ve been eliminated</h2>
@@ -225,15 +253,56 @@ socket.on("tournament:ended", handleTournamentEnded);
       ) : gameOver ? (
         <div className="game-over">
           {isWinner ? (
-            <h2>🎉 Congratulations! You’ve won the tournament 🏆</h2>
+            <div className="game-over-winner">
+              <h1>
+                <span role="img" aria-label="party">🎉</span> You’re the Champion! <span role="img" aria-label="trophy">🏆</span>
+              </h1>
+              <p>Congratulations, {user?.username || "Player"}! You conquered the tournament!</p>
+              <div className="game-over-buttons">
+                <button
+                  onClick={() => router.push("/Home")}
+                  className="game-over-button return-home"
+                >
+                  Return Home
+                </button>
+                <button
+                  onClick={() => {
+                    setGameOver(false);
+                    setIsWinner(false);
+                    router.push("/Home");
+                  }}
+                  className="game-over-button play-again"
+                >
+                  Play Again
+                </button>
+              </div>
+            </div>
           ) : (
-            <>
-              <h2>😔 Game Over — You lost</h2>
-              <p>Winner: {winner}</p>
-            </>
+            <div className="game-over-loser">
+              <h1>😔 Game Over</h1>
+              <p>The tournament has ended. Better luck next time!</p>
+              <p>
+                Winner: <span className="winner-name">{winner || "Unknown"}</span>
+              </p>
+              <div className="game-over-buttons">
+                <button
+                  onClick={() => router.push("/Home")}
+                  className="game-over-button return-home"
+                >
+                  Return Home
+                </button>
+                <button
+                  onClick={() => {
+                    setGameOver(false);
+                    router.push("/Home");
+                  }}
+                  className="game-over-button play-again"
+                >
+                  Play Again
+                </button>
+              </div>
+            </div>
           )}
-
-          <button onClick={() => router.push("/Home")}>Go Home</button>
         </div>
       ) : (
         <>
@@ -242,18 +311,11 @@ socket.on("tournament:ended", handleTournamentEnded);
             <div className="game_info_large"><h4>Round</h4><p>{currentRound}</p></div>
             <div className="game_info_circle"><h4>Points</h4><p>{scores}</p></div>
           </div>
-
           <div className="game-slide">
             <div className="game_opportunity_info">
               <h4>Opportunity: {opportunityNumber}</h4>
             </div>
-
-            {
-              showVoteResultOverlay && (
-                <Results results={showVoteResultOverlay} />
-              )
-            }
-
+            {showVoteResultOverlay && <Results results={showVoteResultOverlay} />}
             <div className="game_round_container">
               {[1, 2, 3].map((opp) => {
                 const roundResult = results[opp];
@@ -272,37 +334,31 @@ socket.on("tournament:ended", handleTournamentEnded);
                 );
               })}
             </div>
-
-            <PrizeChangeModal
-              prizeStats={prizeWindow.stats || []}
-              endsAt={prizeWindow.endsAt}
-            />
-
+            <PrizeChangeModal prizeStats={prizeWindow.stats || []} endsAt={prizeWindow.endsAt} />
             <div className="gamebuttonsContainer">
               <div className="game_buttons_container">
                 <button
                   className="game_y_button"
                   onClick={() => {
                     handleSelectOption("yes");
-                    if (audioBuffer) playSound(audioBuffer, "/Sounds/click_sound.wav");
                   }}
                   disabled={!isVoting || roundTimer <= 0 || gameOver}
                 >
                   Yes
                 </button>
-
                 <button
                   className="game_n_button"
                   onClick={() => {
                     handleSelectOption("no");
-                    if (audioBuffer) playSound(audioBuffer, "/Sounds/click_sound.wav");
                   }}
                   disabled={!isVoting || roundTimer <= 0 || gameOver}
                 >
                   No
                 </button>
-
-                <div className="game_circle" onClick={() => handleVote(option)}>
+                <div
+                  className={`game_circle ${!isVoting || hasVoted || !option || roundTimer <= 0 || gameOver ? "disabled" : ""}`}
+                  onClick={() => handleVote(option)}
+                >
                   {roundTimer > 0 ? (
                     <p className="timer_text">
                       <span>{roundTimer}s</span>

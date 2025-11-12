@@ -2,18 +2,16 @@
 import { useState, useEffect, useRef } from "react";
 import "./styles.css";
 import { FaFlagCheckered, FaHandsHelping, FaLightbulb } from "react-icons/fa";
-import { BsBook } from "react-icons/bs";
-import Round from "../Components/Round";
-import { getAudioContext, playSound } from "../libs/audioContext";
-import "./page.css";
 import { IoGameControllerSharp } from "react-icons/io5";
 import Button from "../Components/syonit_button/mainButton";
 import Header from "../Components/MainHeader";
 import { useSocket } from "../Context/SocketContext";
 import { useUser } from "../Context/userContext";
 import { useRouter } from "next/navigation";
+import Round from "../Components/Round";
+import { getAudioContext, playSound } from "../libs/audioContext";
 import Results from "../game/[tournamentId]/Results";
-
+import "./page.css";
 export default function Home() {
   const [currentTab, setCurrentTab] = useState("game");
   const [points, setPoints] = useState(0);
@@ -26,9 +24,12 @@ export default function Home() {
   const [winner, setWinner] = useState(null);
   const [audioBuffer, setAudioBuffer] = useState(null);
   const [sirenBuffer, setSirenBuffer] = useState(null);
+  const [bgMusicBuffer, setBgMusicBuffer] = useState(null);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const audioSourceRef = useRef(null);
 
   const { socket, tournament, noOfPlayers, onlineCount, timeLeft, formatTime, setNoOfPlayers } = useSocket();
-  const { user } = useUser();
+  const { user, loading } = useUser();
   const router = useRouter();
   const opportunityRef = useRef(opportunityNumber);
 
@@ -36,6 +37,16 @@ export default function Home() {
     opportunityRef.current = opportunityNumber;
   }, [opportunityNumber]);
 
+  // Navigation: Redirect to login if not logged in
+  useEffect(() => {
+    if (loading) return; // Wait for localStorage check
+    if (!user || !user.id) {
+      console.log("User not signed in, redirecting to /login");
+      router.push("/login");
+    }
+  }, [user, loading, router]);
+
+  // Load audio
   useEffect(() => {
     const ctx = getAudioContext();
     if (!ctx) {
@@ -51,8 +62,14 @@ export default function Home() {
         setAudioBuffer(await ctx.decodeAudioData(clickBuf));
 
         const sirenRes = await fetch("/Sounds/siren.wav");
+        if (!sirenRes.ok) throw new Error("Failed to fetch siren sound");
         const sirenBuf = await sirenRes.arrayBuffer();
         setSirenBuffer(await ctx.decodeAudioData(sirenBuf));
+
+        const bgMusicRes = await fetch("/Sounds/SYON.mp3");
+        if (!bgMusicRes.ok) throw new Error("Failed to fetch background music");
+        const bgMusicBuf = await bgMusicRes.arrayBuffer();
+        setBgMusicBuffer(await ctx.decodeAudioData(bgMusicBuf));
       } catch (err) {
         console.error("Error loading sounds:", err);
       }
@@ -61,10 +78,40 @@ export default function Home() {
     loadSound();
   }, []);
 
+  // Play background music
   useEffect(() => {
-    if (!socket?.connected) return;
+    if (!bgMusicBuffer || !user || !user.id) return;
 
-    // Join the lobby room when the game tab is active
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const playBackgroundMusic = () => {
+      if (audioSourceRef.current) return;
+      audioSourceRef.current = ctx.createBufferSource();
+      audioSourceRef.current.buffer = bgMusicBuffer;
+      audioSourceRef.current.loop = true;
+      audioSourceRef.current.connect(ctx.destination);
+      audioSourceRef.current.start(0);
+      setIsMusicPlaying(true);
+      console.log("🎵 Background music started");
+    };
+
+    playBackgroundMusic();
+
+    return () => {
+      if (audioSourceRef.current) {
+        audioSourceRef.current.stop();
+        audioSourceRef.current = null;
+        setIsMusicPlaying(false);
+        console.log("🎵 Background music stopped");
+      }
+    };
+  }, [bgMusicBuffer, user]);
+
+  // Socket events
+  useEffect(() => {
+    if (!socket?.connected || !user) return;
+
     const joinLobby = () => {
       if (currentTab === "game") {
         socket.emit("joinLobby");
@@ -109,10 +156,10 @@ export default function Home() {
 
     const handleRoundEnded = () => {};
 
-    const handleTournamentEnded = ({ winnerName }) => {
-      console.log("Tournament ended. Winner:", winnerName);
+    const handleTournamentEnded = ({ tid, winnerId, winnerName }) => {
+      console.log(`🏆 Tournament ${tid} ended. Winner: ${winnerName} (ID: ${winnerId})`);
       setGameOver(true);
-      setWinner(winnerName);
+      setWinner(winnerName || "No Winner");
     };
 
     const handleTournamentNewPlayer = () => {
@@ -125,6 +172,17 @@ export default function Home() {
       setNoOfPlayers(playersCount);
     };
 
+    const handleTournamentStarting = ({ startsIn }) => {
+      console.log(`🚀 New tournament starting in ${startsIn / 1000}s`);
+      setGameOver(false);
+      setWinner(null);
+      setCurrentRound(0);
+      setOpportunityNumber(0);
+      setResults({ 1: null, 2: null, 3: null });
+      setRoundTimer(Math.floor(startsIn / 1000));
+    };
+
+    socket.on("tournament:starting", handleTournamentStarting);
     socket.on("round:started", handleRoundStarted);
     socket.on("opportunity:started", handleOpportunityStarted);
     socket.on("opportunity:ended", handleOpportunityEnded);
@@ -134,6 +192,7 @@ export default function Home() {
     socket.on("tournament:playerCount", handlePlayerCount);
 
     return () => {
+      socket.off("tournament:starting", handleTournamentStarting);
       socket.off("round:started", handleRoundStarted);
       socket.off("opportunity:started", handleOpportunityStarted);
       socket.off("opportunity:ended", handleOpportunityEnded);
@@ -143,7 +202,7 @@ export default function Home() {
       socket.off("tournament:playerCount", handlePlayerCount);
       socket.emit("leaveLobby");
     };
-  }, [socket, currentTab, sirenBuffer, tournament?.tid, setNoOfPlayers]);
+  }, [socket, currentTab, sirenBuffer, tournament?.tid, setNoOfPlayers, user]);
 
   useEffect(() => {
     if (roundTimer <= 0) return;
@@ -153,11 +212,34 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [roundTimer]);
 
+  const toggleMusic = () => {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    if (isMusicPlaying) {
+      if (audioSourceRef.current) {
+        audioSourceRef.current.stop();
+        audioSourceRef.current = null;
+        setIsMusicPlaying(false);
+        console.log("🎵 Background music paused");
+      }
+    } else {
+      if (bgMusicBuffer) {
+        audioSourceRef.current = ctx.createBufferSource();
+        audioSourceRef.current.buffer = bgMusicBuffer;
+        audioSourceRef.current.loop = true;
+        audioSourceRef.current.connect(ctx.destination);
+        audioSourceRef.current.start(0);
+        setIsMusicPlaying(true);
+        console.log("🎵 Background music resumed");
+      }
+    }
+  };
+
   const renderContent = () => {
     switch (currentTab) {
       case "game":
         return (
-          <>
+         <>
             <h3>Current Game</h3>
             <div className="Home-slide">
               <div className="current_game_info_buttons">
@@ -211,6 +293,7 @@ export default function Home() {
               )}
             </div>
           </>
+          
         );
       case "idea":
         return (
@@ -263,6 +346,13 @@ export default function Home() {
           <div className="progress-fill" style={{ width: `${(points / 2500) * 100}%` }}></div>
         </div>
       </div>
+      {user && (
+        <div className="music-toggle">
+          <button onClick={toggleMusic}>
+            {isMusicPlaying ? "Mute Music" : "Play Music"}
+          </button>
+        </div>
+      )}
       {renderContent()}
       <div className="nav-buttons">
         <button

@@ -136,18 +136,18 @@ align-items: center;
  .section_highlight p{
   color: rgba(247, 113, 47, 1);
  }
-.y1section::before, .y2section::before, .y3section::before {
+.game-console .y1section::before, .game-console .y2section::before, .game-console .y3section::before {
   content: "Y";
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-weight: 900;
-   color: rgba(255, 255, 255, 0.07); /* much lighter and lower opacity */
+    color: rgba(112, 54, 16, 0.14);
   z-index: 0;
   pointer-events: none;
 }
-.n1section::before, .n2section::before, .n3section::before {
+.game-console .n1section::before, .game-console .n2section::before, .game-console .n3section::before {
   content: "N";
   position: absolute;
   top: 50%;
@@ -415,4 +415,181 @@ left: 0;
         color: rgba(0, 0, 0, 0.3);
         text-align: center;
         margin-bottom: 15px;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleHover {
+  to {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes trophyPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Game Over Container */
+.game-over {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: transparent;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Winner State */
+.game-over-winner {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.game-over-winner h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.game-over-winner h1 span[role="img"] {
+  font-size: 2.5rem;
+  animation: trophyPulse 1.5s infinite;
+}
+
+.game-over-winner p {
+  font-size: 1.5rem;
+  color: #ffd700;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+/* Loser State */
+.game-over-loser {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.game-over-loser h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ff4d4d;
+  margin-bottom: 1rem;
+}
+
+.game-over-loser p {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.game-over-loser .winner-name {
+  font-weight: bold;
+  color: #00ff7f;
+}
+
+/* Buttons Container */
+.game-over-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Buttons */
+.game-over-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.game-over-button.return-home {
+  background-color: #555;
+  color: #fff;
+}
+
+.game-over-button.return-home:hover {
+  background-color: #666;
+  animation: scaleHover 0.2s forwards;
+}
+
+.game-over-button.play-again {
+  background-color: #1e90ff;
+  color: #fff;
+}
+
+.game-over-button.play-again:hover {
+  background-color: #1c86ee;
+  animation: scaleHover 0.2s forwards;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .game-over-winner h1 {
+    font-size: 2rem;
+  }
+
+  .game-over-winner p {
+    font-size: 1.25rem;
+  }
+
+  .game-over-loser h1 {
+    font-size: 2rem;
+  }
+
+  .game-over-loser p {
+    font-size: 1rem;
+  }
+
+  .game-over-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-over-winner h1 {
+    font-size: 1.5rem;
+  }
+
+  .game-over-winner h1 span[role="img"] {
+    font-size: 1.5rem;
+  }
+
+  .game-over-winner p {
+    font-size: 1rem;
+  }
+
+  .game-over-loser h1 {
+    font-size: 1.5rem;
+  }
+
+  .game-over-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
