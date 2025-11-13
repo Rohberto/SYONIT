@@ -41,10 +41,3 @@ const page = () => {
 }
 
 export default page
-
- <div className="game-over">
-                  <h2>Tournament Ended</h2>
-                  <p>Winner: {winner || "No Winner"}</p>
-                  <p>Waiting for a new tournament to start...</p>
-                  <button onClick={() => router.push("/Home")}>Refresh</button>
-                </div>
