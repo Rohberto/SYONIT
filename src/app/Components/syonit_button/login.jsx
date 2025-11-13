@@ -56,7 +56,8 @@ const router = useRouter();
            if (audioBuffer) {
               playSound(audioBuffer, '/Sounds/click_sound.wav');
             }
-        router.push("/Home")}}
+      }}
+      type='submit'
     >
         LOGIN
     </button>

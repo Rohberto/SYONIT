@@ -4,7 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(5, 5, 5, 0.8);
+ background: rgba(0,0,0,0.45);
   backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
@@ -30,15 +30,15 @@
   font-family: 'Heebo', sans-serif;
 }
 .modalPrize{
-  font-size: 1rem;
-  margin-bottom: 8px;
+  font-size: 0.5rem;
+  margin-bottom: 5px;
   font-family: 'Heebo', sans-serif;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 .modal-timer {
   color: gold;
   font-weight: bold;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .chart-container {

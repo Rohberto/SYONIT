@@ -1,0 +1,68 @@
+/* components/MessageModal.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* Align modal at bottom */
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #333; /* Match your dark theme */
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px 8px 0 0; /* Rounded top corners */
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  animation: slideUp 0.3s ease-out; /* Slide-up animation */
+}
+
+.modal-content p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.modal-button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  background: #1e90ff; /* Match your button styles */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.modal-button:hover {
+  background: #1c86ee;
+}
+
+/* Slide-up animation */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .modal-content {
+    padding: 15px;
+  }
+  .modal-content p {
+    font-size: 1rem;
+  }
+  .modal-button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+}

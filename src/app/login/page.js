@@ -6,6 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import Button from "../Components/syonit_button/login";
 import { useUser } from "../Context/userContext";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
@@ -40,13 +41,12 @@ export default function Login() {
       if (!res.ok) {
         throw new Error(data.message || "Login failed");
       }else {
-console.log(data, data.token, data.user);
       // save token to localStorage (or cookies if SSR)
       localStorage.setItem("token", data.token);
       localStorage.setItem("user",JSON.stringify(data.user));
       setToken(data.token);
       setUser(data.user);
-      alert("Login successful ✅");
+      toast.success("Login successful! Redirecting...");
       // redirect user (Next.js router)
       router.push("/Home")// 👈 change route
       }

@@ -149,6 +149,7 @@ export const SocketProvider = ({ children }) => {
     socket.on("tournament:joined", ({ tid, room }) => {
       console.log(`✅ Joined room ${room} for tournament ${tid}`);
       setJoined(true);
+      toast.success("Successfully joined the tournament!");
       // Verify room membership
       socket.emit("debugRooms", { userId: user.id });
     });

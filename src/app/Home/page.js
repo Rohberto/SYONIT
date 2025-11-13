@@ -12,6 +12,9 @@ import Round from "../Components/Round";
 import { getAudioContext, playSound } from "../libs/audioContext";
 import Results from "../game/[tournamentId]/Results";
 import "./page.css";
+import MessageModal from "../Components/MessageModal";
+import { toast } from "react-toastify";
+
 export default function Home() {
   const [currentTab, setCurrentTab] = useState("game");
   const [points, setPoints] = useState(0);
@@ -27,12 +30,26 @@ export default function Home() {
   const [bgMusicBuffer, setBgMusicBuffer] = useState(null);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioSourceRef = useRef(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const { socket, tournament, noOfPlayers, onlineCount, timeLeft, formatTime, setNoOfPlayers } = useSocket();
   const { user, loading } = useUser();
   const router = useRouter();
   const opportunityRef = useRef(opportunityNumber);
 
+  // Show modal with message
+  const showModal = (message) => {
+    setModalMessage(message);
+    setModalOpen(true);
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalMessage("");
+  };
+  
   useEffect(() => {
     opportunityRef.current = opportunityNumber;
   }, [opportunityNumber]);
@@ -150,8 +167,8 @@ export default function Home() {
           minority: minority ?? "none",
         },
       }));
-      setShowVoteResultOverlay({ voters, yesVotes, noVotes, minority });
-      setTimeout(() => setShowVoteResultOverlay(null), 5000);
+     // setShowVoteResultOverlay({ voters, yesVotes, noVotes, minority });
+    //  setTimeout(() => setShowVoteResultOverlay(null), 5000);
     };
 
     const handleRoundEnded = () => {};
@@ -387,6 +404,13 @@ export default function Home() {
         </div>
         <Button formatTime={formatTime} timeLeft={timeLeft} tournament={tournament} user={user} />
       </div>
+
+      <MessageModal
+        isOpen={modalOpen}
+        message={modalMessage}
+        onClose={closeModal}
+        autoDismiss={5000} // Auto-close after 5s
+      />
     </div>
   );
 }

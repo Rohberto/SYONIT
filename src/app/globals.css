@@ -83,11 +83,8 @@ a {
   text-decoration: none;
 }
 .custom-toast-container{
-  top: auto !important;
-  right: 0 !important;
-  left: auto !important;
-  bottom: 300px !important;
-  position: fixed !important;
+top: 0 !important; /* Adjust based on header height (e.g., 50px + padding) */
+  z-index: 2000; /* Above header (z-index: 1000 in MainHeader.css) */
 }
 /* Glassy overlay panel */
 .glassy-panel {
@@ -245,5 +242,10 @@ a {
     color-scheme: dark;
   }
 }
+.recharts-legend-item-text{
+  font-family: 'Heebo', sans-serif !important;
+  font-size: 10px !important;
+}
+
 
 

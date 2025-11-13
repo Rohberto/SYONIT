@@ -1,4 +1,4 @@
-
+/* MainHeader.css */
 .header_section {
   display: flex;
   align-items: center;
@@ -8,10 +8,10 @@
 }
 
 .header_section .headerr {
- font-size: 16px;
+  font-size: 16px;
   font-weight: 700;
-    font-family: 'Heebo', sans-serif;
-  font-size: 16x;
+  font-family: 'Heebo', sans-serif;
+  font-size: 16px; /* Corrected typo: 16x to 16px */
   text-transform: capitalize;
   white-space: nowrap;
   letter-spacing: 7.68px;
@@ -30,14 +30,90 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer; /* Indicate clickable for profile */
 }
-.online{
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: rgba(247, 113, 47, 1);
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 4px;
+
+.profile-pic {
+  width: 100%; /* Fill the 50x50 container */
+  height: 100%;
+  border-radius: 50%; /* Circular cropping */
+  object-fit: cover; /* Maintain aspect ratio */
+}
+
+.online {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(247, 113, 47, 1);
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 4px;
+}
+
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+  z-index: 1000;
+  padding: 20px;
+  color: #fff;
+  display: none; /* Hidden by default on desktop */
+}
+
+.mobile-nav.open {
+  transform: translateY(0);
+  display: block; /* Show on mobile when open */
+}
+
+.nav-content {
+  text-align: left;
+  max-width: 300px;
+  margin: 60px auto 0;
+}
+
+.nav-content h2 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: rgba(255, 255, 255, 1);
+  font-family: 'Heebo', sans-serif;
+}
+
+.nav-content p {
+  font-size: 0.9rem;
+  margin: 5px 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'Heebo', sans-serif;
+}
+
+.nav-content .close-btn {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background: rgba(247, 113, 47, 1); /* Match orange theme */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Heebo', sans-serif;
+}
+
+.nav-content .close-btn:hover {
+  background: rgba(247, 113, 47, 0.8);
+}
+
+/* Show mobile nav on screens smaller than 768px */
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: block; /* Enable for mobile */
+  }
+}
+
+/* Optional hover effect for profile/book icons */
+.profile_icon:hover, .book_icon:hover {
+  background-color: rgba(249, 202, 124, 0.6);
 }

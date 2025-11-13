@@ -6,6 +6,7 @@ import { FcGoogle } from 'react-icons/fc';
 import Button from '../Components/syonit_button/sign';
 import { useRouter } from 'next/navigation';
 import { useUser } from '../Context/userContext';
+import { toast } from 'react-toastify';
 
 export default function Signup() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -81,7 +82,7 @@ export default function Signup() {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || "Signup failed");
+        toast.error(data.message || "Signup failed");
         setSubmitting(false);
         return;
       }
@@ -98,11 +99,11 @@ export default function Signup() {
         setPendingUserId(uid);
         localStorage.setItem("pendingUserId", String(uid));
       }
-
+      toast.success("Signup successful! Verification code sent to your email.");
       setCurrentStep(3);
     } catch (err) {
       console.error("Signup error:", err);
-      alert("Something went wrong while signing up.");
+     toast.error("Signup failed");
     } finally {
       setSubmitting(false);
     }
@@ -125,10 +126,10 @@ export default function Signup() {
         alert(data.message || "Unable to resend code");
         return;
       }
-      alert("Code resent to your email.");
+     toast.success("Verification code resent to your email.");
     } catch (err) {
       console.error("Resend OTP error:", err);
-      alert("Failed to resend code");
+     toast.error("Unable to resend code");
     }
   };
 
@@ -159,7 +160,7 @@ export default function Signup() {
         setToken(data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
         setUser(data.user);
-        alert("Account verified! Redirecting...");
+        toast.success("Verification successful! Welcome aboard.");
         router.push("/profile");
       } else {
         alert(data.message || "OTP verification failed");

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import "./profile.css";
 import { getAudioContext, playSound } from '../libs/audioContext';
 import { useUser } from '../Context/userContext';
+import { toast } from 'react-toastify';
 export default function Welcome() {
   const [profileImage, setProfileImage] = useState(null);
   const [clickBuffer, setClickBuffer] = useState(null);
@@ -11,6 +12,7 @@ export default function Welcome() {
   const {user} = useUser();
 
   useEffect(() => {
+    console.log("User data:", user);
     const ctx = getAudioContext();
     if (!ctx) return;
 
@@ -65,7 +67,7 @@ export default function Welcome() {
         });
       }
       if(res.ok){
-       alert("Image updated successfully");
+      toast.success("Profile picture updated successfully!");
       }
        router.push("/Home");
     } catch (err) {
