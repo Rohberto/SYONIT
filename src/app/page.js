@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import Onboarding from "./Components/Onboarding/Onboarding";
+import Banner from "./Components/IntroBanner/Banner";
 export default function Home() {
   useEffect(() => {
     function setDynamicHeight() {
@@ -13,7 +14,7 @@ export default function Home() {
   }, []);
   return (
    <div className="">
-    <Onboarding/>
+    <Banner />
    </div>
   );
 }
