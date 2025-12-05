@@ -6,7 +6,7 @@ import { FaPlay } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { getAudioContext, playSound } from "@/app/libs/audioContext";
 import ProgressBar from "./progressBar";
-import Button from '../Components/syonit_button/intro';
+import Button from '../syonit_button/intro';
 
 const Onboarding = () => {
   const router = useRouter();
