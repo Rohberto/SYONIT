@@ -6,6 +6,7 @@ import { FaPlay } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { getAudioContext, playSound } from "@/app/libs/audioContext";
 import ProgressBar from "./progressBar";
+import Button from '../Components/syonit_button/intro';
 
 const Onboarding = () => {
   const router = useRouter();
@@ -67,7 +68,7 @@ const Onboarding = () => {
         <h1>SYONIT</h1>
         </div>
 
-     <div className="progress-container">
+    {/* <div className="progress-container">
      {!isComplete &&  <div className=" progress-bar">
         <div
           className="progress-fill"
@@ -99,7 +100,18 @@ const Onboarding = () => {
                </div>
              </div>
       )}
-    </div>
+    </div>*/}
+
+
+        <div className='bottom_button' ref={buttonRef}>
+          <div className="new_intro_bottom_content">
+           <div className="new_intro_bottom_text">
+                 <p className="think_differently">THINK <span className="flipped">D</span>IFFERENTLY</p>
+               </div>
+               <img src='/musketeer2.svg' alt='musketeeers' className="intro_musketeer"/>
+               </div>
+          <Button/>
+          </div>
     </div>
   );
 }
