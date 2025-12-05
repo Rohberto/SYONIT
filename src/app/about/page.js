@@ -93,10 +93,10 @@ export default function HowToPlay() {
           </div>
           <span className="progress-text">{`${currentSlide}/${totalSlides}`}</span>
         </div>
-        <div className="slider-progress">
-          <div className="progress-bar">
+        <div className="about-slider-progress">
+          <div className="about-progress-bar">
             <div
-              className="progress-fill"
+              className="about-progress-fill"
               style={{ width: `${progressPercentage}%` }}
             ></div>
           </div>

@@ -105,7 +105,7 @@
     margin-bottom: 5px;
     list-style: decimal;
 }
-.slider-progress {
+.about-slider-progress {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -113,7 +113,7 @@
   margin-bottom: 20px;
 }
 
-.progress-bar {
+.about-progress-bar {
   width: 90%;
   height: 3px;
   background-color: rgba(248, 194, 158, 1);
@@ -124,7 +124,7 @@
   margin-right: auto;
 }
 
-.progress-fill {
+.about-progress-fill {
   position: absolute;
   height: 100%;
   background-color: rgba(247, 113, 47, 1);
