@@ -121,7 +121,8 @@ export default function HowToPlay() {
       </div>
 
       <div className="ButtonContainer">
-             <Button/>
+        <h1>Are You Ready To Proceed?</h1>
+        <Button/>
       </div>
 
     </div>

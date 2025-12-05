@@ -35,9 +35,7 @@ export default function Banner() {
   const handlePlayClick = () => {
     if (audioBuffer) {
       playSound(audioBuffer, '/Sounds/SYON.mp3');
-      router.push("/intro");
-    } else {
-      router.push("/Home");
+      router.push("/about");
     }
   };
 

@@ -171,6 +171,16 @@
     right: 0;
     width: 100%;
 }
+.ButtonContainer h1 {
+  font-size: 22px;
+  font-family: "Heebo", sans-serif;
+  font-weight: 900;
+  color: rgba(249, 202, 124, 1);
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
 .nav-button:disabled {
   cursor: not-allowed;
   opacity: 0.3;
