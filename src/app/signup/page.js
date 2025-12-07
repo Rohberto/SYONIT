@@ -7,6 +7,7 @@ import Button from '../Components/syonit_button/sign';
 import { useRouter } from 'next/navigation';
 import { useUser } from '../Context/userContext';
 import { toast } from 'react-toastify';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Signup() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -25,6 +26,7 @@ export default function Signup() {
   const [pendingUserId, setPendingUserId] = useState(null);
   const router = useRouter();
   const { user, setUser, setToken } = useUser();
+  const [showPassword, setShowPassword] = useState(false);
 
   // Create refs for OTP input fields
   const inputRefs = useRef([null, null, null, null].map(() => useRef(null)));
@@ -210,14 +212,33 @@ export default function Signup() {
               placeholder="Enter Email"
               required
             />
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              placeholder="Enter Password"
-              required
-            />
+       <div className="password-input-wrapper" style={{ position: "relative" }}>
+          <input
+          type={showPassword ? "text" : "password"}
+          name="password"
+          value={formData.password}
+          onChange={handleInputChange}
+          placeholder="Enter Password"
+          required
+          style={{ paddingRight: "36px" }}
+          />
+        <span
+        onClick={() => setShowPassword((prev) => !prev)}
+        style={{
+          position: "absolute",
+          right: "10px",
+          top: "50%",
+            transform: "translateY(-50%)",
+          cursor: "pointer",
+          color: "#fff",
+          zIndex: 20,
+          }}
+        tabIndex={0}
+        aria-label={showPassword ? "Hide password" : "Show password"}
+    >
+    {showPassword ? <FaEyeSlash /> : <FaEye />}
+  </span>
+</div>
             <select name="ageBracket" value={formData.ageBracket} onChange={handleInputChange} required>
               <option value="">Select Age Range</option>
               <option value="7-12">7 - 12</option>

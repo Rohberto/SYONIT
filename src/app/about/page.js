@@ -6,7 +6,7 @@ import Button from '../Components/syonit_button/about';
 
 
 export default function HowToPlay() {
-  const [currentSlide, setCurrentSlide] = useState(2); // Start at 2/10
+  const [currentSlide, setCurrentSlide] = useState(1); // Start at 2/10
   const totalSlides = 4;
 
   const handlePrev = () => {

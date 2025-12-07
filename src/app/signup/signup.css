@@ -50,7 +50,7 @@ height: 350px;
 max-height: 350px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
- .resend-code p{
+ .form-container label, .resend-code p{
   display: block;
   font-size: 10px;
   font-family: "Heebo", sans-serif;
@@ -252,4 +252,8 @@ input[type="checkbox"]:checked{
   left: 0;
   right: 0;
   bottom: 20px;
+}
+.password-input-wrapper input {
+  width: 100%;
+  box-sizing: border-box;
 }
