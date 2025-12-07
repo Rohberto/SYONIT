@@ -2,6 +2,7 @@
 
 .signContainer {
     height: 100svh;
+    width: 100%;
    background:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/bg.jpg');
     background-size: 350%; /* Ensures the image covers the entire screen */
     background-repeat: no-repeat; /* Prevents the image from repeating */
@@ -49,12 +50,7 @@ height: 450px;
 max-height: 500px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.form-spacer{
-     display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.form-container label, .resend-code p{
+ .resend-code p{
   display: block;
   font-size: 10px;
   font-family: "Heebo", sans-serif;
@@ -79,7 +75,7 @@ max-height: 500px;
 .form-container input[type="password"], .form-container select {
   width: 100%;
   padding: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   border: none;
   background-color: rgba(250, 231, 193, 0.3);
   border-radius: 30px;

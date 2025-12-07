@@ -194,41 +194,36 @@ export default function Signup() {
       case 1:
         return (
           <div className="form-container form-spacer">
-            <label>Full Name:</label>
             <input
               type="text"
               name="fullName"
               value={formData.fullName}
               onChange={handleInputChange}
-              placeholder="John Doe"
+              placeholder="Enter Full Name"
               required
             />
-            <label>Email:</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              placeholder="johnosami@email.com"
+              placeholder="Enter Email"
               required
             />
-            <label>Password:</label>
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              placeholder="••••••••••••••••"
+              placeholder="Enter Password"
               required
             />
-            <label>Age Bracket:</label>
             <select name="ageBracket" value={formData.ageBracket} onChange={handleInputChange} required>
               <option value="">Select Age Range</option>
               <option value="7-12">7 - 12</option>
               <option value="13-17">13 - 17</option>
               <option value="18+">18 and above</option>
             </select>
-            <label>Gender:</label>
             <select name="gender" value={formData.gender} onChange={handleInputChange} required>
               <option value="">Select Gender</option>
               <option value="male">Male</option>
