@@ -1,5 +1,52 @@
+/*
+
+--sunset: #FCD5A3ff;
+--orange-crayola: #FB7B3Cff;
+--cornsilk: #FAF6D9ff;
+--pumpkin: #EE7B37ff;
+--cosmic-latte: #FAF3DFff;
+
+--sunset: hsla(34, 94%, 81%, 1);
+--orange-crayola: hsla(20, 96%, 61%, 1);
+--cornsilk: hsla(53, 77%, 92%, 1);
+--pumpkin: hsla(22, 84%, 57%, 1);
+--cosmic-latte: hsla(44, 73%, 93%, 1);
+
+
+$sunset: #FCD5A3ff;
+$orange-crayola: #FB7B3Cff;
+$cornsilk: #FAF6D9ff;
+$pumpkin: #EE7B37ff;
+$cosmic-latte: #FAF3DFff;
+
+
+$sunset: hsla(34, 94%, 81%, 1);
+$orange-crayola: hsla(20, 96%, 61%, 1);
+$cornsilk: hsla(53, 77%, 92%, 1);
+$pumpkin: hsla(22, 84%, 57%, 1);
+$cosmic-latte: hsla(44, 73%, 93%, 1);
+
+
+$sunset: rgba(252, 213, 163, 1);
+$orange-crayola: rgba(251, 123, 60, 1);
+$cornsilk: rgba(250, 246, 217, 1);
+$pumpkin: rgba(238, 123, 55, 1);
+$cosmic-latte: rgba(250, 243, 223, 1);
+
+
+$gradient-top: linear-gradient(0deg, #FCD5A3ff, #FB7B3Cff, #FAF6D9ff, #EE7B37ff, #FAF3DFff);
+$gradient-right: linear-gradient(90deg, #FCD5A3ff, #FB7B3Cff, #FAF6D9ff, #EE7B37ff, #FAF3DFff);
+$gradient-bottom: linear-gradient(180deg, #FCD5A3ff, #FB7B3Cff, #FAF6D9ff, #EE7B37ff, #FAF3DFff);
+$gradient-left: linear-gradient(270deg, #FCD5A3ff, #FB7B3Cff, #FAF6D9ff, #EE7B37ff, #FAF3DFff);
+$gradient-top-right: linear-gradient(45deg, #FCD5A3ff, #FB7B3Cff, #FAF6D9ff, #EE7B37ff, #FAF3DFff);
+$gradient-bottom-right: linear-gradient(135deg, #FCD5A3ff, #FB7B3Cff, #FAF6D9ff, #EE7B37ff, #FAF3DFff);
+$gradient-top-left: linear-gradient(225deg, #FCD5A3ff, #FB7B3Cff, #FAF6D9ff, #EE7B37ff, #FAF3DFff);
+$gradient-bottom-left: linear-gradient(315deg, #FCD5A3ff, #FB7B3Cff, #FAF6D9ff, #EE7B37ff, #FAF3DFff);
+$gradient-radial: radial-gradient(#FCD5A3ff, #FB7B3Cff, #FAF6D9ff, #EE7B37ff, #FAF3DFff);
+
+*/
 :root {
-  --background: #ffffff;
+  --background: #1f1919;
   --foreground: #171717;
 }
 
@@ -28,10 +75,166 @@ body {
   padding: 0;
   margin: 0;
 }
-
+html {
+  scroll-behavior: smooth;
+}
 a {
   color: inherit;
   text-decoration: none;
+}
+.custom-toast-container{
+top: 0 !important; /* Adjust based on header height (e.g., 50px + padding) */
+  z-index: 2000; /* Above header (z-index: 1000 in MainHeader.css) */
+}
+/* Glassy overlay panel */
+.glassy-panel {
+   position: relative;
+  background: rgba(255, 255, 255, 0.15); /* translucent */
+  padding: 2rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(2px) saturate(150%);
+  -webkit-backdrop-filter: blur(2px) saturate(180%); /* Safari fix */
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+
+  color: #fff;
+  text-align: center;
+  overflow: hidden;
+
+}
+
+/* glossy highlight */
+.glassy-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0) 70%
+  );
+  pointer-events: none;
+}
+
+.glass-text {
+  display: inline-block; /* so it wraps around the text */
+  backdrop-filter: blur(10px); /* glass blur */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  position: relative;
+}
+
+.glassContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  height: 70px;
+  border-radius: 30px;
+}
+
+.glassContainer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    border-radius: 30px;
+    -webkit-box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7), inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
+            box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7), inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
+}
+
+.glassContainer::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: 30px;
+    -webkit-backdrop-filter: blur(0px);
+            backdrop-filter: blur(0px);
+    -webkit-filter: url(#container-glass);
+            filter: url(#container-glass);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.glassBtn {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  cursor: pointer;
+  width: 100%;
+  height: 70px;
+  padding: 15px;
+  background: transparent;
+  border-radius: 9999px;
+  outline: none;
+  border: none;
+  z-index: 0;
+  color: rgba(247, 113, 47, .8);
+   font-size: 18px;
+  font-weight: 700;
+  font-family: "Heebo", sans-serif;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+.glassBtn::before , .homeglassBtn::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    border-radius: 9999px;
+   -webkit-box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7), inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
+            box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7), inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
+    background-color: rgb(255 255 255 / 10%);
+}
+
+.glassBtn::after, .homeglassBtn::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: 9999px;
+    -webkit-backdrop-filter: blur(0px);
+            backdrop-filter: blur(0px);
+    -webkit-filter: url(#container-glass);
+            filter: url(#container-glass);
+    overflow: hidden;
+    isolation: isolate;
+}
+.homeglassBtn{
+   background: transparent;
+     border-radius: 9999px;
+  outline: none;
+  border: none;
+    overflow: hidden;
+}
+.glassBtn svg {
+  width: 100%;
+  height: 100%;
+  stroke: #fff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -39,5 +242,10 @@ a {
     color-scheme: dark;
   }
 }
+.recharts-legend-item-text{
+  font-family: 'Heebo', sans-serif !important;
+  font-size: 10px !important;
+}
+
 
 

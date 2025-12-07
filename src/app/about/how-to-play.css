@@ -1,0 +1,203 @@
+
+.aboutContainer {
+    height: 100svh;
+    background:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/bg.jpg');
+    background-size: 350%; /* Ensures the image covers the entire screen */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.aboutHeader {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+    font-family: 'Heebo', sans-serif;
+  font-size: 16x;
+  text-transform: capitalize;
+  width: 100%;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  letter-spacing: 7.68px;
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+}
+
+.subheader {
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-family: "Heebo", sans-serif;
+  letter-spacing: 0;
+  color: rgba(255, 254, 220, 1);
+}
+.iconContainer{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(249, 202, 124, 0.42);
+  color: rgba(255, 255, 255, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 20px;
+  top: 40px;
+}
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative  ;
+  max-height: 400px;
+  min-height: 350px;
+}
+
+.slider-content {
+  width: 100%;
+  height: 350px;
+  max-height: 350px;
+  background-color: transparent;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  color: #faf6d9ff;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 1);
+  border-radius: 24px;
+
+}
+.slider-inner-content{
+  height: 100%;
+    overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.slider-scrollable {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  /* If you want to limit the height: */
+  max-height: calc(100% - 40px); /* adjust as needed */
+}
+.slider-content::-webkit-scrollbar {
+  display: none;
+}
+.slider-content h1 {
+  margin: 0;
+  font-size: 18px;
+  text-align: center;
+  font-family: "DM Sans";
+}
+.slider-content ul{
+      margin: 0;
+  font-size: 14px;
+  font-family: "DM Sans";
+}
+.slider-content ul li{
+    margin-bottom: 5px;
+    list-style: decimal;
+}
+.about-slider-progress {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.about-progress-bar {
+  width: 90%;
+  height: 3px;
+  background-color: rgba(248, 194, 158, 1);
+  position: relative;
+  overflow: hidden;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-progress-fill {
+  position: absolute;
+  height: 100%;
+  background-color: rgba(247, 113, 47, 1);
+  transition: width 0.3s ease-in-out;
+}
+
+.progress-text {
+  font-size: 10px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  color: rgba(176, 117, 86, 1);
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  font-family: "Heebo", sans-serif;
+  display: inline-block;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-top: -10px;
+}
+
+.nav-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  border-radius: 50%;
+  background: rgba(249, 202, 124, 0.42);
+  color: rgba(255, 255, 255, 1);
+  font-size: 18px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  border: none;
+}
+.ButtonContainer{
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    width: 100%;
+}
+.ButtonContainer h1 {
+  font-size: 22px;
+  font-family: "Heebo", sans-serif;
+  font-weight: 700;
+   color: rgba(255, 254, 220, 1);
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.nav-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+.button-group {
+  display: flex;
+  gap: 20px;
+}
+
+.action-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  background-color: #fff;
+  cursor: pointer;
+  outline: none;
+}

@@ -1,22 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
-/* OnboardingScreen.module.css 
-$lime-green: #4BD330ff;
-$blue-ncs: #0088D1ff;
-$prussian-blue: #063759ff;
-$tea-green: #CFF1C7ff;
-$bice-blue: #00689Eff;
-
-$oxford-blue: #0B092Eff;
-$tropical-indigo: #A67BFEff;
-$neon-blue: #5072FEff;
-$rich-black: #080919ff;
-$russian-violet: #3C074Aff;
-
-background: hsla(260, 98%, 74%, 1);
-
-  background: radial-gradient(circle, hsla(260, 98%, 74%, 1) 27%, hsla(228, 99%, 65%, 1) 100%);
-*/
-
 @font-face {
   font-family: "Heebo";
   src: url('./fonts/Heebo-Medium.ttf') format('truetype');
@@ -25,14 +6,30 @@ background: hsla(260, 98%, 74%, 1);
   font-family: "Grimer";
   src: url('./fonts/BNGrimer.otf') format('opentype');
 }
+@font-face {
+  font-family: "sf-text";
+  src: url('./fonts/sf-pro-display/sf-pro-text.ttf') format('truetype');
+}
+@font-face {
+  font-family: "sf-display";
+  src: url('./fonts/sf-pro-display/SFPRODISPLAYMEDIUM.OTF') format('opentype');
+}
+@font-face {
+  font-family: "sf-display-thin";
+  src: url('./fonts/sf-pro-display/SFPRODISPLAYTHINITALIC.OTF') format('opentype');
+}
 @property --gradient-angle{
   syntax: "<angle>";
   initial-value: 0deg;
   inherits: false;
 }
+
+body{
+  font-family: 'Grimer', 'Heebo';
+}
 .container {
   height: 100vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium4.png'); /* Replace with the path to your image */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium5.png'); /* Replace with the path to your image */
   background-size: cover; /* Ensures the image covers the entire screen */
   background-repeat: no-repeat; /* Prevents the image from repeating */
   background-position: center;
@@ -58,7 +55,7 @@ line-height: 22px;
 leading-trim: both;
 text-edge: cap;
 color: transparent; /* Make the text fill transparent */
-  -webkit-text-stroke: 1px #fff; /* Define the stroke width and color */
+  -webkit-text-stroke: 1px #F6ee23; /* Define the stroke width and color */
   font-size: 24px; /* Adjust font size */
   font-weight: bold; 
 }
@@ -76,21 +73,35 @@ color: transparent; /* Make the text fill transparent */
   width: 100%;
   border-radius: 36px;
   display: block;
-border:1px solid #fff;
 display: flex;
 flex-direction: column;
 padding: 20px 0;
 justify-content: center;
 align-items: center;
 margin: 20px 0;
+visibility: visible;
+  opacity: 1;
+  transition: visibility 0s .5s, opacity 1s .5s; 
 }
-.onboarding_about h4{
-  font-family: "DM Sans", serif;
-  font-size: 16px;
+.onboarding_about h4:first-child{
+  font-family: "sf-display", serif;
+  font-size: 28px;
   letter-spacing: -0.5px;
-  margin-bottom: 10px;
+  margin: 40px 0;
+  text-transform: capitalize;
+}
+.onboarding_about p{
+  font-family: "DM Sans", serif;
+  font-size: 18px;
+  margin: 20px 0;
+  text-transform: capitalize;
+  font-weight: regular;
 }
 
+.about_no_display, .no_illustration{
+visibility: hidden;
+opacity: 0;
+}
 /* Main Content */
 .swiper_container{
   width: 100%;
@@ -104,9 +115,7 @@ margin: 20px 0;
   width: 100%;
   padding: 20px 0;
 }
-.Home_slide{
-  padding: 20px;
-}
+
 .onboarding_slide p{
   font-family: "Grimer" !important;
 font-size: 18px;
@@ -142,17 +151,7 @@ display: block;
   position: relative;
 }
 
-.buttonsContainer::after, .buttonsContainer::before{
-  content: ' ';
-  position: absolute;
-  inset: -.1rem;
-  border-radius: inherit;
-  animation: rotation 2s linear infinite;
-  z-index: -1;
-}
-.buttonsContainer::after{
-  filter: blur(.4rem);
-}
+
 
 /* Progress Indicators  background: conic-gradient( from var(--gradient-angle), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), rgba(201, 201, 201, .17), #fff);*/
 
@@ -184,13 +183,19 @@ display: block;
 
 /* Illustrations */
 .illustrations_container{
-  width: 100%;
+  width: 200px;
+  height: 200px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-self: center;
   margin-top: auto;
-  padding-bottom: 40px;
-  background-color: black;
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s .5s, opacity 1s .5s;
+}
+.illustrations_container img{
+  width: 100%;
+  height: 100%;
 }
 
 /* Bottom Gradient, Circle, and Buttons */
@@ -216,44 +221,19 @@ bottom: 0%;
 left: 0;
 padding: 20px;
 }
-.buttonsContainer{
-width: 100%;
-height: 94px;
-background: transparent;
-border: 1px solid #fff;
-border-radius: 65px;
-position: relative;
-display: flex;
-justify-content: space-between;
-padding: 5px;
-overflow: hidden;
-outline: none;
-transition: color 0.3s;
-}
-.buttonsContainer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 4px;
-  z-index: -1;
-  box-shadow: 0 0 0 2px transparent;
-  animation: borderAnimation 2s infinite linear;
+
+
+@keyframes rotation {
+  0% {--gradient-angle: 0deg;}
+  100% {--gradient-angle: 360deg}
 }
 
-@keyframes borderAnimation {
-  0% {
-    box-shadow: 0 0 0 2px transparent, 0 0 10px 2px rgba(255, 99, 71, 1);
-  }
-  50% {
-    box-shadow: 0 0 0 2px transparent, 0 0 10px 2px rgba(255, 99, 71, 0.7);
-  }
-  100% {
-    box-shadow: 0 0 0 2px transparent, 0 0 10px 2px rgba(255, 99, 71, 1);
-  }
+@keyframes rotate {
+	100% {
+		transform: translate(-50%, -50%) rotate(1turn);
+	}
 }
+
 
 
 .button_circle{
@@ -264,7 +244,7 @@ height: 93.5px;
 left: 50%;
 top: 50%;
 transform: translate(-50%, -50%);
-background: rgba(0, 0, 0, 0.8);
+background: transparent;
 transform: translate(-50%, -50%);
 display: block;
 }
@@ -286,7 +266,7 @@ display: block;
   content: "";
   height: 50%;
   width: 50%;
-  background-image: url('/syonit-logo.svg'); /* Replace with the path to your image */
+  background-image: url('/syonit_icon.png'); /* Replace with the path to your image */
   background-size: cover; /* Ensures the image covers the entire screen */
   background-repeat: no-repeat; /* Prevents the image from repeating */
   background-position: center;
@@ -294,6 +274,15 @@ display: block;
   left: 25%;
   border-radius: 50%;
   background-color: transparent;
+  /*animation: flashGreen 1s infinite; Flash animation */
+}
+@keyframes flashGreen {
+  0%, 100% {
+    box-shadow: 0 0 5px 2px rgba(0, 255, 0, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 10px 4px rgba(0, 255, 0, 1);
+  }
 }
 /*
 .button_circle div {
@@ -382,7 +371,7 @@ display: block;
   top: 0;
   left: 50%;
   transform-origin: center 46.75px;
-}v
+}
 .onboarding_link{
   font-family: "DM Sans", serif;
 font-size: 28px;
@@ -398,6 +387,11 @@ text-transform: uppercase;
 color: transparent;
 z-index: 100;
 -webkit-text-stroke: 0.5px #fff;
+}
+.onboarding_link_button{
+  border: none;
+  outline: none;
+  background-color: transparent;
 }
 .onboarding_link_login{
   position: absolute;
@@ -415,15 +409,24 @@ z-index: 100;
 /* points container*/
 .main_point_container{
   width: 100%;
-  padding: 20px;
+  margin: 0 0 20px 0;
 }
 .game_point_container{
   width: 100%;
-  margin: 20px 0;
 }
 .Points_container{
 height: 50px;
-background: linear-gradient(90deg, hsla(260, 98%, 74%, 1) 40%, hsla(228, 99%, 65%, 1) 100%);
+background: transparent;
+width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
+}
+.game_Points_container{
+  min-height: 60px;
+background: transparent;
+border: 1px solid #fff;
 border-radius: 8px;
 width: 100%;
 display: flex;
@@ -438,41 +441,51 @@ text-align: center;
   width: 40%;
 }
 .points_text h4{
-  font-family: "Heebo" !important;
+  font-family: "Helvetica Neue" !important;
 font-style: normal;
-font-weight: 400;
+font-weight: 500;
 font-size: 8px;
 text-align: center;
 color: #fff;
 }
+
 .points_text p {
-font-family: 'Heebo';
+font-family: 'Helvetica Neue';
 font-style: normal;
-font-weight: 400;
-font-size: 16px;
-line-height: 24px;
+font-weight: 500;
+font-size: 18px;
+line-height: 22px;
 color: #fff;
 }
 .next_game{
-background: #FFF;
-border-radius: 8px;
+color: #fff;
+margin-top: 30px;
 }
 .next_game h4{
 font-family: 'Heebo';
 font-style: normal;
 font-weight: 400;
-font-size: 8px;
-color: #292828;
+font-size: 14px;
+color: #fff;
 }
 .next_game p{
 font-family: 'Heebo';
 font-style: normal;
 font-weight: 700;
 font-size: 24px;
-color: #000000;
+color: #fff;
 }
 
 @keyframes rotation {
   0% { --gradient-angle: 0deg; }
   100% { --gradient-angle: 360deg}
+}
+@media all and (max-width: 400px){
+  .header h1 {
+      font-size: 18px; /* Adjust font size */
+      font-weight: bold; 
+    }
+    .stroke_links{
+    font-size: 18px;
+    }
 }

@@ -1,0 +1,68 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+/* ===== Sizes ===== */
+.btn.sm {
+  padding: 6px 14px;
+  font-size: 14px;
+}
+
+.btn.md {
+  padding: 10px 18px;
+  font-size: 16px;
+}
+
+.btn.lg {
+  padding: 14px 26px;
+  font-size: 18px;
+}
+
+/* ===== Variants ===== */
+.btn.default {
+  background-color: #f5c518;
+  color: #000;
+}
+.btn.default:hover {
+  background-color: #ffd83d;
+}
+
+.btn.outline {
+  border: 2px solid #f5c518;
+  background-color: transparent;
+  color: #f5c518;
+}
+.btn.outline:hover {
+  background-color: #f5c518;
+  color: #000;
+}
+
+.btn.ghost {
+  background-color: transparent;
+  color: #f5c518;
+}
+.btn.ghost:hover {
+  background-color: rgba(245, 197, 24, 0.1);
+}
+
+/* ===== Disabled ===== */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== Subtle Animation ===== */
+.btn:hover {
+  transform: scale(1.05);
+}
+.btn:active {
+  transform: scale(0.97);
+}

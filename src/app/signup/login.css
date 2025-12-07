@@ -1,3 +1,15 @@
+.sign-container {
+  min-height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/bg.jpg');
+  background-size: cover; /* Ensures the image covers the entire screen */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center;
+  color: #26282a;
+  padding: 20px 20px 150px 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
   /* Input Fields */
   .input-container {
@@ -5,17 +17,39 @@
     flex-direction: column;
     gap: 15px;
     width: 100%;
-    padding: 30px;
+    padding: 20px 10px;
     font-family: "Heebo" !important;
-border: 1px solid  hsla(260, 98%, 74%, 1);
+border: 1px solid #fff;
 border-radius: 36px;
-margin: 20px 0;
+margin-bottom: 10px;
   }
-  
+  .terms-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px 20px;
+    color: #fff;
+  }
+  .terms-container input[type="checkbox"] {
+    margin-right: 8px;
+  }
+  .terms-container label {
+    font-size: 14px;
+    color: #fff;
+  }
+  .terms-link {
+    color: #0066cc;
+    text-decoration: underline;
+  }
+  .terms-link:hover {
+    color: #003366;
+  }
   .input-field {
     display: flex;
     flex-direction: column;
-    background-color: #fff;
+    background-color: transparent;
+    border: 1px solid #fff;
     border-radius: 20px;
     padding: 10px 15px;
     font-family: "Heebo" !important;
@@ -25,7 +59,7 @@ margin: 20px 0;
   .input-field label {
     font-size: 12px;
     text-transform: uppercase;
-    color: #000;
+    color: #fff;
     margin-bottom: 5px;
     font-family: "Heebo" !important;
     font-weight: 700;
@@ -34,7 +68,7 @@ margin: 20px 0;
   .input-field input {
     background: transparent;
     border: none;
-    color: #000;
+    color: #fff;
     font-size: 14px;
     outline: none;
     font-family: "Heebo" !important;
@@ -42,34 +76,75 @@ margin: 20px 0;
   }
   
   .input-field input::placeholder{
-    color: #000;
+    color: #fff;
     font-family: "Heebo" !important;
     font-size: 12px;
     font-weight: 400;
   }
   /* Sign in with Apple Button */
   .apple-button {
-    background-color: #fff;
-    color: #000;
+    background-color: transparent;
+    color: #fff;
     font-weight: bold;
+    border: 1px solid #fff;
     border-radius: 25px;
     padding: 10px 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin: 20px auto;
     font-family: "Grimer" !important;
     cursor: pointer;
-    width: 80%;
+    width: 90%;
     text-align: center;
-    font-family: "Heebo" !important;
     font-weight: 700;
+    margin: 0px auto 10px;
   }
   
   .apple-icon {
     font-size: 20px;
   }
+
+.sign_buttons_container{
+  width: 100%;
+padding: 40px 20px;
+z-index: 100;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 40px;
+}
+.sign_stroke_links{
+  width: 200px;
+  padding: 10px 5px;
+  border-radius: 20px;
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  font-family: "DM Sans";
+  font-size: 14px;
+  outline: none;
+}
+.profile_container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-picture{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-picture img{
+  width: 60%;
+  height: "auto";
+  object-fit: cover;
+}
   
   
   

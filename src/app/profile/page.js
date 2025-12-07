@@ -1,59 +1,116 @@
-"use client";
-
-export const dynamic = "force-dynamic";
-
-import React, {useState, useEffect} from 'react';
-import Header from '../Components/Header';
-import Bottom from '../Components/profileBottom';
-import Image from 'next/image';
-import Pr from "../Assets/pr.png";
+"use client"
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import "./profile.css";
-const Profile = () => {
-  
+import { getAudioContext, playSound } from '../libs/audioContext';
+import { useUser } from '../Context/userContext';
+import { toast } from 'react-toastify';
+export default function Welcome() {
+  const [profileImage, setProfileImage] = useState(null);
+  const [clickBuffer, setClickBuffer] = useState(null);
+  const router = useRouter();
+  const {user} = useUser();
 
-  const [imageSrc, setImageSrc] = useState(null);
+  useEffect(() => {
+    console.log("User data:", user);
+    const ctx = getAudioContext();
+    if (!ctx) return;
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImageSrc(imageUrl);
+    const loadSound = async () => {
+      try {
+        const clickResponse = await fetch('/Sounds/coin_drop.mp3');
+        if (!clickResponse.ok) throw new Error('Failed to fetch coin_drop.mp3');
+        const clickArrayBuffer = await clickResponse.arrayBuffer();
+        const clickAudioBuffer = await ctx.decodeAudioData(clickArrayBuffer);
+        setClickBuffer(clickAudioBuffer);
+      } catch (err) {
+        console.error('Error loading sounds:', err);
+      }
+    };
+
+    loadSound();
+  }, []);
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Preview locally
+    const imageUrl = URL.createObjectURL(file);
+    setProfileImage(imageUrl);
+
+    try {
+      // Upload to Cloudinary
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "Syonit"); // from cloudinary dashboard
+
+      const res = await fetch("https://api.cloudinary.com/v1_1/dxurv6mps/image/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.secure_url) {
+        console.log("Uploaded Image URL:", data.secure_url);
+
+        // Send URL to backend to update user
+      const res =  await fetch("https://syonit-js.onrender.com/api/profile", { // change endpoint
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user?.id, // assuming you saved after signup
+            image_url: data.secure_url,
+          }),
+        });
+      }
+      if(res.ok){
+      toast.success("Profile picture updated successfully!");
+      }
+       router.push("/Home");
+    } catch (err) {
+      console.error("Error uploading image:", err);
+      alert("error uploading image");
     }
   };
 
-  // Clean up the URL when a new file is selected or when the component unmounts
-  useEffect(() => {
-    return () => {
-      if (imageSrc) {
-        URL.revokeObjectURL(imageSrc);
-      }
-    };
-  }, [imageSrc]);
   return (
-    <div className='container'>
-        <Header/>
+    <div className="profileContainer">
+      <h1 className="profileHeader">SYONIT</h1>
+      <h2 className="subheader">WELCOME SYONNAIRE JOHN!</h2>
 
-        <div className="input-container">
-
-        {imageSrc ? (
-        <div className='profile_pic'>
-        <img src={imageSrc} alt="Uploaded preview" style={{ width: '200px', height: '200px', objectFit: 'cover', marginTop: '10px', borderRadius: "50%" }} /></div>
-      ) : (
-        <div className='profile_pic'>
-        <Image src={Pr} alt="Uploaded preview" style={{ width: '200px', height: '200px', objectFit: 'cover', marginTop: '10px', borderRadius: "50%", border: "1px solid #fff"}} /></div>
-      )}
-
-        <div className="input-field">
-          <label>Profile Picture:</label>
-          <input type="file" onChange={handleImageUpload} />
+      <div className="profile-container">
+        <div className="profile-picture">
+          {profileImage ? (
+            <img src={profileImage} alt="Profile" className="profile-image" />
+          ) : (
+            <div className="placeholder"></div>
+          )}
         </div>
+
+        <label htmlFor="image-upload" className="upload-label">
+          UPDATE PROFILE PICTURE
+          <hr/>
+        </label>
+        <input
+          id="image-upload"
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          style={{ display: 'none' }}
+        />
       </div>
-      
 
-
-        <Bottom/>
+      <div className='bottom-button'>
+        <button className="profile-button" onClick={() => {
+          playSound(clickBuffer, '/Sounds/coin_drop.mp3');
+          router.push("/Home");
+        }}>
+          LET'S GET STARTED
+        </button>
+      </div>
     </div>
-  )
+  );
 }
-
-export default Profile

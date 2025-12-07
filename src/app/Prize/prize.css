@@ -1,0 +1,162 @@
+.gameContainer {
+    height: 100svh;
+ background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/bg.jpg');
+  background-size: 300%;
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: center;
+}
+.Home-slide {
+  background-color: transparent;
+  border-radius: 24px;
+  padding: 20px;
+  width: 100%;
+  height: 360px;
+  max-height: 360px;
+  border: 1px solid rgba(255, 255, 255, 1);
+  margin-bottom: 10px;
+  margin-top: 10px;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  overflow-y: auto; /* ✅ Scroll vertically if prizes exceed height */
+  scrollbar-width: thin; /* for Firefox */
+  scrollbar-color: rgba(255,255,255,0.5) transparent;
+}
+
+.Home-slide::-webkit-scrollbar {
+  width: 6px; /* slim scrollbar */
+}
+
+.Home-slide::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+}
+
+.prize-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  max-height: 90px; /* ✅ each item small */
+}
+
+.prize-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.prize-item.selected {
+  border: 2px solid #00bfff; /* highlight when selected */
+  background: rgba(0, 191, 255, 0.1);
+}
+
+.prize-image {
+  width: 60px;   /* ✅ small image */
+  height: 60px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.prize-info {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+}
+
+.prize-info h4 {
+  font-size: 16px;
+  margin: 0;
+  color: #fff;
+   font-family: "heebo", sans-serif;
+  font-weight: 400;
+}
+
+.prize-info p {
+  font-size: 13px;
+  margin: 2px 0;
+  color: rgba(255, 255, 255, 0.8);
+   font-family: "heebo", sans-serif;
+  font-weight: 400;
+}
+
+.bottom-button{
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    padding: 0 20px;
+}
+.game_details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 10px;
+}
+.prize-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ color: rgba(247, 113, 47, 1);
+}
+/* .modal*/
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal Box */
+.modal {
+  background:  rgba(247, 113, 47, 1);;
+  padding: 20px;
+  border-radius: 12px;
+  width: 320px;
+  text-align: center;
+}
+
+.modal h3 {
+  margin-bottom: 10px;
+}
+
+.modal-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.confirm-btn {
+  background: green;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: red;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

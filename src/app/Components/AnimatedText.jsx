@@ -1,0 +1,41 @@
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+
+export default function AnimatedText() {
+  const textRef = useRef(null);
+
+  useEffect(() => {
+    // Create a GSAP timeline
+    const tl = gsap.timeline();
+
+    tl.fromTo(
+      ".never_give_up",
+      { scale: 0.8, opacity: 0 },
+      { scale: 1.2, opacity: 1, duration: 2, ease: "power1.out" }
+    )
+      .to(".never_give_up", {
+        scale: 1,
+        duration: 0.3,
+        ease: "power1.inOut"
+      })
+      .fromTo(".rest_of_text",   { scale: 1.2, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 2, ease: "power1.out" })
+        .to([".never_give_up", ".rest_of_text"], {
+          scale: 1.06,
+          duration: 0.6,
+          repeat: -1,
+          yoyo: true,
+          ease: "power1.inOut"
+        });
+  }, []);
+
+  return (
+    <p className="frozen_motivation" ref={textRef}>
+      <span className="never_give_up">Oops!!!, You are frozen</span>{" "}
+      <span className="rest_of_text">
+        Never give up, You can still join the game if you stay alert to <b>Break-the-Tie.</b>{" "}
+        Fastest finger joins next round.
+      </span>
+    </p>
+  );
+}

@@ -1,0 +1,276 @@
+.home_container{
+    min-height: 100vh;
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: radial-gradient(circle, hsla(230, 65%, 20%, 1) 22%, hsla(243, 67%, 11%, 1) 87%);
+  color: #fff;
+  padding: 20px 0 150px 0;
+}
+
+    .Home_slide h1{
+        font-size: 10px;
+        font-weight: 700;
+        font-family: "Heebo", sans-serif;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+        color: rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+.home_container .swiper_container{
+    padding-bottom: 40px;
+}
+.custom-pagination-bullet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+  }
+  
+  .bullet-label {
+  font-family: 'Heebo';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 8px;
+  line-height: 12px;
+  text-align: center;
+  color: #D9D9D9 !important;
+  display: inline-block;
+  margin-bottom: 7px;
+  text-transform: uppercase;
+  }
+  
+  .swiper-pagination-bullet  {
+    width: 77px !important;
+    display: inline-block;
+    height: 8px !important;
+    background-color: #666 !important;
+    border-radius: 3px !important;
+  
+  }
+  
+.swiper-pagination-bullet-active{
+    background-color: hsla(260, 98%, 74%, 1) !important;
+  }
+ .home_container .swiper-pagination{
+    display: flex;
+    justify-content: space-between;
+    bottom: 0 !important;
+    z-index: 100;
+  }
+.main_header .headerLine {
+    width: 100vw;
+    height: 2px;
+    background-color: hsla(260, 98%, 74%, 1);
+  }
+.header_links{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+.profile_menu{
+    margin-top: 15px;
+}
+.main_header h1 {
+    font-family: "Grimer" !important;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 22px;
+    leading-trim: both;
+    text-edge: cap;
+    color: #FFFFFF;
+    }
+.Home_screen{
+    padding: 20px;
+}
+    .current_game_info_buttons{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;position: relative;
+    }
+.game_info h4, .game_info p{
+     font-size: 10px;
+        font-weight: 700;
+        font-family: "Heebo";
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 1);
+        text-align: center;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+}
+.divider{
+    width: 100%;
+    height: 1px;
+    background-color: #faf6d9ff;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+}
+    .current_game_header{
+font-family: 'Grimer';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 22px;
+leading-trim: both;
+text-edge: cap;
+text-align: center;
+color: #FFFFFF;
+margin-bottom: 10px;
+    }
+ .homeContainer .game_round{
+width: 100%;
+height: 32px;
+ background-color: rgba(226, 226, 226, 0.5);
+border-radius: 31px;
+margin: 10px 0;
+display: flex;
+align-items: center;
+justify-content: space-between;
+border: 1px solid rgba(255, 255, 255, 1);
+    }
+
+  .homeContainer .round_section{
+font-family: 'Heebo';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 24px;
+text-align: center;
+color: rgba(0, 0, 0, 0.7);
+    }
+    
+    .y-section, .n-section{
+        width: 35%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        position: relative;
+        background-color: transparent;
+        transition: background-color 1s ease, border-color 1s ease;
+    }
+.highlight{
+    height: 30;
+background-color: rgba(244, 113, 48, 1);
+border-radius: 36px;
+}
+.y-section.highlight, .y-section.higher_section{
+    border-top-left-radius: 17px;
+border-top-right-radius: 8px;
+border-bottom-right-radius: 8px;
+border-bottom-left-radius: 17px;
+}
+.n-section.highlight, .n-section.higher_section{
+    border-top-left-radius: 8px;
+border-top-right-radius: 17px;
+border-bottom-right-radius: 17px;
+border-bottom-left-radius: 8px;
+}
+.y-section p, .n-section p{
+    opacity: 0;
+}
+.yes_count{
+position: absolute;
+left: 40%;
+position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+font-family: 'Grimer' !important;
+font-size: 16px;
+color: rgba(0, 0, 0, 0.3);
+}
+.no_count{
+    position: absolute;
+    right: 40%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Grimer' !important;
+font-size: 16px;
+color: rgba(0, 0, 0, 0.3);
+}
+.higher_section .yes_count, .higher_section .no_count{
+    color: #D9D9D9;
+}
+.Y_icon, .N_icon{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+font-family: "Grimer" !important;
+font-size: 16px;
+color: rgba(0, 0, 0, 0.3);
+}
+.higher_section .Y_icon, .higher_section .N_icon{
+    width: 24px;
+    height: 24px;
+    background: rgba(226, 226, 226, 0.5);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.N_icon{
+    right: 10%;
+}
+.Y_icon{
+    left: 10%;
+}
+
+.played p{
+    opacity: 1;
+    color: #000;
+}
+.game_buttons{
+width: calc(100% - 40px);
+height: 72px;
+background: transparent;
+border: 1px solid rgba(255, 255, 255, 1);
+border-radius: 36px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0 20px;
+position: absolute;
+left: 20px;
+right: 20px;
+bottom: 20px;
+}
+.game_button{
+background-color: transparent;
+width: 24px;
+height: 22px;
+border: none;
+outline: none;
+font-family: 'Heebo';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 29px;
+display: flex;
+align-items: center;
+text-align: center;
+color: rgba(152, 146, 132, 1)
+}
+.screen_desc{
+    text-align: center;
+color: #A1A1A1;
+font-family: 'Grimer';
+font-style: normal;
+font-weight: 400;
+font-size: 32px;
+line-height: 29px;
+}
+.home_bottom{
+    margin-top: auto;
+}
+.higher_section{
+   height: 30;
+background-color: rgba(244, 113, 48, 1);
+border-radius: 8px;
+}

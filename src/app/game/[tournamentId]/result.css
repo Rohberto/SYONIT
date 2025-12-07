@@ -1,0 +1,139 @@
+.results-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.results-card {
+  background: linear-gradient(180deg, #FFEECF, #FF924A);
+  padding: 20px;
+  width: 95%;
+  max-width: 480px;
+  border-radius: 30px;
+  text-align: center;
+  color: #5A2C08;
+  animation: popIn .4s ease-out;
+}
+
+@keyframes popIn {
+  0% { transform: scale(.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.primer-text {
+  font-size: 12px;
+  opacity: .6;
+  margin-bottom: 4px;
+}
+
+.question-text {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.avatar-row {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.avatar-wrap {
+  text-align: center;
+}
+
+.avatar-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #ddd;
+  margin: auto;
+}
+
+.avatar-icon.yes {
+  background: #FFDFB1;
+}
+
+.avatar-icon.no {
+  background: #FF7B47;
+}
+
+.vote-label {
+  font-size: 10px;
+  font-weight: bold;
+  display: block;
+  margin-top: -4px;
+}
+
+.avatar-name {
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.votes-title {
+  font-size: 10px;
+  letter-spacing: 1px;
+  opacity: .7;
+  margin-bottom: 8px;
+}
+
+.bubble-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.bubble {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+  display: grid;
+  place-items: center;
+  border: 2px solid white;
+}
+
+.bubble.yes { background: white; color: #E24B2C; }
+.bubble.no { background: #E24B2C; color: white; }
+
+.results-summary {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.choice-box {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.yes-box span, .no-box span {
+  font-size: 20px;
+}
+
+.points-box {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.stats-section {
+  background: rgba(255,255,255,0.35);
+  padding: 12px;
+  border-radius: 18px;
+  margin-top: 10px;
+}
+
+.chart-row {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}

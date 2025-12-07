@@ -1,0 +1,67 @@
+.about_container{
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/bg.jpg'); 
+    background-size: cover; /* Ensures the image covers the entire screen */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center;
+    color: #26282a;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+    .about_header{
+        padding: 20px 0 20px;
+    }
+    .about_header h1{
+        font-family: 'Helvetica Neue';
+font-style: normal;
+font-weight: 500;
+text-transform: uppercase;
+font-size: 28px;
+leading-trim: both;
+text-edge: cap;
+    }
+    .game_benefits h3{
+        font-family: 'Helvetica Neue';
+font-style: normal;
+font-weight: 500;
+text-transform: uppercase;
+font-size: 28px;
+leading-trim: both;
+text-edge: cap;
+    }
+.about_description_container{
+    padding: 20px 0;
+}
+.about_description_container p, .benefit_lists li{
+    font-family: "Helvetica Neue";
+
+color: #fff;
+font-size: 16px;
+font-weight: 400;
+}
+.benefit_lists{
+    list-style: decimal;
+    padding: 0 20px;
+}
+.game_benefits{
+    padding: 20px 0;
+}
+.game_benefits p{
+    font-family: "Helvetica Neue";
+    color: #fff;
+    font-size: 18px;
+    font-weight: 400;
+    padding: 15px 0;
+}
+.bottom_button{
+    width: 100vw;
+    position: fixed;
+    padding: 0 20px;
+    bottom: 50px;
+    left: 0;
+  }
+
+

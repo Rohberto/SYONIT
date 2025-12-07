@@ -1,35 +1,107 @@
-import React from 'react';
-import Bottom from '../Components/loginBottom';
-import Header from '../Components/Header';
+"use client";
+import { useState } from "react";
+import "../signup/signup.css";
+import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import Button from "../Components/syonit_button/login";
+import { useUser } from "../Context/userContext";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+export default function Login() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
+  const {setToken, setUser} = useUser();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-import "./login.css";
-const LoginScreen = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("https://syonit-js.onrender.com/api/login", { // 👈 change this to your API
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }else {
+      // save token to localStorage (or cookies if SSR)
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user",JSON.stringify(data.user));
+      setToken(data.token);
+      setUser(data.user);
+      toast.success("Login successful! Redirecting...");
+      // redirect user (Next.js router)
+      router.push("/Home")// 👈 change route
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="container">
-      <Header/>
+    <div className="signContainer">
+      <h1 className="signHeader">SYONIT</h1>
+      <h2 className="subheader">LOGIN TO YOUR PROFILE</h2>
 
-      {/* Input Fields */}
-      <div className="input-container">
-        <div className="input-field">
+      <form className="form-container form-spacer" onSubmit={handleSubmit}>
+        <div>
           <label>Email:</label>
-          <input type="email" placeholder="Enter your emails" />
-        </div>
-        <div className="input-field">
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            placeholder="johnosami@email.com"
+            required
+          />
           <label>Password:</label>
-          <input type="password" placeholder="Enter your password" />
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            placeholder="••••••••••••••••"
+            required
+          />
         </div>
-      </div>
 
-      {/* Sign in with Apple Button */}
-      <button className="apple-button">
-        <span className="apple-icon"><FcGoogle/> </span> Sign in with Google
-      </button>
+        {error && <p className="error-text">{error}</p>}
 
-     <Bottom/>
+        <div className="social-login">
+          <p>or sign in with:</p>
+          <div className="social-buttons">
+            <button type="button" className="social-button">
+              <FaApple />
+            </button>
+            <button type="button" className="social-button">
+              <FcGoogle />
+            </button>
+          </div>
+        </div>
+
+        <div className="button-group">
+          <Button text={loading ? "Logging in..." : "Login"} disabled={loading} />
+        </div>
+      </form>
     </div>
   );
-};
-
-export default LoginScreen;
-
+}

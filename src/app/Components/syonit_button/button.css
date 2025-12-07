@@ -1,0 +1,79 @@
+.buttonsContainer{
+    width: 100%;
+    height: 94px;
+    background: transparent !important;
+    border-radius: 200px;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    transition: color 0.3s;
+    aspect-ratio: 1/15;
+    transform: rotateY(0deg);
+
+    }
+    .button-circle, .home_circle{
+        border-radius: 50%;
+        position: absolute;
+        width: 93.5px;
+        height: 93.5px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+     /* Flash animation */
+        }
+        .home_circle{
+        /*  border: 1px solid rgba(248, 194, 158, 1);*/
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          /* background: radial-gradient(circle at center, rgba(252, 199, 114, 1) 0%, #F7F4E6ff 100%);*/
+        }
+        .circle_info{
+          text-align: center;
+        }
+        .circle_info p{
+           font-size: 10px;
+  color: rgba(244, 113, 48, 1);
+  font-family: "Heebo";
+  font-weight: 700;
+  letter-spacing: 1.8px;
+        }
+        .circle_info h1{
+          font-family: "Heebo";
+          color: rgba(255, 255, 255, 1);
+          font-weight: 700;
+          font-size: 24px;
+          letter-spacing: 4.98px;
+        }
+        .game_stroke_links{
+          font-family: "Heebo";
+          width: 30%;
+          text-align: center;
+          font-size: 18px;
+          font-weight: 700;
+          text-transform: uppercase;
+          color: rgba(247, 113, 47, .6);
+          background-color: transparent;
+          outline: none;
+          padding: 0 5px;
+          border: none;
+          z-index: 100;
+        }
+        .lines{
+              border: 2px solid #fb7b3cff;
+              border-radius: 50%;
+              overflow: hidden;
+        }
+        .line {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background-color: #fb7b3cff;
+            transition: background-color 0.3s;
+          }
+          
+          .line.active {
+            background-color: #fb7b3cff;
+          }
+      

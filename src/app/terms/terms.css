@@ -1,0 +1,27 @@
+.terms-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  .terms-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .terms-section {
+    margin-bottom: 20px;
+  }
+  .terms-section h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .terms-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #fff;
+  }

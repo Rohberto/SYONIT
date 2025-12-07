@@ -12,14 +12,6 @@ const Bottom = () => {
           <Link href={"/"}>
             <span className="onboarding_link onboarding_link_sign">Back</span>
           </Link>
-      <div className='button_circle'>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
     </div>
     </div>
      </div>

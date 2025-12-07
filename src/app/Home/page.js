@@ -1,220 +1,416 @@
-"use client"
-import React, { useState, useEffect, useRef } from 'react';
-import Header from '../Components/mainHeader';
-import "./home.css";
-import { useRouter } from 'next/navigation';
-import Points from '../Components/points';
-import "swiper/css";
-import "swiper/css/pagination";
-import {Swiper, SwiperSlide} from 'swiper/react';
-import {Pagination} from "swiper/modules";
-import Round from '../Components/Round';
-import Bottom from '../Components/homeBottom';
+"use client";
+import { useState, useEffect, useRef } from "react";
+import "./styles.css";
+import { FaFlagCheckered, FaHandsHelping, FaLightbulb } from "react-icons/fa";
+import { IoGameControllerSharp } from "react-icons/io5";
+import Button from "../Components/syonit_button/mainButton";
+import Header from "../Components/MainHeader";
+import { useSocket } from "../Context/SocketContext";
+import { useUser } from "../Context/userContext";
+import { useRouter } from "next/navigation";
+import Round from "../Components/Round";
+import { getAudioContext, playSound } from "../libs/audioContext";
+import Results from "../game/[tournamentId]/Results";
+import "./page.css";
+import MessageModal from "../Components/MessageModal";
+import { toast } from "react-toastify";
 
-const Home = () => {
-  const labels = ['current game', 'Leaderboard', 'Prizes', 'History'];
+export default function Home() {
+  const [currentTab, setCurrentTab] = useState("game");
+  const [points, setPoints] = useState(0);
   const [currentRound, setCurrentRound] = useState(0);
-  const [roomId, setRoomId] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [userId, setUserId] = useState("");
+  const [opportunityNumber, setOpportunityNumber] = useState(0);
+  const [roundTimer, setRoundTimer] = useState(0);
+  const [results, setResults] = useState({ 1: null, 2: null, 3: null });
+  const [showVoteResultOverlay, setShowVoteResultOverlay] = useState(null);
+  const [gameOver, setGameOver] = useState(false);
+  const [winner, setWinner] = useState(null);
+  const [audioBuffer, setAudioBuffer] = useState(null);
+  const [sirenBuffer, setSirenBuffer] = useState(null);
+  const [bgMusicBuffer, setBgMusicBuffer] = useState(null);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const audioSourceRef = useRef(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
-  const handleJoinGame = async (e) => {
-    e.stopPropagation();
-    setIsLoading(true);
-    try {
-      const response = await fetch('/api/join-game', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId}), // Replace with actual user ID
-      });
-console.log(response);
-      const data = await response.json();
-      setRoomId(data.roomId);
-      setIsLoading(false);
+  const { socket, tournament, noOfPlayers, onlineCount, timeLeft, formatTime, setNoOfPlayers } = useSocket();
+  const { user, loading } = useUser();
+  const router = useRouter();
+  const opportunityRef = useRef(opportunityNumber);
 
-      // Redirect to the assigned room
-    //  window.location.href = `/room/${data.roomId}`;
-    } catch (error) {
-      console.error('Error joining game:', error);
-      setIsLoading(false);
-    }
+  // Show modal with message
+  const showModal = (message) => {
+    setModalMessage(message);
+    setModalOpen(true);
   };
+
+  // Close modal
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalMessage("");
+  };
+  
+  useEffect(() => {
+    opportunityRef.current = opportunityNumber;
+  }, [opportunityNumber]);
+
+  // Navigation: Redirect to login if not logged in
+  useEffect(() => {
+    if (loading) return; // Wait for localStorage check
+    if (!user || !user.id) {
+      console.log("User not signed in, redirecting to /login");
+      router.push("/login");
+    }
+  }, [user, loading, router]);
+
+  // Load audio
+  useEffect(() => {
+    const ctx = getAudioContext();
+    if (!ctx) {
+      console.warn("Web Audio API not supported");
+      return;
+    }
+
+    const loadSound = async () => {
+      try {
+        const clickRes = await fetch("/Sounds/click_sound.wav");
+        if (!clickRes.ok) throw new Error("Failed to fetch click sound");
+        const clickBuf = await clickRes.arrayBuffer();
+        setAudioBuffer(await ctx.decodeAudioData(clickBuf));
+
+        const sirenRes = await fetch("/Sounds/siren.wav");
+        if (!sirenRes.ok) throw new Error("Failed to fetch siren sound");
+        const sirenBuf = await sirenRes.arrayBuffer();
+        setSirenBuffer(await ctx.decodeAudioData(sirenBuf));
+
+        const bgMusicRes = await fetch("/Sounds/SYON.mp3");
+        if (!bgMusicRes.ok) throw new Error("Failed to fetch background music");
+        const bgMusicBuf = await bgMusicRes.arrayBuffer();
+        setBgMusicBuffer(await ctx.decodeAudioData(bgMusicBuf));
+      } catch (err) {
+        console.error("Error loading sounds:", err);
+      }
+    };
+
+    loadSound();
+  }, []);
+
+  // Play background music
+  useEffect(() => {
+    if (!bgMusicBuffer || !user || !user.id) return;
+
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const playBackgroundMusic = () => {
+      if (audioSourceRef.current) return;
+      audioSourceRef.current = ctx.createBufferSource();
+      audioSourceRef.current.buffer = bgMusicBuffer;
+      audioSourceRef.current.loop = true;
+      audioSourceRef.current.connect(ctx.destination);
+      audioSourceRef.current.start(0);
+      setIsMusicPlaying(true);
+      console.log("🎵 Background music started");
+    };
+
+    playBackgroundMusic();
+
+    return () => {
+      if (audioSourceRef.current) {
+        audioSourceRef.current.stop();
+        audioSourceRef.current = null;
+        setIsMusicPlaying(false);
+        console.log("🎵 Background music stopped");
+      }
+    };
+  }, [bgMusicBuffer, user]);
+
+  // Socket events
+  useEffect(() => {
+    if (!socket?.connected || !user) return;
+
+    const joinLobby = () => {
+      if (currentTab === "game") {
+        socket.emit("joinLobby");
+        console.log("✅ Joined lobby room");
+      } else {
+        socket.emit("leaveLobby");
+        console.log("✅ Left lobby room");
+      }
+    };
+
+    joinLobby();
+
+    const handleRoundStarted = ({ roundNumber }) => {
+      setCurrentRound(roundNumber);
+      setResults({ 1: null, 2: null, 3: null });
+      setOpportunityNumber(0);
+    };
+
+    const handleOpportunityStarted = ({ opportunityNumber, endsAt }) => {
+      setOpportunityNumber(opportunityNumber);
+      if (sirenBuffer) playSound(sirenBuffer, "/Sounds/siren.wav");
+      setResults((prev) => ({
+        ...prev,
+        [opportunityNumber]: null,
+      }));
+      const msLeft = new Date(endsAt).getTime() - Date.now();
+      setRoundTimer(Math.floor(msLeft / 1000));
+    };
+
+    const handleOpportunityEnded = ({ yesVotes, noVotes, minority, voters }) => {
+      setResults((prev) => ({
+        ...prev,
+        [opportunityRef.current]: {
+          yesVotes: yesVotes ?? 0,
+          noVotes: noVotes ?? 0,
+          minority: minority ?? "none",
+        },
+      }));
+     // setShowVoteResultOverlay({ voters, yesVotes, noVotes, minority });
+    //  setTimeout(() => setShowVoteResultOverlay(null), 5000);
+    };
+
+    const handleRoundEnded = () => {};
+
+    const handleTournamentEnded = ({ tid, winnerId, winnerName }) => {
+      console.log(`🏆 Tournament ${tid} ended. Winner: ${winnerName} (ID: ${winnerId})`);
+      setGameOver(true);
+      setWinner(winnerName || "No Winner");
+    };
+
+    const handleTournamentNewPlayer = () => {
+      if (tournament?.tid) {
+        socket.emit("getPlayerCount", { tid: tournament.tid });
+      }
+    };
+
+    const handlePlayerCount = ({ playersCount }) => {
+      setNoOfPlayers(playersCount);
+    };
+
+    const handleTournamentStarting = ({ startsIn }) => {
+      console.log(`🚀 New tournament starting in ${startsIn / 1000}s`);
+      setGameOver(false);
+      setWinner(null);
+      setCurrentRound(0);
+      setOpportunityNumber(0);
+      setResults({ 1: null, 2: null, 3: null });
+      setRoundTimer(Math.floor(startsIn / 1000));
+    };
+
+    socket.on("tournament:starting", handleTournamentStarting);
+    socket.on("round:started", handleRoundStarted);
+    socket.on("opportunity:started", handleOpportunityStarted);
+    socket.on("opportunity:ended", handleOpportunityEnded);
+    socket.on("round:ended", handleRoundEnded);
+    socket.on("tournament:ended", handleTournamentEnded);
+    socket.on("tournament:newPlayer", handleTournamentNewPlayer);
+    socket.on("tournament:playerCount", handlePlayerCount);
+
+    return () => {
+      socket.off("tournament:starting", handleTournamentStarting);
+      socket.off("round:started", handleRoundStarted);
+      socket.off("opportunity:started", handleOpportunityStarted);
+      socket.off("opportunity:ended", handleOpportunityEnded);
+      socket.off("round:ended", handleRoundEnded);
+      socket.off("tournament:ended", handleTournamentEnded);
+      socket.off("tournament:newPlayer", handleTournamentNewPlayer);
+      socket.off("tournament:playerCount", handlePlayerCount);
+      socket.emit("leaveLobby");
+    };
+  }, [socket, currentTab, sirenBuffer, tournament?.tid, setNoOfPlayers, user]);
 
   useEffect(() => {
-    // Check if a user ID already exists
-    if (!localStorage.getItem('userId')) {
-      // Generate a random string
-      const userId = Math.random().toString(36).substring(2, 7); // Generates 5 random characters
-      // Save it to localStorage
-      setUserId(userId);
-      localStorage.setItem('userId', userId);
-      console.log(`userId: ${userId}`)
-    } else{
+    if (roundTimer <= 0) return;
+    const interval = setInterval(() => {
+      setRoundTimer((t) => (t > 0 ? t - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [roundTimer]);
 
-    // Retrieve and log the user ID
-    const savedUserId = localStorage.getItem('userId');
-    setUserId(savedUserId);
-    console.log(`saveduserId: ${savedUserId}`);
-    }
-  }, []);
-  const [rounds, setRounds] = useState([
-    { yesScore: 1000, noScore: 1000, isPlayed: false },
-    { yesScore: 1000, noScore: 1000, isPlayed: false },
-    { yesScore: 1000, noScore: 1000, isPlayed: false },
-  ]);
-  
-  //check if all round has been played
-  const allRoundsPlayed = rounds.every(round => round.isPlayed);
-
-// Use refs to store the audio instances
-const clickSoundRef = useRef(null);
-const gameplaySoundRef = useRef(null);
-
-useEffect(() => {
-  clickSoundRef.current = new Audio('Sounds/click_sound.wav');
-  clickSoundRef.current.load();
-  gameplaySoundRef.current = new Audio('/Sounds/game_sound.mp3');
-  gameplaySoundRef.current.loop = true; // Loop the background sound
-}, []);
-
-  const handleNextRound = () => {
-    // Mark the current round as played
-    setRounds(prevRounds =>
-      prevRounds.map((round, index) =>
-        index === currentRound
-          ? { ...round, isPlayed: true }
-          : round
-      )
-    );
-
-    // Move to the next round if it's not the last round
-    if (currentRound < rounds.length - 1) {
-      setCurrentRound(prevRound => prevRound + 1);
+  const toggleMusic = () => {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    if (isMusicPlaying) {
+      if (audioSourceRef.current) {
+        audioSourceRef.current.stop();
+        audioSourceRef.current = null;
+        setIsMusicPlaying(false);
+        console.log("🎵 Background music paused");
+      }
+    } else {
+      if (bgMusicBuffer) {
+        audioSourceRef.current = ctx.createBufferSource();
+        audioSourceRef.current.buffer = bgMusicBuffer;
+        audioSourceRef.current.loop = true;
+        audioSourceRef.current.connect(ctx.destination);
+        audioSourceRef.current.start(0);
+        setIsMusicPlaying(true);
+        console.log("🎵 Background music resumed");
+      }
     }
   };
-  const handleYesClick = () => {
-    clickSoundRef.current.play();
-    setRounds(prevRounds =>
-      prevRounds.map((round, index) =>
-        index === currentRound
-          ? { ...round, yesScore: round.yesScore + 1 }
-          : round
-      )
-    );
-    handleNextRound();
-  };
 
-  const handleNoClick = () => {
-    clickSoundRef.current.play();
-    setRounds(prevRounds =>
-      prevRounds.map((round, index) =>
-        index === currentRound
-          ? { ...round, noScore: round.noScore + 1 }
-          : round
-      )
-    );
-    handleNextRound();
-  };
+  const renderContent = () => {
+    switch (currentTab) {
+      case "game":
+        return (
+         <>
+            <h3>Current Game</h3>
+            <div className="Home-slide">
+              <div className="current_game_info_buttons">
+                <div className="game_info">
+                  <h4>Players</h4>
+                  <p>{noOfPlayers || "N/A"}</p>
+                </div>
+                <div className="game_info">
+                  <h4>Opportunity</h4>
+                  <p>{opportunityNumber || 0}</p>
+                </div>
+                <div className="game_info">
+                  <h4>Round</h4>
+                  <p>{currentRound || 0}</p>
+                </div>
+                <div className="game_info">
+                  <h4>Time Left</h4>
+                  <p>{roundTimer > 0 ? `${roundTimer}s` : "N/A"}</p>
+                </div>
+                <div className="divider"></div>
+              </div>
 
-   // Determine if "Yes" or "No" has the highest score for a given round
-   const getHighestScore = (yesScore, noScore) => {
-    if (yesScore > noScore) return 'Yes';
-    else if (noScore > yesScore) return 'No';
-    return 'Tie';
-  };
-  const router = useRouter();
-  return (
-    <div className='home_container'>
-        <Header/>
-        <Points/>
-
-        {
-          /*screen */
-        }
-            {/* slider  Content */}
-   <Swiper 
-   grabCursor={true}
-   centeredSlides={true}
-   slidesPerView={1}
-   spaceBetween={20}
-   modules={[Pagination]}
-      pagination={{
-        clickable: true,
-        renderBullet: (index, className) => {
-          return `
-            <div class="custom-pagination-bullet">
-              <span class="bullet-label">${labels[index]}</span>
-              <span class="${className}"></span>
+              {gameOver ? (
+                <div className="game-over">
+                  <h2>Game Over</h2>
+                  <p>Winner: {winner || "N/A"}</p>
+                  <button onClick={() => router.push("/Home")}>Go Home</button>
+                </div>
+              ) : (
+                <>
+                  {showVoteResultOverlay && <Results results={showVoteResultOverlay} />}
+                  <div className="game">
+                    {[1, 2, 3].map((opp) => {
+                      const roundResult = results[opp];
+                      return (
+                        <Round
+                          key={opp}
+                          round={opp}
+                          yesScore={roundResult ? roundResult.yesVotes : 0}
+                          noScore={roundResult ? roundResult.noVotes : 0}
+                          isPlayed={!!roundResult && roundResult.minority !== null}
+                          isActive={opportunityNumber === opp}
+                          currentRound={currentRound}
+                          minority={roundResult ? roundResult.minority : null}
+                          roundId={opp}
+                        />
+                      );
+                    })}
+                  </div>
+                </>
+              )}
             </div>
-          `;
-        },
-      }}
-  className='swiper_container' >
-    <SwiperSlide>
-      <div className='Home_slide'>
-      <div className='Home_screen'>
-        <div className="current_game_header">CURRENT GAME</div>
-        <div className="current_game_info_buttons">
-          <p>N.O.P: 4000</p>
-          <p>OPP 3</p>
-          <p>Round {currentRound}</p>
+          </>
+          
+        );
+      case "idea":
+        return (
+          <div className="idea-container">
+            <h3>Motivation</h3>
+            <p>
+              "In any moment of decision, the best thing you can do is the right thing, the next best thing is the wrong thing, and the worst thing you can do is nothing."
+            </p>
+            <p className="quote-author">— Theodore Roosevelt</p>
+          </div>
+        );
+      case "leaderboard":
+        return (
+          <div className="leaderboard-container">
+            <h3>Leaderboard</h3>
+            <div className="leaderboard-header">
+              <div>RANK</div>
+              <div>NAME</div>
+              <div>POINTS</div>
+            </div>
+            <p>No leaderboard data available.</p>
+          </div>
+        );
+      case "special":
+        return (
+          <div className="special-container">
+            <h3>Upcoming Special Events</h3>
+            <p>No upcoming events at the moment.</p>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="homeContainer">
+      <Header />
+      <div className="points-section">
+        <div className="points-container">
+          <p>
+            <span>POINTS: </span>
+            {points}
+          </p>
+          <p>
+            2,500 <span>:PRIZE</span>
+          </p>
         </div>
-      
-        <div className="game">
-
-        {rounds.map((round, index) => (
-        <Round
-          key={index}
-          round={index + 1}
-          yesScore={round.yesScore}
-          noScore={round.noScore}
-          isPlayed={round.isPlayed}
-          isActive={index === currentRound}
-         currentRound={currentRound} 
-        />
-      ))}
-
-        </div>
-
-        <div className='game_buttons'>
-          <button className='game_button y_button'  onClick={handleYesClick} disabled={allRoundsPlayed}>Y</button>
-          <button className='game_button y_button' onClick={handleNoClick} disabled={allRoundsPlayed}>N</button>
+        <div className="progress-bar">
+          <div className="progress-fill" style={{ width: `${(points / 2500) * 100}%` }}></div>
         </div>
       </div>
+      {user && (
+        <div className="music-toggle">
+          <button onClick={toggleMusic}>
+            {isMusicPlaying ? "Mute Music" : "Play Music"}
+          </button>
+        </div>
+      )}
+      {renderContent()}
+      <div className="nav-buttons">
+        <button
+          className={`nav-button ${currentTab === "game" ? "active" : ""}`}
+          onClick={() => setCurrentTab("game")}
+        >
+          <IoGameControllerSharp />
+        </button>
+        <button
+          className={`nav-button ${currentTab === "idea" ? "active" : ""}`}
+          onClick={() => setCurrentTab("idea")}
+        >
+          <FaLightbulb />
+        </button>
+        <button
+          className={`nav-button ${currentTab === "leaderboard" ? "active" : ""}`}
+          onClick={() => setCurrentTab("leaderboard")}
+        >
+          <FaFlagCheckered />
+        </button>
+        <button
+          className={`nav-button ${currentTab === "special" ? "active" : ""}`}
+          onClick={() => setCurrentTab("special")}
+        >
+          <FaHandsHelping />
+        </button>
       </div>
-    </SwiperSlide>
-    <SwiperSlide>
-      <div className='Home_slide'>
-      <div className='Home_screen'>
-        <h1 className='screen_desc'>Leaderboard</h1>
+      <div className="bottom-button">
+        <div className="game_details">
+          <p>ONLINE: {onlineCount}</p>
+          <p>{tournament ? "1: IN GAME" : "0: IN GAME"}</p>
+        </div>
+        <Button formatTime={formatTime} timeLeft={timeLeft} tournament={tournament} user={user} />
       </div>
-      <p>SIMPLE YES OR NO <span className='small_slide_text'>is a mind game about decision making.</span></p>
-      </div>
-    </SwiperSlide>
-    <SwiperSlide>
-      <div className='Home_slide'>
-      <div className='Home_screen'>
-      <h1 className='screen_desc'>Prizes</h1>
-      </div>
-      <p>SIMPLE YES OR NO <span className='small_slide_text'>is a mind game about decision making.</span></p>
-      </div>
-    </SwiperSlide>
-    <SwiperSlide>
-      <div className='Home_slide'>
-      <div className='Home_screen'>
-      <h1 className='screen_desc'>History</h1>
-      </div>
-      <p>SIMPLE YES OR NO <span className='small_slide_text'>is a mind game about decision making.</span></p>
-      </div>
-    </SwiperSlide>
-   
-   </Swiper>
 
-   <Bottom handleJoinGame={handleJoinGame} isLoading={isLoading} gameplaySoundRef={gameplaySoundRef}/>
+      <MessageModal
+        isOpen={modalOpen}
+        message={modalMessage}
+        onClose={closeModal}
+        autoDismiss={5000} // Auto-close after 5s
+      />
     </div>
-  )
+  );
 }
-
-export default Home

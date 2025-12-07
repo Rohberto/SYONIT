@@ -1,0 +1,64 @@
+.game_round{
+    width: 100%;
+    border-radius: 8px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+height: 52px;
+background: transparent;
+border: 1px solid #D9D9D9;
+border-radius: 26px;
+        }
+
+    .round_ball{
+width: 96px;
+height: 52px;
+background: #fff;
+color: #292828;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 14px;
+border-radius: 26px;
+    }
+        .round_section{
+    font-family: 'Heebo';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: #292828;
+        }
+        .y-section, .n-section{
+            width: 96px;
+height: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: 'Grimer';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 14px;
+text-align: center;
+color: #A1A1A1;
+        }
+        .round_center_text{
+font-family: 'Heebo';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 47px;
+text-align: center;
+color: #fff;
+        }
+        .round-highlight{
+font-weight: bold;
+width: 96px;
+height: 100%;
+color: #fff;
+background: #DEAE37;
+border-radius: 26px;
+        }

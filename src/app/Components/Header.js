@@ -3,8 +3,7 @@ import React from 'react';
 const Header = () => {
   return (
     <div className="header">
-    <h1>SYONIT TOURNA-MAZEMENT</h1>
-    <div className="headerLine"></div>
+    <h1>SYONit! TOURNA-MUSEMENT</h1>
   </div>
   )
 }

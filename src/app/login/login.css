@@ -1,4 +1,7 @@
-
+.sign_point_container{
+  width: 100%;
+  margin-top: 20px;
+}
   /* Input Fields */
   .input-container {
     display: flex;
@@ -7,51 +10,56 @@
     width: 100%;
     padding: 30px;
     font-family: "Heebo" !important;
-border: 1px solid hsla(260, 98%, 74%, 1) ;
+border: 1px solid #fff;
 border-radius: 36px;
 margin: 20px 0;
   }
   
-  .input-field {
+   .login-input-field {
     display: flex;
-    flex-direction: column;
-    background-color: #fff;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid #fff;
     border-radius: 20px;
-    padding: 10px 15px;
-    font-family: "Heebo" !important;
-    font-weight: 700;
+    padding: 15px;
+    font-family: "Helvetica Neue" !important;
+    font-weight: 500;
+    margin-bottom: 10px;
   }
   
-  .input-field label {
+  .login-input-field label {
     font-size: 12px;
     text-transform: uppercase;
-    color: #000;
-    margin-bottom: 5px;
-    font-family: "Heebo" !important;
-    font-weight: 700;
+    color: #fff;
+    font-family: "Helvetica Neue" !important;
+    font-weight: 500;
+    width: 20%;
   }
   
-  .input-field input {
+  .login-input-field input {
     background: transparent;
     border: none;
-    color: #000;
+    color: #fff;
     font-size: 14px;
     outline: none;
-    font-family: "Heebo" !important;
-    font-weight: 700;
+    width: 70%;
+    font-family: "Helvetica Neue" !important;
+    font-weight: 500;
   }
 
-  .input-field input::placeholder{
-    color: #000;
-    font-family: "Heebo" !important;
+  .login-input-field input::placeholder{
+    color: #fff;
+    font-family: "Helvetica Neue" !important;
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 500;
   }
   
   /* Sign in with Apple Button */
-  .apple-button {
-    background-color: #fff;
-    color: #000;
+  .login-apple-button {
+    background-color: transparent;
+    color: #fff;
     font-weight: bold;
     border-radius: 25px;
     padding: 10px 20px;
@@ -59,9 +67,11 @@ margin: 20px 0;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin: 20px auto;
+    margin: 0px auto 10px;
     cursor: pointer;
-    width: 80%;
+    width: 100%;
+    outline: none;
+    border: 1px solid #fff;
     text-align: center;
     font-family: "Grimer" !important;
     font-weight: 700;
@@ -70,6 +80,85 @@ margin: 20px 0;
   .apple-icon {
     font-size: 20px;
   }
+
+  .sign_buttons_container{
+    width: 100%;
+    position: fixed;
+  bottom: 0%;
+  left: 0;
+  padding: 40px 20px;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  }
+  .sign_stroke_links{
+    width: 200px;
+    padding: 10px 5px;
+    border-radius: 20px;
+    background-color: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    font-family: "DM Sans";
+    font-size: 14px;
+    outline: none;
+  }
+
+  .login-console {
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/syonit_stadium4.png'); /* Replace with the path to your image */
+    background-size: cover; /* Ensures the image covers the entire screen */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center;
+    color: #fff;
+    padding: 0px 20px 150px 20px;
+    position: relative;
+    }
+
+    .login-container {
+      width: 100%;
+      padding: 16px;
+      width: 100%;
+      min-height: 400px;
+      display: block;
+      background-color: transparent;
+      margin-top: 0px;
+    }
+    .round-info{
+      margin-bottom: 20px;
+    }
+    .round-info p{
+      font-family: 'DM Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 8px;
+color: #fff;
+text-align: center;
+margin-bottom: 2.5px;
+    }
+    .round-info h2 {
+  font-family: 'Grimer';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 22px;
+  text-align: center;
+  color: #FFFFFF;
+    }
+    
+    .login_blank_screen{
+  width: 100%;
+  min-height: 219px;
+  background: transparent;
+  margin: 20px 0;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+    }
+   
   
   
   
