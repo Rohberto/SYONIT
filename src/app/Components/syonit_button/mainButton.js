@@ -12,7 +12,7 @@ const Button = ({ formatTime, timeLeft, tournament, user }) => {
 
   // ✅ Get everything from context directly
   const { socket, joined, setJoined } = useSocket();
-console.log("Button component - joined:", joined);
+
   // load click sound
   useEffect(() => {
     const ctx = getAudioContext();

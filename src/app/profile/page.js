@@ -9,10 +9,10 @@ export default function Welcome() {
   const [profileImage, setProfileImage] = useState(null);
   const [clickBuffer, setClickBuffer] = useState(null);
   const router = useRouter();
-  const {user} = useUser();
+  const {user, setUser} = useUser();
+  const url = process.env.NEXT_PUBLIC_SOCKET_URL;
 
   useEffect(() => {
-    console.log("User data:", user);
     const ctx = getAudioContext();
     if (!ctx) return;
 
@@ -55,7 +55,7 @@ export default function Welcome() {
         console.log("Uploaded Image URL:", data.secure_url);
 
         // Send URL to backend to update user
-      const res =  await fetch("https://syonit-js.onrender.com/api/profile", { // change endpoint
+      const res =  await fetch(`${url}/api/profile`, { // change endpoint
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -68,6 +68,8 @@ export default function Welcome() {
       }
       if(res.ok){
       toast.success("Profile picture updated successfully!");
+      setUser((prev) => ({ ...prev, image_url: data.secure_url }));
+      localStorage.setItem("user", JSON.stringify({ ...user, image_url: data.secure_url }));
       }
        router.push("/Home");
     } catch (err) {
@@ -79,7 +81,7 @@ export default function Welcome() {
   return (
     <div className="profileContainer">
       <h1 className="profileHeader">SYONIT</h1>
-      <h2 className="subheader">WELCOME SYONNAIRE JOHN!</h2>
+      <h2 className="subheader">WELCOME SYONNAIRE {user.username}!</h2>
 
       <div className="profile-container">
         <div className="profile-picture">

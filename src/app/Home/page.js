@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import "./styles.css";
 import { FaFlagCheckered, FaHandsHelping, FaLightbulb } from "react-icons/fa";
 import { IoGameControllerSharp } from "react-icons/io5";
@@ -14,6 +14,13 @@ import Results from "../game/[tournamentId]/Results";
 import "./page.css";
 import MessageModal from "../Components/MessageModal";
 import { toast } from "react-toastify";
+import SlidingQuotes from "../Components/Quotes";
+import { useOnboarding } from "../Context/OnboardingContext";
+import SpotlightOverlay from "../Components/Game_Assistant/SpotlightOverlay";
+import SimpleTooltip from "../Components/Game_Assistant/SimpleTooltip";
+import { HomeSteps } from "../libs/onboardingSteps";
+import {jwtDecode} from "jwt-decode";
+import PrizeSelectionUI from "../Components/Prize/PrizeModal";
 
 export default function Home() {
   const [currentTab, setCurrentTab] = useState("game");
@@ -34,9 +41,61 @@ export default function Home() {
   const [modalMessage, setModalMessage] = useState("");
 
   const { socket, tournament, noOfPlayers, onlineCount, timeLeft, formatTime, setNoOfPlayers } = useSocket();
-  const { user, loading } = useUser();
+  const { user, loading, userPrize, selectedPrize } = useUser();
   const router = useRouter();
   const opportunityRef = useRef(opportunityNumber);
+  const [prizeModalOpen, setPrizeModalOpen] = useState(false);
+
+  //gamehelp
+  const { start } = useOnboarding();
+
+
+ useEffect(() => {
+    const seen = localStorage.getItem('syonit_onboarding_seen_home');
+    if (!seen) {
+      start(HomeSteps, {
+      onComplete: () => {
+        // Set localStorage AFTER onboarding finishes
+        localStorage.setItem('syonit_onboarding_seen_home', 'true');
+        // Dispatch event to trigger prize modal check
+        window.dispatchEvent(new Event('localStorageChange'));
+      },
+      onSkip: () => {
+        // Also handle if user skips
+        localStorage.setItem('syonit_onboarding_seen_home', 'true');
+        window.dispatchEvent(new Event('localStorageChange'));
+      }
+    });
+      localStorage.setItem('syonit_onboarding_seen_home', 'true');
+    }
+  }, []);
+
+useEffect(() => {
+  // Function to check and open modal
+  const checkAndOpenModal = () => {
+    const seen = localStorage.getItem('syonit_onboarding_seen_home');
+    console.log("Checking modal conditions:", { seen, userPrize });
+    
+    if (seen && userPrize && userPrize.prizeId === null) {
+      setPrizeModalOpen(true);
+    }
+  };
+
+  // Check immediately
+  checkAndOpenModal();
+
+  // Listen for storage changes (works across tabs)
+  window.addEventListener('storage', checkAndOpenModal);
+
+  // Listen for custom event (works in same tab)
+  window.addEventListener('localStorageChange', checkAndOpenModal);
+
+  // Cleanup
+  return () => {
+    window.removeEventListener('storage', checkAndOpenModal);
+    window.removeEventListener('localStorageChange', checkAndOpenModal);
+  };
+}, [userPrize]);
 
   // Show modal with message
   const showModal = (message) => {
@@ -62,6 +121,7 @@ export default function Home() {
       router.push("/login");
     }
   }, [user, loading, router]);
+
 
   // Load audio
   useEffect(() => {
@@ -229,6 +289,29 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [roundTimer]);
 
+  //token checker
+
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    const decoded = jwtDecode(token);
+    // decoded.exp is in seconds, Date.now() is in ms
+    if (decoded.exp * 1000 < Date.now()) {
+      // Token expired
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      router.push("/login");
+    }
+  } catch (e) {
+    // Invalid token
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    router.push("/login");
+  }
+}, [router]);
+
   const toggleMusic = () => {
     const ctx = getAudioContext();
     if (!ctx) return;
@@ -254,64 +337,74 @@ export default function Home() {
 
   const renderContent = () => {
     switch (currentTab) {
-      case "game":
-        return (
-         <>
-            <h3>Current Game</h3>
-            <div className="Home-slide">
-              <div className="current_game_info_buttons">
-                <div className="game_info">
-                  <h4>Players</h4>
-                  <p>{noOfPlayers || "N/A"}</p>
-                </div>
-                <div className="game_info">
-                  <h4>Opportunity</h4>
-                  <p>{opportunityNumber || 0}</p>
-                </div>
-                <div className="game_info">
-                  <h4>Round</h4>
-                  <p>{currentRound || 0}</p>
-                </div>
-                <div className="game_info">
-                  <h4>Time Left</h4>
-                  <p>{roundTimer > 0 ? `${roundTimer}s` : "N/A"}</p>
-                </div>
-                <div className="divider"></div>
+      
+case "game":
+  return (
+    <>
+      <h3>
+        {!tournament || currentRound === 0
+          ? "Waiting for the next game to start..."
+          : "Current Game"}
+      </h3>
+      <div className="Home-slide">
+        {tournament || currentRound !== 0 ? (
+          <>
+            <div className="current_game_info_buttons">
+              <div className="game_info">
+                <h4>Players</h4>
+                <p>{noOfPlayers || "N/A"}</p>
               </div>
-
-              {gameOver ? (
-                <div className="game-over">
-                  <h2>Game Over</h2>
-                  <p>Winner: {winner || "N/A"}</p>
-                  <button onClick={() => router.push("/Home")}>Go Home</button>
-                </div>
-              ) : (
-                <>
-                  {showVoteResultOverlay && <Results results={showVoteResultOverlay} />}
-                  <div className="game">
-                    {[1, 2, 3].map((opp) => {
-                      const roundResult = results[opp];
-                      return (
-                        <Round
-                          key={opp}
-                          round={opp}
-                          yesScore={roundResult ? roundResult.yesVotes : 0}
-                          noScore={roundResult ? roundResult.noVotes : 0}
-                          isPlayed={!!roundResult && roundResult.minority !== null}
-                          isActive={opportunityNumber === opp}
-                          currentRound={currentRound}
-                          minority={roundResult ? roundResult.minority : null}
-                          roundId={opp}
-                        />
-                      );
-                    })}
-                  </div>
-                </>
-              )}
+              <div className="game_info">
+                <h4>Opportunity</h4>
+                <p>{opportunityNumber || 0}</p>
+              </div>
+              <div className="game_info">
+                <h4>Round</h4>
+                <p>{currentRound || 0}</p>
+              </div>
+              <div className="game_info">
+                <h4>Time Left</h4>
+                <p>{roundTimer > 0 ? `${roundTimer}s` : "N/A"}</p>
+              </div>
+              <div className="divider"></div>
             </div>
           </>
-          
-        );
+        ) : null}
+
+        {!tournament || currentRound === 0 ? (
+          <SlidingQuotes />
+        ) : gameOver ? (
+          <div className="game-over">
+            <h2>Game Over</h2>
+            <p>Winner: {winner || "N/A"}</p>
+            <button onClick={() => router.push("/Home")}>Go Home</button>
+          </div>
+        ) : (
+          <>
+            {showVoteResultOverlay && <Results results={showVoteResultOverlay} />}
+            <div className="game">
+              {[1, 2, 3].map((opp) => {
+                const roundResult = results[opp];
+                return (
+                  <Round
+                    key={opp}
+                    round={opp}
+                    yesScore={roundResult ? roundResult.yesVotes : 0}
+                    noScore={roundResult ? roundResult.noVotes : 0}
+                    isPlayed={!!roundResult}
+                    isActive={opportunityNumber === opp}
+                    currentRound={currentRound}
+                    minority={roundResult ? roundResult.minority : null}
+                    roundId={opp}
+                  />
+                );
+              })}
+            </div>
+          </>
+        )}
+      </div>
+    </>
+  );
       case "idea":
         return (
           <div className="idea-container">
@@ -347,20 +440,23 @@ export default function Home() {
   };
 
   return (
+    <>
+    <SpotlightOverlay />
+    {prizeModalOpen && <PrizeSelectionUI onClose={() => setPrizeModalOpen(false)} />}
     <div className="homeContainer">
       <Header />
-      <div className="points-section">
+      <div className="points-section" data-guide="points">
         <div className="points-container">
           <p>
             <span>POINTS: </span>
-            {points}
+            {userPrize?.points}
           </p>
           <p>
-            2,500 <span>:PRIZE</span>
+            {selectedPrize?.pointsRequired} <span>:PRIZE</span>
           </p>
         </div>
         <div className="progress-bar">
-          <div className="progress-fill" style={{ width: `${(points / 2500) * 100}%` }}></div>
+          <div className="progress-fill" style={{ width: `${(userPrize?.points / selectedPrize?.pointsRequired) * 100}%` }}></div>
         </div>
       </div>
       {user && (
@@ -370,7 +466,9 @@ export default function Home() {
           </button>
         </div>
       )}
+      <div data-guide="game">
       {renderContent()}
+      </div>
       <div className="nav-buttons">
         <button
           className={`nav-button ${currentTab === "game" ? "active" : ""}`}
@@ -397,14 +495,13 @@ export default function Home() {
           <FaHandsHelping />
         </button>
       </div>
-      <div className="bottom-button">
+      <div className="bottom-button" data-guide="timer">
         <div className="game_details">
           <p>ONLINE: {onlineCount}</p>
           <p>{tournament ? "1: IN GAME" : "0: IN GAME"}</p>
         </div>
         <Button formatTime={formatTime} timeLeft={timeLeft} tournament={tournament} user={user} />
       </div>
-
       <MessageModal
         isOpen={modalOpen}
         message={modalMessage}
@@ -412,5 +509,6 @@ export default function Home() {
         autoDismiss={5000} // Auto-close after 5s
       />
     </div>
+    </>
   );
 }

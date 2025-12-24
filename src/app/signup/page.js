@@ -25,8 +25,9 @@ export default function Signup() {
   const [verifying, setVerifying] = useState(false);
   const [pendingUserId, setPendingUserId] = useState(null);
   const router = useRouter();
-  const { user, setUser, setToken } = useUser();
+  const { user, setUser, setToken, setUserPrize } = useUser();
   const [showPassword, setShowPassword] = useState(false);
+  const url = process.env.NEXT_PUBLIC_SOCKET_URL;
 
   // Create refs for OTP input fields
   const inputRefs = useRef([null, null, null, null].map(() => useRef(null)));
@@ -68,7 +69,7 @@ export default function Signup() {
     }
     setSubmitting(true);
     try {
-      const res = await fetch("https://syonit-js.onrender.com/api/signup", {
+      const res = await fetch(`${url}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -150,20 +151,22 @@ export default function Signup() {
 
     setVerifying(true);
     try {
-      const res = await fetch("https://syonit-js.onrender.com/api/verify", {
+      const res = await fetch(`${url}/api/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: uid, otp: code }),
       });
       const data = await res.json();
-
+console.log(data);
       if (res.ok) {
         localStorage.setItem("token", data.token);
         setToken(data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("userPrize", JSON.stringify(data.userPrize));
         setUser(data.user);
+        setUserPrize(data.userPrize);
         toast.success("Verification successful! Welcome aboard.");
-        router.push("/profile");
+        router.push("/signup/success");
       } else {
         alert(data.message || "OTP verification failed");
       }

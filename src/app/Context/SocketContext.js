@@ -10,7 +10,7 @@ const SocketContext = createContext(null);
 let socketInstance = null;
 
 export const SocketProvider = ({ children }) => {
-  const { user } = useUser();
+  const { user, setUserPrize } = useUser();
   const [socket, setSocket] = useState(null);
   const [connected, setConnected] = useState(false);
   const [tournament, setTournament] = useState(null);
@@ -27,34 +27,35 @@ export const SocketProvider = ({ children }) => {
   const [selectedPrize, setSelectedPrize] = useState(null);
   const [onlineCount, setOnlineCount] = useState(0);
   const router = useRouter();
-  const url = "https://syonit-js.onrender.com";
+  const url = process.env.NEXT_PUBLIC_SOCKET_URL;
   // Initialize socket
   useEffect(() => {
     const initSocket = async () => {
-      const token = localStorage.getItem("token");
-      if (!user || !token) {
-        console.warn("⚠️ No user/token found — socket not initialized yet.");
-        return;
+   const token = localStorage.getItem("token");
+    if (!user || !token) {
+      console.warn("⚠️ No user/token found — socket not initialized yet.");
+      return;
+    }
+
+    // Always disconnect previous socket if any
+    if (socketInstance) {
+      console.log("🔌 Cleaning up previous socket instance");
+      socketInstance.disconnect();
+      socketInstance = null;
+    }
+
+    console.log("🔌 Initializing socket connection...");
+    const newSocket = io(
+      url,
+      {
+        autoConnect: true,
+        transports: ["websocket"],
+        auth: { token },
       }
+    );
 
-      if (socketInstance) {
-        console.log("♻️ Using existing socket instance");
-        setSocket(socketInstance);
-        return;
-      }
-
-      console.log("🔌 Initializing socket connection...");
-      const newSocket = io(
-        url || "https://syonit-js.onrender.com",
-        {
-          autoConnect: true,
-          transports: ["websocket"],
-          auth: { token },
-        }
-      );
-
-      socketInstance = newSocket;
-      setSocket(newSocket);
+    socketInstance = newSocket;
+    setSocket(newSocket);
 
       newSocket.on("connect", () => {
         console.log("✅ Connected to socket server:", newSocket.id);
@@ -115,6 +116,23 @@ export const SocketProvider = ({ children }) => {
 
     initSocket();
   }, [user]);
+
+  useEffect(() => {
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === "visible") {
+      if (socket && !socket.connected) {
+        console.log("🔄 Tab is visible again, reconnecting socket...");
+        socket.connect();
+      }
+    }
+  };
+
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+
+  return () => {
+    document.removeEventListener("visibilitychange", handleVisibilityChange);
+  };
+}, [socket]);
 
   // Register event listeners
   useEffect(() => {
@@ -262,7 +280,7 @@ export const SocketProvider = ({ children }) => {
 
     try {
       const res = await axios.post(
-        "https://syonit-js.onrender.com/api/tournament/join",
+        `${url}/api/tournament/join`,
         { userId: user.id, tid: tournament.tid }
       );
 
@@ -283,6 +301,22 @@ export const SocketProvider = ({ children }) => {
       toast.error("Failed to join tournament");
     }
   };
+
+  const handleSendPrize = async (userId, prizeId, setConfirmed, onClose) => {
+    try{
+      const response = await axios.post(`${url}/api/prizes/select-prize`, { userId, prizeId });
+       console.log("✅ Prize selected:", response.data);
+       setUserPrize(response.data.userPrize);
+       localStorage.setItem("userPrize", JSON.stringify(response.data.userPrize));
+       setConfirmed(true);
+       setTimeout(() => {
+          onClose();
+        }, 2000);
+    }catch(err){
+      console.error("Select prize error:", err?.response?.data || err.message);
+      toast.error("Failed to select prize");  
+    }
+  }
 
   return (
     <SocketContext.Provider
@@ -308,6 +342,7 @@ export const SocketProvider = ({ children }) => {
         gameTimer,
         setGameTimer,
         onlineCount,
+        handleSendPrize
       }}
     >
       {children}

@@ -274,3 +274,11 @@ line-height: 29px;
 background-color: rgba(244, 113, 48, 1);
 border-radius: 8px;
 }
+.waiting_text {
+  font-size: 16px;
+  font-family: "Heebo", sans-serif;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  letter-spacing: 1px;
+}

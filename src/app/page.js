@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import Onboarding from "./Components/Onboarding/Onboarding";
 import Banner from "./Components/IntroBanner/Banner";
+import SpotlightOverlay from "./Components/Game_Assistant/SpotlightOverlay";
 export default function Home() {
   useEffect(() => {
     function setDynamicHeight() {

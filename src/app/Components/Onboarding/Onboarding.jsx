@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import { getAudioContext, playSound } from "@/app/libs/audioContext";
 import ProgressBar from "./progressBar";
 import Button from '../syonit_button/intro';
+import { useOnboarding } from "@/app/Context/OnboardingContext";
+import { IntroSteps } from "@/app/libs/onboardingSteps";
+import SpotlightOverlay from "../Game_Assistant/SpotlightOverlay";
 
 const Onboarding = () => {
   const router = useRouter();
@@ -60,15 +63,25 @@ const Onboarding = () => {
     }
   };
 
+  const { start } = useOnboarding();
 
+ useEffect(() => {
+    const seen = localStorage.getItem('syonit_onboarding_seen_auth');
+    if (!seen) {
+      start(IntroSteps);
+      localStorage.setItem('syonit_onboarding_seen_auth', 'true');
+    }
+  }, []);
 
   return (
+    <>
+    <SpotlightOverlay/>
     <div className="new_onboarding_container">
       <div className="onboarding_primary_text">
         <h1>SYONIT</h1>
         </div>
 
-        <div className='bottom_button' ref={buttonRef}>
+        <div className='bottom_button' ref={buttonRef} data-guide="onboarding-auth">
           <div className="new_intro_bottom_content">
            <div className="new_intro_bottom_text">
                  <p className="think_differently">THINK <span className="flipped">D</span>IFFERENTLY</p>
@@ -78,6 +91,7 @@ const Onboarding = () => {
           <Button/>
           </div>
     </div>
+    </>
   );
 }
 

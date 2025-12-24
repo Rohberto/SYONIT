@@ -4,7 +4,9 @@ import { useRef, useEffect, useState } from 'react';
 import './banner.css';
 import { getAudioContext, playSound } from '@/app/libs/audioContext';
 import { useRouter } from 'next/navigation';
-
+import SpotlightOverlay from '../Game_Assistant/SpotlightOverlay';
+import { useOnboarding } from '@/app/Context/OnboardingContext';
+import { OnboardingSteps } from '@/app/libs/onboardingSteps';
 // GSAP
 import { gsap } from 'gsap';
 
@@ -95,7 +97,19 @@ export default function Banner() {
 
   }, []);
 
+    const { start } = useOnboarding();
+  
+   useEffect(() => {
+      const seen = localStorage.getItem('syonit_onboarding_seen_welcome');
+      if (!seen) {
+        start(OnboardingSteps);
+        localStorage.setItem('syonit_onboarding_seen_welcome', 'true');
+      }
+    }, []);
+
   return (
+    <>
+      <SpotlightOverlay />
     <div className="syonit-page">
       <header className="intro-header">
         <h1>SYONIT!</h1>
@@ -121,6 +135,7 @@ export default function Banner() {
               ref={buttonRef}
               onClick={handlePlayClick}
               className="glassBtn intro-btn"
+              data-guide="onboarding-welcome"
             >
               Let's Get Started
             </button>
@@ -142,5 +157,6 @@ export default function Banner() {
         </div>
       </div>
     </div>
+    </>
   );
 }

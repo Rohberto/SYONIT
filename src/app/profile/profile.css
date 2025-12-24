@@ -36,6 +36,7 @@
   font-family: "Heebo", sans-serif;
   letter-spacing: 0;
   color: rgba(255, 254, 220, 1);
+  text-transform: uppercase;
 }
 
 .profile-container {

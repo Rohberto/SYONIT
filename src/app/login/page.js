@@ -15,7 +15,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-  const {setToken, setUser} = useUser();
+  const {setToken, setUser, setUserPrize} = useUser();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -23,29 +23,31 @@ export default function Login() {
       [name]: value,
     });
   };
-
+const url = process.env.NEXT_PUBLIC_SOCKET_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const res = await fetch("https://syonit-js.onrender.com/api/login", { // 👈 change this to your API
+      const res = await fetch(`${url}/api/login`, { // 👈 change this to your API
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       const data = await res.json();
-
+      console.log(data);
       if (!res.ok) {
         throw new Error(data.message || "Login failed");
       }else {
       // save token to localStorage (or cookies if SSR)
       localStorage.setItem("token", data.token);
       localStorage.setItem("user",JSON.stringify(data.user));
+      localStorage.setItem("userPrize",JSON.stringify(data.userPrize));
       setToken(data.token);
       setUser(data.user);
+      setUserPrize(data.userPrize);
       toast.success("Login successful! Redirecting...");
       // redirect user (Next.js router)
       router.push("/Home")// 👈 change route

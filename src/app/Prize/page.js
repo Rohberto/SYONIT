@@ -16,11 +16,12 @@ const PrizePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [pendingPrize, setPendingPrize] = useState(null);
   const router = useRouter();
+  const url = process.env.NEXT_PUBLIC_SOCKET_URL;
   // ✅ Fetch prizes on load
   useEffect(() => {
     const fetchPrizes = async () => {
       try {
-        const res = await fetch("https://syonit-js.onrender.com/api/prizes"); // GET all prizes
+        const res = await fetch(`${url}/api/prizes`); // GET all prizes
         if (!res.ok) throw new Error("Failed to fetch prizes");
         const data = await res.json();
         setPrizes(data);
@@ -37,7 +38,7 @@ const PrizePage = () => {
     setSelectedPrize(prizeId);
 
     try {
-      const res = await fetch("https://syonit-js.onrender.com/api/prizes", {
+      const res = await fetch(`${url}/api/prizes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
