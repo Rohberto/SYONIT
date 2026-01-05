@@ -52,7 +52,9 @@ export default function Home() {
 
  useEffect(() => {
     const seen = localStorage.getItem('syonit_onboarding_seen_home');
+    console.log("Onboarding seen status:", seen);
     if (!seen) {
+      console.log("Starting onboarding for Home page");
       start(HomeSteps, {
       onComplete: () => {
         // Set localStorage AFTER onboarding finishes
@@ -66,9 +68,8 @@ export default function Home() {
         window.dispatchEvent(new Event('localStorageChange'));
       }
     });
-      localStorage.setItem('syonit_onboarding_seen_home', 'true');
     }
-  }, []);
+  }, [start]);
 
 useEffect(() => {
   // Function to check and open modal
@@ -443,7 +444,7 @@ case "game":
     <>
     <SpotlightOverlay />
     {prizeModalOpen && <PrizeSelectionUI onClose={() => setPrizeModalOpen(false)} />}
-    <div className="homeContainer">
+    <div className="homeContainer" data-guide="game">
       <Header />
       <div className="points-section" data-guide="points">
         <div className="points-container">
@@ -466,7 +467,7 @@ case "game":
           </button>
         </div>
       )}
-      <div data-guide="game">
+      <div data-guide="screen">
       {renderContent()}
       </div>
       <div className="nav-buttons">
@@ -497,7 +498,7 @@ case "game":
       </div>
       <div className="bottom-button" data-guide="timer">
         <div className="game_details">
-          <p>ONLINE: {onlineCount}</p>
+          <p data-guide="online">ONLINE: {onlineCount}</p>
           <p>{tournament ? "1: IN GAME" : "0: IN GAME"}</p>
         </div>
         <Button formatTime={formatTime} timeLeft={timeLeft} tournament={tournament} user={user} />

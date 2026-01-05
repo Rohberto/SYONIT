@@ -44,7 +44,7 @@ const Button = ({ formatTime, timeLeft, tournament, user }) => {
     !user?.id;
 
   return (
-    <div className="buttonsContainer glassContainer">
+    <div className="buttonsContainer glassContainer"  data-guide="actions">
       {/* Invite button */}
       <button
         className="game_stroke_links"
@@ -71,7 +71,7 @@ const Button = ({ formatTime, timeLeft, tournament, user }) => {
 
       {/* Countdown circle */}
       <div className="home_circle homeglassBtn">
-        <div className="circle_info">
+        <div className="circle_info" data-guide="timer">
           <p>NEXT</p>
           <h1>
             {tournament && tournament.status === "waiting"

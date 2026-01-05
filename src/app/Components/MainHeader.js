@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <div className="header_section">
-      <div className="profile_icon" onClick={toggleMenu}>
+      <div className="profile_icon" onClick={toggleMenu} data-guide="profile">
         {user?.image_url ? (
           <img src={user.image_url} alt="Profile" className="profile-pic" />
         ) : (
@@ -24,7 +24,7 @@ const Header = () => {
         <span className="online"></span>
       </div>
       <h1 className="headerr">SYONIT</h1>
-      <div className="book_icon">
+      <div className="book_icon" data-guide="rules">
         <BsBook />
       </div>
 
