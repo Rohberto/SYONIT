@@ -763,3 +763,6 @@ left: 0;
 .status-card--win h1 { display: block; }
 .status-card--win h1 span[role="img"] { display: inline-block; font-size: 30px; vertical-align: middle; }
 .avatar-icon.yes { border: 2px solid #fff; }
+
+/* Practice opportunity (round 1, first vote): visibly different, never scored */
+.game-console .game_round--practice { opacity: .85; outline: 2px dashed rgba(255, 255, 255, .55); outline-offset: 2px; border-radius: 14px; }

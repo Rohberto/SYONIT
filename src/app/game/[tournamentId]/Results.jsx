@@ -80,10 +80,15 @@ const Results = ({ results, myVote, onClose }) => {
     ? "It was a tie"
     : "Everyone voted the same";
 
-  const subtitle = hasMinority ? "Minority voters scored +1 point" : "Nobody scores this time";
+  const practice = !!results.practice;
+  const subtitle = practice
+    ? "Practice round. No points, just see how everyone thinks"
+    : hasMinority ? "Minority voters scored +1 point" : "Nobody scores this time";
 
   let personal = null;
-  if (!myVote) {
+  if (practice) {
+    personal = { tone: "neutral", text: myVote ? `You voted ${myVote.toUpperCase()}. Practice only, nothing scored` : "Practice only, nothing scored" };
+  } else if (!myVote) {
     personal = { tone: "neutral", text: "You didn't vote this time" };
   } else if (hasMinority && myVote === minoritySide) {
     personal = { tone: "win", text: `You voted ${myVote.toUpperCase()}. You scored +1!` };

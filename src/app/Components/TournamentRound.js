@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-const Round = ({ round, currentRound, yesScore, noScore, isPlayed, isActive, minority, roundId}) => {
+const Round = ({ round, currentRound, yesScore, noScore, isPlayed, isActive, minority, roundId, practice}) => {
   const [highlightY, setHighlightY] = useState(false);
 
   // Randomly assign background before play
@@ -17,7 +17,7 @@ const Round = ({ round, currentRound, yesScore, noScore, isPlayed, isActive, min
   const showNone = isPlayed && minority === "none";
 
   return (
-    <div className={`game_round ${isActive ? "game_round--active" : ""} ${isPlayed ? "game_round--played" : ""}`} aria-label={`Opportunity ${round}`}>
+    <div className={`game_round ${isActive ? "game_round--active" : ""} ${isPlayed ? "game_round--played" : ""} ${practice ? "game_round--practice" : ""}`} aria-label={practice ? "Practice opportunity" : `Opportunity ${round}`}>
       <div
         className={`y-section y${roundId}section
           ${isPlayed && minority === "yes" ? "section_highlight" : ""} 
@@ -29,7 +29,7 @@ const Round = ({ round, currentRound, yesScore, noScore, isPlayed, isActive, min
       </div>
 
       <div className={`${isPlayed ? "round_played_section" : "round_section"}`}>
-        {showNone ? <div className="none_label">None</div> : minority ? minority === "yes" ? "Y" : "N" : round}
+        {showNone ? <div className="none_label">None</div> : minority ? minority === "yes" ? "Y" : "N" : practice ? "P" : round}
       </div>
 
       <div

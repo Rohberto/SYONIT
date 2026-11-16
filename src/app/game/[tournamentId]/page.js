@@ -24,7 +24,9 @@ const GameConsole = () => {
   const [opportunityNumber, setOpportunityNumber] = useState(0);
   const [roundTimer, setRoundTimer] = useState(0);
   const [isVoting, setIsVoting] = useState(false);
-  const [results, setResults] = useState({ 1: null, 2: null, 3: null });
+  const [results, setResults] = useState({ 1: null, 2: null, 3: null, 4: null });
+  const [isPractice, setIsPractice] = useState(false);
+  const [totalOpps, setTotalOpps] = useState(3);
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
   const [isWinner, setIsWinner] = useState(false);
@@ -77,14 +79,18 @@ const GameConsole = () => {
     const handleRoundStarted = ({ roundNumber }) => {
       console.log(`🔄 Round ${roundNumber} started`);
       setCurrentRound(roundNumber);
-      setResults({ 1: null, 2: null, 3: null });
+      setResults({ 1: null, 2: null, 3: null, 4: null });
       setOpportunityNumber(0);
+      setIsPractice(false);
+      setTotalOpps(3);
     };
 
-    const handleOpportunityStarted = ({ oid, opportunityNumber, endsAt }) => {
+    const handleOpportunityStarted = ({ oid, opportunityNumber, endsAt, practice, totalOpportunities }) => {
       console.log(`🎯 Opportunity ${opportunityNumber} started, oid: ${oid}`);
       setOpportunityId(oid);
       setOpportunityNumber(opportunityNumber);
+      setIsPractice(!!practice);
+      if (totalOpportunities) setTotalOpps(totalOpportunities);
       if (sirenBuffer) playSound(sirenBuffer, "/Sounds/celebration.wav");
       setIsVoting(true);
       setShowVoteResultOverlay(null); // never leave the previous result covering a new vote
@@ -98,7 +104,8 @@ const GameConsole = () => {
       setRoundTimer(Math.floor(msLeft / 1000));
     };
 
-    const handleOpportunityEnded = ({ voters, yesVotes, noVotes, minority }) => {
+    const handleOpportunityEnded = ({ voters, yesVotes, noVotes, minority, practice, totalOpportunities }) => {
+      if (totalOpportunities) setTotalOpps(totalOpportunities);
       console.log(`🏁 Opportunity ${opportunityRef.current} ended`, { yesVotes, noVotes, minority });
       setIsVoting(false);
       setResults((prev) => ({
@@ -107,10 +114,11 @@ const GameConsole = () => {
           yesVotes: yesVotes ?? 0,
           noVotes: noVotes ?? 0,
           minority: minority ?? "none",
+          practice: !!practice,
         },
       }));
-      setShowVoteResultOverlay({ voters, yesVotes, noVotes, minority });
-      if (lastVote) {
+      setShowVoteResultOverlay({ voters, yesVotes, noVotes, minority, practice: !!practice });
+      if (lastVote && !practice) {
         if (lastVote === minority) {
           if (celebrationBuffer) playSound(celebrationBuffer, "/Sounds/celebration.wav");
         } else {
@@ -304,7 +312,7 @@ const GameConsole = () => {
           </div>
           <div className="game-slide">
             <div className="game_opportunity_info">
-              <h4>{opportunityNumber ? `Opportunity ${opportunityNumber} of 3` : "Get ready"}</h4>
+              <h4>{opportunityNumber ? (isPractice ? `Practice round (does not count)` : `Opportunity ${totalOpps === 4 ? opportunityNumber - 1 : opportunityNumber} of 3`) : "Get ready"}</h4>
               <p className="game_hint" role="status" aria-live="polite">
                 {isEliminated
                   ? ""
@@ -313,6 +321,8 @@ const GameConsole = () => {
                   : isVoting
                   ? option
                     ? "Now tap the centre circle to lock it in"
+                    : isPractice
+                    ? "Practice: vote freely. Nothing counts, so learn how others think!"
                     : "Pick YES or NO. Be in the minority to score!"
                   : opportunityNumber
                   ? "Waiting for the next opportunity..."
@@ -321,7 +331,7 @@ const GameConsole = () => {
             </div>
             {showVoteResultOverlay && <Results results={showVoteResultOverlay} myVote={lastVote} onClose={() => setShowVoteResultOverlay(null)} />}
             <div className="game_round_container">
-              {[1, 2, 3].map((opp) => {
+              {Array.from({ length: totalOpps }, (_, i) => i + 1).map((opp) => {
                 const roundResult = results[opp];
                 return (
                   <Round
@@ -333,7 +343,8 @@ const GameConsole = () => {
                     isActive={opportunityNumber === opp && isVoting}
                     currentRound={currentRound}
                     minority={roundResult ? roundResult.minority : null}
-                    roundId={opp}
+                    roundId={((opp - 1) % 3) + 1}
+                    practice={totalOpps === 4 && opp === 1}
                   />
                 );
               })}
