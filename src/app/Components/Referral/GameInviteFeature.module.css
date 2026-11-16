@@ -1,0 +1,461 @@
+/* GameInviteFeature.module.css */
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #fcd34d, #fdba74, #fcd34d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.gameInterface {
+  width: 100%;
+  max-width: 700px;
+  background: linear-gradient(to bottom, rgba(252, 211, 77, 0.5), rgba(251, 146, 60, 0.5));
+  border-radius: 30px;
+  padding: 40px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(249, 115, 22, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 8px;
+  margin: 0;
+}
+
+.points {
+  font-size: 12px;
+  color: #c2410c;
+  margin: 0;
+}
+
+.gameStatus {
+  background: rgba(251, 146, 60, 0.4);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.waitingText {
+  text-align: center;
+  color: #c2410c;
+  font-size: 14px;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.gameInfo {
+  background: rgba(249, 115, 22, 0.6);
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 20px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+  margin-bottom: 30px;
+}
+
+.statLabel {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.quoteSection {
+  text-align: center;
+  color: white;
+}
+
+.quoteText {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.quoteAuthor {
+  font-size: 14px;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 15px;
+}
+
+.actionBtn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.actionBtn:active {
+  transform: scale(0.95);
+}
+
+.inviteBtn {
+  background: #f97316;
+}
+
+.inviteBtn:hover {
+  background: #ea580c;
+}
+
+.secondaryBtn {
+  background: rgba(251, 146, 60, 0.6);
+  color: white;
+}
+
+.gameInfoRight {
+  text-align: right;
+}
+
+.onlineStatus {
+  font-size: 12px;
+  color: #c2410c;
+  margin-bottom: 5px;
+}
+
+.nextGame {
+  font-size: 14px;
+  color: #9a3412;
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+  animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background: white;
+  border-radius: 30px;
+  max-width: 450px;
+  width: 100%;
+  padding: 30px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: zoomIn 0.2s;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.modalTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1f2937;
+  margin: 0;
+}
+
+.closeBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.closeBtn:hover {
+  background: #e5e7eb;
+}
+
+.modalDescription {
+  color: #6b7280;
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+
+.referralStats {
+  background: linear-gradient(to right, #fff7ed, #fffbeb);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 25px;
+  border: 1px solid #fed7aa;
+}
+
+.statsTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #9a3412;
+  margin-bottom: 15px;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  text-align: center;
+}
+
+.statValue {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.statValue.joined {
+  color: #ea580c;
+}
+
+.statValue.pending {
+  color: #f59e0b;
+}
+
+.statValue.points {
+  color: #22c55e;
+}
+
+.statLabelSmall {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.shareGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.shareBtn {
+  border: none;
+  border-radius: 20px;
+  padding: 20px 15px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: white;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.shareBtn:hover {
+  opacity: 0.9;
+}
+
+.shareBtn:active {
+  transform: scale(0.95);
+}
+
+.shareBtn.whatsapp {
+  background: #22c55e;
+}
+
+.shareBtn.telegram {
+  background: #60a5fa;
+}
+
+.shareBtn.twitter {
+  background: #000000;
+}
+
+.shareBtn.facebook {
+  background: #2563eb;
+}
+
+.shareBtn.linkedin {
+  background: #1d4ed8;
+}
+
+.shareBtn.email {
+  background: #4b5563;
+}
+
+.shareBtn.sms {
+  background: #a855f7;
+}
+
+.shareIcon {
+  font-size: 28px;
+}
+
+.shareName {
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.copySection {
+  background: #f9fafb;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.copyLabel {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.copyInputGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.copyInput {
+  flex: 1;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #374151;
+  outline: none;
+}
+
+.copyInput:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+.copyBtn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.copyBtn.default {
+  background: #f97316;
+  color: white;
+}
+
+.copyBtn.default:hover {
+  background: #ea580c;
+}
+
+.copyBtn.copied {
+  background: #22c55e;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gameInterface {
+    padding: 25px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .quoteText {
+    font-size: 16px;
+  }
+
+  .shareGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .actionButtons {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .shareGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .logo {
+    font-size: 20px;
+    letter-spacing: 4px;
+  }
+}

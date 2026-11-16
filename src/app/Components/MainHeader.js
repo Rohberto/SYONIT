@@ -14,7 +14,7 @@ const Header = () => {
   };
 
   return (
-    <div className="header_section">
+    <div className="header_section" data-guide="profile">
       <div className="profile_icon" onClick={toggleMenu}>
         {user?.image_url ? (
           <img src={user.image_url} alt="Profile" className="profile-pic" />

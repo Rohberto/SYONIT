@@ -38,6 +38,13 @@ const url = process.env.NEXT_PUBLIC_SOCKET_URL;
 
       const data = await res.json();
       console.log(data);
+      if (res.status === 403 && data.code === "PAYMENT_REQUIRED") {
+        // registered but never paid the ₦50 bot-check: resume at the payment step
+        localStorage.setItem("pendingUserId", String(data.userId));
+        localStorage.setItem("pendingEmail", data.email);
+        router.push("/signup?step=3");
+        return;
+      }
       if (!res.ok) {
         throw new Error(data.message || "Login failed");
       }else {
@@ -84,17 +91,28 @@ const url = process.env.NEXT_PUBLIC_SOCKET_URL;
             placeholder="••••••••••••••••"
             required
           />
+
+      <p className="signup-link">
+  Don&apos;t have an account?{" "}
+  <span
+    className="signup-link-text"
+    style={{ cursor: "pointer", textDecoration: "underline" }}
+    onClick={() => router.push("/signup")}
+  >
+    Sign up
+  </span>
+</p>
         </div>
 
         {error && <p className="error-text">{error}</p>}
 
         <div className="social-login">
-          <p>or sign in with:</p>
+          <p>Social sign-in coming soon</p>
           <div className="social-buttons">
-            <button type="button" className="social-button">
+            <button type="button" className="social-button" disabled aria-disabled="true" title="Coming soon">
               <FaApple />
             </button>
-            <button type="button" className="social-button">
+            <button type="button" className="social-button" disabled aria-disabled="true" title="Coming soon">
               <FcGoogle />
             </button>
           </div>

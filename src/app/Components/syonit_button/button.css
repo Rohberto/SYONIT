@@ -77,3 +77,14 @@
             background-color: #fb7b3cff;
           }
       
+/* bottom bar polish: readable labels and big touch targets */
+.game_stroke_links {
+  min-height: 56px;
+  color: #e4571a;
+  font-size: 18px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: transform 0.15s, color 0.15s;
+}
+.game_stroke_links:active { transform: scale(0.96); }
+.game_stroke_links:disabled { opacity: 0.5; }

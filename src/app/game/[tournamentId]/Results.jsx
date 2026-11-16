@@ -1,126 +1,152 @@
 "use client";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./result.css";
-import { Pie } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend
-} from "chart.js";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+/**
+ * Simple round result: who was in the minority, the vote split, and what it means for YOU.
+ * results: { yesVotes, noVotes, minority, voters }   myVote: "yes" | "no" | null
+ */
+const AUTO_CLOSE_MS = 7000;
+const MAX_NAMES = 6;
 
-const Results = ({ results }) => {
-  const voters = results.voters || [];
-
-  // Group vote data
-  const yesVoters = voters.filter(v => v.choice === "yes");
-  const noVoters = voters.filter(v => v.choice === "no");
-
-  // Aggregate gender/age stats
-  const genderStats = {
-    yes: yesVoters.reduce((acc, v) => ({ ...acc, [v.gender]: (acc[v.gender] || 0) + 1 }), {}),
-    no: noVoters.reduce((acc, v) => ({ ...acc, [v.gender]: (acc[v.gender] || 0) + 1 }), {})
-  };
-
-  const ageStats = {
-    yes: yesVoters.reduce((acc, v) => ({ ...acc, [v.age]: (acc[v.age] || 0) + 1 }), {}),
-    no: noVoters.reduce((acc, v) => ({ ...acc, [v.age]: (acc[v.age] || 0) + 1 }), {})
-  };
-
-const chartColors = [
-  "#FF6A3D",
-  "#3DA5FF",
-  "#FFB74D",
-  "#81C784",
-  "#9575CD",
-  "#E57373"
-];
-
-const createChartData = (obj) => {
-  const keys = Object.keys(obj);
-  const values = Object.values(obj);
-
-  return {
-    labels: keys,
-    datasets: [
-      {
-        data: values,
-        backgroundColor: keys.map((_, i) => chartColors[i % chartColors.length]),
-        borderWidth: 0
-      }
-    ]
-  };
+const LABELS = {
+  male: "Male",
+  female: "Female",
+  other: "Other",
+  unknown: "Unknown",
 };
 
+/** Count votes per category (e.g. gender) for each side */
+function breakdown(voters, key) {
+  const rows = {};
+  voters.forEach((v) => {
+    const cat = v[key] || "unknown";
+    rows[cat] = rows[cat] || { yes: 0, no: 0 };
+    if (v.choice === "yes") rows[cat].yes += 1;
+    else if (v.choice === "no") rows[cat].no += 1;
+  });
+  return Object.entries(rows).sort((a, b) => b[1].yes + b[1].no - (a[1].yes + a[1].no));
+}
 
+function BreakdownRows({ title, rows }) {
+  if (!rows.length) return null;
+  const max = Math.max(1, ...rows.map(([, c]) => Math.max(c.yes, c.no)));
+  return (
+    <div className="rs-group">
+      <h4 className="rs-group-title">{title}</h4>
+      {rows.map(([cat, c]) => (
+        <div className="rs-row" key={cat}>
+          <span className="rs-row-num rs-row-num--yes">{c.yes}</span>
+          <div className="rs-row-bar rs-row-bar--yes"><i style={{ width: `${(c.yes / max) * 100}%` }} /></div>
+          <span className="rs-row-label">{LABELS[cat] || cat}</span>
+          <div className="rs-row-bar rs-row-bar--no"><i style={{ width: `${(c.no / max) * 100}%` }} /></div>
+          <span className="rs-row-num rs-row-num--no">{c.no}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const Results = ({ results, myVote, onClose }) => {
+  const [showWho, setShowWho] = useState(false);
+  const voters = useMemo(() => results.voters || [], [results]);
+  const gender = useMemo(() => breakdown(voters, "gender"), [voters]);
+  const age = useMemo(() => breakdown(voters, "age"), [voters]);
+  const namesFor = (side) => {
+    const list = voters.filter((v) => v.choice === side).map((v) => v.name);
+    return { shown: list.slice(0, MAX_NAMES), extra: Math.max(0, list.length - MAX_NAMES) };
+  };
+
+  // Close automatically after a few seconds, unless the player opened "who voted what"
+  useEffect(() => {
+    if (showWho || !onClose) return;
+    const t = setTimeout(onClose, AUTO_CLOSE_MS);
+    return () => clearTimeout(t);
+  }, [showWho, onClose]);
+
+  const yes = results.yesVotes ?? (results.voters || []).filter((v) => v.choice === "yes").length;
+  const no = results.noVotes ?? (results.voters || []).filter((v) => v.choice === "no").length;
+  const total = yes + no;
+
+  const minoritySide = yes < no ? "yes" : no < yes ? "no" : null;
+  const minorityCount = minoritySide === "yes" ? yes : minoritySide === "no" ? no : 0;
+  const hasMinority = minoritySide !== null && minorityCount > 0;
+
+  const title = hasMinority
+    ? `${minoritySide.toUpperCase()} was the minority`
+    : total === 0
+    ? "Nobody voted"
+    : yes === no
+    ? "It was a tie"
+    : "Everyone voted the same";
+
+  const subtitle = hasMinority ? "Minority voters scored +1 point" : "Nobody scores this time";
+
+  let personal = null;
+  if (!myVote) {
+    personal = { tone: "neutral", text: "You didn't vote this time" };
+  } else if (hasMinority && myVote === minoritySide) {
+    personal = { tone: "win", text: `You voted ${myVote.toUpperCase()}. You scored +1!` };
+  } else if (hasMinority) {
+    personal = { tone: "lose", text: `You voted ${myVote.toUpperCase()}. No point this time` };
+  } else {
+    personal = { tone: "neutral", text: `You voted ${myVote.toUpperCase()}` };
+  }
+
+  const yesPct = total ? Math.round((yes / total) * 100) : 50;
 
   return (
-    <div className="results-overlay">
-      <div className="results-card">
+    <div className="results-overlay" onClick={onClose} role="dialog" aria-label="Round result">
+      <div className="results-card rs-card" onClick={(e) => e.stopPropagation()}>
+        {onClose && (
+          <button className="results-close" onClick={onClose} aria-label="Close result">
+            ×
+          </button>
+        )}
 
-        <h3 className="primer-text">PRIMER</h3>
-        <p className="question-text">{results.question || ""}</p>
+        <p className="rs-kicker">RESULT</p>
+        <h2 className="rs-title">{title}</h2>
+        <p className="rs-sub">{subtitle}</p>
 
-        {/* AVATARS & CHOICES ROW */}
-        <div className="avatar-row">
-          {voters.map((v,i) => (
-            <div key={i} className="avatar-wrap">
-              <div className={`avatar-icon ${v.choice}`}></div>
-              <span className="vote-label">{v.choice.toUpperCase()}</span>
-              <p className="avatar-name">{v.name}</p>
-            </div>
-          ))}
-        </div>
-
-        <p className="votes-title">ROUND {results.opportunityNumber} — VOTES</p>
-
-        {/* VOTE BUBBLES */}
-        <div className="bubble-row">
-          {voters.map((v,i) => (
-            <div key={i} className={`bubble ${v.choice}`}>
-              {v.choice.charAt(0).toUpperCase()}
-            </div>
-          ))}
-        </div>
-
-        {/* SCORE SUMMARY */}
-        <div className="results-summary">
-          <div className="choice-box yes-box">Y <span>{results.yesVotes}</span></div>
-          <div className="choice-box no-box">N <span>{results.noVotes}</span></div>
-          <div className="points-box">
-            {results.minority?.toUpperCase()} gets +1PT
+        <div className="rs-split" aria-label={`Yes ${yes}, No ${no}`}>
+          <div className={`rs-side rs-yes ${minoritySide === "yes" && hasMinority ? "is-minority" : ""}`}>
+            <span className="rs-count">{yes}</span>
+            <span className="rs-label">YES</span>
+          </div>
+          <div className={`rs-side rs-no ${minoritySide === "no" && hasMinority ? "is-minority" : ""}`}>
+            <span className="rs-count">{no}</span>
+            <span className="rs-label">NO</span>
           </div>
         </div>
-
-        {/* CHARTS */}
-        <div className="stats-section">
-          <h4>Who voted YES?</h4>
-          <div className="chart-row">
-            <div>
-              <p>By Gender</p>
-              <Pie data={createChartData(genderStats.yes)} />
-            </div>
-            <div>
-              <p>By Age</p>
-              <Pie data={createChartData(ageStats.yes)} />
-            </div>
-          </div>
-
-          <h4>Who voted NO?</h4>
-          <div className="chart-row">
-            <div>
-              <p>By Gender</p>
-              <Pie data={createChartData(genderStats.no)} />
-            </div>
-            <div>
-              <p>By Age</p>
-              <Pie data={createChartData(ageStats.no)} />
-            </div>
-          </div>
+        <div className="rs-bar" aria-hidden="true">
+          <div className="rs-bar-yes" style={{ width: `${yesPct}%` }} />
         </div>
 
+        {personal && <p className={`rs-me rs-me--${personal.tone}`}>{personal.text}</p>}
+        {voters.length > 0 && (
+          <button type="button" className="rs-who-btn" onClick={() => setShowWho((v) => !v)} aria-expanded={showWho}>
+            {showWho ? "Hide who voted what" : "See who voted what"}
+          </button>
+        )}
+
+        {showWho && (
+          <div className="rs-who">
+            <div className="rs-who-head"><span>YES</span><span>NO</span></div>
+            <BreakdownRows title="By gender" rows={gender} />
+            <BreakdownRows title="By age" rows={age} />
+            {["yes", "no"].map((side) => {
+              const { shown, extra } = namesFor(side);
+              return shown.length ? (
+                <p className="rs-names" key={side}>
+                  <b>{side.toUpperCase()}:</b> {shown.join(", ")}
+                  {extra > 0 ? ` +${extra} more` : ""}
+                </p>
+              ) : null;
+            })}
+          </div>
+        )}
+
+        <p className="rs-hint">{showWho ? "Tap outside to close" : "Tap anywhere to continue"}</p>
       </div>
     </div>
   );

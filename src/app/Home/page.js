@@ -21,6 +21,7 @@ import SimpleTooltip from "../Components/Game_Assistant/SimpleTooltip";
 import { HomeSteps } from "../libs/onboardingSteps";
 import {jwtDecode} from "jwt-decode";
 import PrizeSelectionUI from "../Components/Prize/PrizeModal";
+import GameInviteFeature from "../Components/Referral/GameInvite";
 
 export default function Home() {
   const [currentTab, setCurrentTab] = useState("game");
@@ -45,6 +46,7 @@ export default function Home() {
   const router = useRouter();
   const opportunityRef = useRef(opportunityNumber);
   const [prizeModalOpen, setPrizeModalOpen] = useState(false);
+    const [showShareModal, setShowShareModal] = useState(false);
 
   //gamehelp
   const { start } = useOnboarding();
@@ -66,7 +68,6 @@ export default function Home() {
         window.dispatchEvent(new Event('localStorageChange'));
       }
     });
-      localStorage.setItem('syonit_onboarding_seen_home', 'true');
     }
   }, []);
 
@@ -116,7 +117,7 @@ useEffect(() => {
   // Navigation: Redirect to login if not logged in
   useEffect(() => {
     if (loading) return; // Wait for localStorage check
-    if (!user || !user.id) {
+    if (!user || !user.id || !userPrize) {
       console.log("User not signed in, redirecting to /login");
       router.push("/login");
     }
@@ -466,7 +467,7 @@ case "game":
           </button>
         </div>
       )}
-      <div data-guide="game">
+      <div data-guide="screen">
       {renderContent()}
       </div>
       <div className="nav-buttons">
@@ -496,11 +497,11 @@ case "game":
         </button>
       </div>
       <div className="bottom-button" data-guide="timer">
-        <div className="game_details">
+        <div className="game_details" data-guide="online">
           <p>ONLINE: {onlineCount}</p>
           <p>{tournament ? "1: IN GAME" : "0: IN GAME"}</p>
         </div>
-        <Button formatTime={formatTime} timeLeft={timeLeft} tournament={tournament} user={user} />
+        <Button formatTime={formatTime} timeLeft={timeLeft} tournament={tournament} user={user} setShowShareModal={setShowShareModal} />
       </div>
       <MessageModal
         isOpen={modalOpen}
@@ -508,6 +509,7 @@ case "game":
         onClose={closeModal}
         autoDismiss={5000} // Auto-close after 5s
       />
+      <GameInviteFeature showShareModal={showShareModal} setShowShareModal={setShowShareModal} />
     </div>
     </>
   );

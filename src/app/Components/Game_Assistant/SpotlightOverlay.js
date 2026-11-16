@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react';
 import Glass from '../GlassyButton/Glass';
 
 export default function SpotlightOverlay() {
-  const { visible, stepIndex, next, close, steps} = useOnboarding();
-const step = steps[stepIndex];
-const [rect, setRect] = useState(null);
+  const { visible, stepIndex, next, close, steps, skip } = useOnboarding();
+  const step = steps[stepIndex];
+  const [rect, setRect] = useState(null);
 
   useEffect(() => {
     if (!visible || !step) return;
@@ -108,11 +108,11 @@ console.log(stepIndex);
       <div className="tooltip-actions">
        
   {stepIndex.length < 1 ? (
-    <button onClick={close}>Close</button>
+    <button onClick={skip}>Close</button>
   ) : (
     <>
       <button onClick={next}>Next</button>
-      <button onClick={close}>Skip</button>
+      <button onClick={skip}>Skip</button>
     </>
   )}
 

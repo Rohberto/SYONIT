@@ -5,7 +5,7 @@ import { getAudioContext, playSound } from "../../libs/audioContext";
 import Glass from "../GlassyButton/Glass";
 import { useSocket } from "../../Context/SocketContext";
 
-const Button = ({ formatTime, timeLeft, tournament, user }) => {
+const Button = ({ formatTime, timeLeft, tournament, user, setShowShareModal }) => {
   const [lines, setLines] = useState([]);
   const [audioBuffer, setAudioBuffer] = useState(null);
   const router = useRouter();
@@ -44,13 +44,13 @@ const Button = ({ formatTime, timeLeft, tournament, user }) => {
     !user?.id;
 
   return (
-    <div className="buttonsContainer glassContainer">
+    <div className="buttonsContainer glassContainer" data-guide="actions" >
       {/* Invite button */}
       <button
         className="game_stroke_links"
         onClick={() => {
           if (audioBuffer) playSound(audioBuffer, "/Sounds/click_sound.wav");
-          router.push("/Invite");
+          setShowShareModal(true);
         }}
       >
         INVITE

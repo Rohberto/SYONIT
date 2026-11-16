@@ -1,0 +1,450 @@
+/* src/app/cube/cube.css */
+/* Matches home page: Heebo font, orange #f7712f, dark radial gradient background */
+
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;800&display=swap');
+
+/* ─── Page ────────────────────────────────────────────────────────────────── */
+.cube-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at 30% 20%, #7c3a0a 0%, #3d1a05 40%, #1a0a02 100%);
+  color: #fff;
+  font-family: 'Heebo', sans-serif;
+  padding-bottom: 80px;
+}
+
+.cube-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  gap: 14px;
+  color: rgba(255,255,255,0.4);
+  font-family: 'Heebo', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.cube-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(247,113,47,0.2);
+  border-top-color: rgba(247,113,47,1);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Points pill ─────────────────────────────────────────────────────────── */
+.pts-pill-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 16px 0;
+}
+.pts-pill {
+  background: rgba(247,113,47,0.15);
+  border: 1px solid rgba(247,113,47,0.5);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(247,113,47,1);
+  letter-spacing: 1.5px;
+  font-family: 'Heebo', sans-serif;
+}
+
+/* ─── Page heading ────────────────────────────────────────────────────────── */
+.page-heading {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  padding: 16px 16px 2px;
+  font-family: 'Heebo', sans-serif;
+}
+.page-sub {
+  text-align: center;
+  font-size: 9px;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 1px;
+  padding-bottom: 4px;
+  font-family: 'Heebo', sans-serif;
+}
+
+/* ─── 3D Cube ─────────────────────────────────────────────────────────────── */
+.cube-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 16px 0 8px;
+}
+
+.cube-scene {
+  width: 120px;
+  height: 120px;
+  perspective: 500px;
+  cursor: grab;
+  user-select: none;
+}
+.cube-scene:active { cursor: grabbing; }
+
+.cube-3d {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.cube-face {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 6px;
+  border: 1px solid rgba(247,113,47,0.25);
+  background: rgba(255,255,255,0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: background 0.4s, border-color 0.4s;
+}
+
+.cf-front  { transform: rotateY(0deg)    translateZ(60px); }
+.cf-back   { transform: rotateY(180deg)  translateZ(60px); }
+.cf-right  { transform: rotateY(90deg)   translateZ(60px); }
+.cf-left   { transform: rotateY(-90deg)  translateZ(60px); }
+.cf-top    { transform: rotateX(90deg)   translateZ(60px); }
+.cf-bottom { transform: rotateX(-90deg)  translateZ(60px); }
+
+.face-roman {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.3);
+  font-family: 'Heebo', sans-serif;
+}
+.face-done .face-roman { color: rgba(255,255,255,0.9); }
+.face-check { font-size: 14px; }
+
+.cube-count-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(247,113,47,1);
+  margin-top: 10px;
+  letter-spacing: 0.5px;
+  font-family: 'Heebo', sans-serif;
+}
+.cube-drag-hint {
+  font-size: 9px;
+  color: rgba(255,255,255,0.2);
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+  font-family: 'Heebo', sans-serif;
+}
+
+/* ─── Progress bar ────────────────────────────────────────────────────────── */
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 16px 4px;
+}
+.bar-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: rgba(247,113,47,1);
+  border-radius: 99px;
+  transition: width 0.5s ease;
+}
+.bar-pct {
+  font-size: 9px;
+  color: rgba(255,255,255,0.35);
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  font-family: 'Heebo', sans-serif;
+}
+
+/* ─── Complete badge ──────────────────────────────────────────────────────── */
+.complete-badge {
+  margin: 10px 16px 0;
+  padding: 10px 14px;
+  border: 1px solid rgba(247,113,47,1);
+  border-radius: 10px;
+  color: rgba(247,113,47,1);
+  font-weight: 700;
+  font-size: 11px;
+  text-align: center;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  font-family: 'Heebo', sans-serif;
+}
+
+/* ─── Face tabs ───────────────────────────────────────────────────────────── */
+.face-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin: 14px 16px 0;
+}
+
+.face-tab {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  position: relative;
+  transition: all 0.2s;
+  font-family: 'Heebo', sans-serif;
+}
+.face-tab:active { transform: scale(0.98); }
+
+.face-tab.tab-open {
+  border-color: rgba(247,113,47,0.7);
+  background: rgba(247,113,47,0.08);
+}
+.face-tab.tab-done {
+  border-color: var(--fc);
+  background: color-mix(in srgb, var(--fc) 12%, transparent);
+}
+
+.tab-part {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--fc, rgba(247,113,47,1));
+}
+.tab-title {
+  font-size: 10px;
+  color: #ccc;
+  line-height: 1.3;
+}
+.face-tab.tab-done .tab-title { color: #fff; }
+
+.tab-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 11px;
+  color: var(--fc);
+  font-weight: 700;
+}
+
+/* ─── Face detail panel ───────────────────────────────────────────────────── */
+.face-detail {
+  margin: 10px 16px 0;
+  border: 1px solid color-mix(in srgb, var(--fc) 40%, transparent);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.02);
+}
+
+.face-det-header {
+  padding: 12px 14px;
+  background: color-mix(in srgb, var(--fc) 10%, transparent);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.det-part {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--fc);
+  letter-spacing: 1px;
+  margin: 0 0 2px;
+  font-family: 'Heebo', sans-serif;
+}
+.det-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  font-family: 'Heebo', sans-serif;
+}
+.det-count {
+  font-size: 10px;
+  color: var(--fc);
+  font-weight: 700;
+  white-space: nowrap;
+  font-family: 'Heebo', sans-serif;
+}
+
+/* ─── Steps ───────────────────────────────────────────────────────────────── */
+.step-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 14px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  gap: 10px;
+  transition: background 0.15s;
+}
+.step-locked { cursor: pointer; }
+.step-locked:hover { background: rgba(255,255,255,0.05); }
+.step-done { opacity: 0.5; cursor: default; }
+
+.step-info { flex: 1; }
+.step-num {
+  display: block;
+  font-size: 9px;
+  color: #555;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+  font-family: 'Heebo', sans-serif;
+}
+.step-name {
+  font-size: 11px;
+  color: #ddd;
+  line-height: 1.3;
+  font-family: 'Heebo', sans-serif;
+}
+.step-done .step-name { text-decoration: line-through; color: #555; }
+
+.step-right { flex-shrink: 0; }
+
+.step-tick {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--fc) 20%, transparent);
+  color: var(--fc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+.step-cost-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.step-pts {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--fc, rgba(247,113,47,1));
+  font-family: 'Heebo', sans-serif;
+}
+
+/* ─── Modals ──────────────────────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-box {
+  background: #1a0d05;
+  border: 1px solid rgba(247,113,47,0.4);
+  border-radius: 18px;
+  padding: 24px 20px;
+  width: 100%;
+  max-width: 340px;
+  font-family: 'Heebo', sans-serif;
+}
+
+.modal-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  margin: 0 0 6px;
+  letter-spacing: 0.5px;
+}
+.modal-step-name {
+  font-size: 11px;
+  color: #888;
+  text-align: center;
+  line-height: 1.4;
+  margin-bottom: 18px;
+}
+.modal-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: #888;
+}
+.modal-cost { color: rgba(247,113,47,1); font-weight: 700; }
+.pts-ok     { color: #10b981; font-weight: 700; }
+.pts-low    { color: #ef4444; font-weight: 700; }
+.modal-warn { font-size: 10px; color: #ef4444; text-align: center; margin-top: 8px; }
+
+.modal-actions { display: flex; gap: 8px; margin-top: 20px; }
+
+.btn-cancel {
+  flex: 1;
+  padding: 11px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: transparent;
+  color: #888;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Heebo', sans-serif;
+}
+.btn-unlock {
+  flex: 1;
+  padding: 11px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(247,113,47,1);
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Heebo', sans-serif;
+  transition: opacity 0.2s;
+}
+.btn-unlock:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* ─── Complete modal ──────────────────────────────────────────────────────── */
+.modal-complete { text-align: center; border-color: rgba(247,113,47,0.8); }
+.trophy-icon { font-size: 44px; margin-bottom: 10px; }
+.complete-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: rgba(247,113,47,1);
+  margin-bottom: 8px;
+  font-family: 'Heebo', sans-serif;
+}
+.complete-body { font-size: 12px; color: #aaa; line-height: 1.5; margin-bottom: 4px; }
+.complete-sub  { font-size: 10px; color: #555; }
+
+/* ─── Mobile tweaks ───────────────────────────────────────────────────────── */
+@media (max-width: 390px) {
+  .page-heading  { font-size: 10px; letter-spacing: 2px; }
+  .page-sub      { font-size: 8px; }
+  .pts-pill      { font-size: 10px; padding: 4px 10px; }
+  .cube-count-lbl { font-size: 10px; }
+  .tab-title     { font-size: 9px; }
+  .tab-part      { font-size: 8px; }
+  .step-name     { font-size: 10px; }
+  .det-title     { font-size: 11px; }
+  .modal-title   { font-size: 13px; }
+  .modal-step-name { font-size: 10px; }
+  .btn-cancel, .btn-unlock { font-size: 11px; padding: 10px; }
+  .complete-title { font-size: 18px; }
+}

@@ -192,7 +192,7 @@ export const SocketProvider = ({ children }) => {
 
     socket.on("tournament:starting", (data) => {
       console.log("🚀 Tournament starting:", data);
-      toast.info(`Tournament starting in ${data.startsIn / 1000}s...`);
+      toast.info(`Tournament starting in ${data.startsIn / 1000}s...`, { toastId: "tournament-starting" });
       setNoOfPlayers(data.playersCount);
       setGameTimer(data.startsIn / 1000);
       if (tournament?.tid && user?.id) {
@@ -277,11 +277,13 @@ export const SocketProvider = ({ children }) => {
     const tid = tournament?.tid;
     if (!tid) return console.warn("⚠️ No tournament ID found");
     if (!user?.id) return console.warn("⚠️ No user ID found");
+    const token = localStorage.getItem("token");
 
     try {
       const res = await axios.post(
         `${url}/api/tournament/join`,
-        { userId: user.id, tid: tournament.tid }
+        { userId: user.id, tid: tournament.tid },
+  { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (res.data?.ok) {
@@ -302,21 +304,28 @@ export const SocketProvider = ({ children }) => {
     }
   };
 
+  // Pick the user's prize (first-time selection). Returns true on success.
   const handleSendPrize = async (userId, prizeId, setConfirmed, onClose) => {
-    try{
-      const response = await axios.post(`${url}/api/prizes/select-prize`, { userId, prizeId });
-       console.log("✅ Prize selected:", response.data);
-       setUserPrize(response.data.userPrize);
-       localStorage.setItem("userPrize", JSON.stringify(response.data.userPrize));
-       setConfirmed(true);
-       setTimeout(() => {
-          onClose();
-        }, 2000);
-    }catch(err){
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${url}/api/prizes/select-prize`,
+        { prizeId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUserPrize(response.data.userPrize);
+      localStorage.setItem("userPrize", JSON.stringify(response.data.userPrize));
+      setConfirmed?.(true);
+      setTimeout(() => {
+        onClose?.();
+      }, 2000);
+      return true;
+    } catch (err) {
       console.error("Select prize error:", err?.response?.data || err.message);
-      toast.error("Failed to select prize");  
+      toast.error(err?.response?.data?.message || "Failed to select prize");
+      return false;
     }
-  }
+  };
 
   return (
     <SocketContext.Provider

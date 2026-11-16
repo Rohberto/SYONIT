@@ -8,8 +8,8 @@ import {useRouter} from "next/navigation";
 import "./prize.css";
 
 const PrizePage = () => {
-  const { socket, tournament, timeLeft, handleReadyUp, setSelectedPrize } = useSocket();
-  const { user } = useUser();
+  const { socket, tournament, timeLeft, handleReadyUp, handleSendPrize, setSelectedPrize } = useSocket();
+  const { user, userPrize } = useUser();
 
   const [prizes, setPrizes] = useState([]);
  
@@ -33,32 +33,6 @@ const PrizePage = () => {
     fetchPrizes();
   }, []);
 
-  // ✅ Handle selecting prize (after confirmation)
-  const handleSelectPrize = async (prizeId) => {
-    setSelectedPrize(prizeId);
-
-    try {
-      const res = await fetch(`${url}/api/prizes`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          participantId: user?.participantId, // you must pass this from context
-          prizeId,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to assign prize");
-
-      alert("Prize selected successfully!");
-    } catch (err) {
-      console.error("Error selecting prize:", err.message);
-      alert(err.message);
-    }
-  };
-
   // ✅ Show confirmation modal
   const confirmPrizeSelection = (prizeId, prizeName) => {
     setPendingPrize(prizeId);
@@ -67,10 +41,14 @@ const PrizePage = () => {
   };
 
   // ✅ Handle modal confirm
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (pendingPrize) {
-   handleReadyUp(user, pendingPrize);
-  
+      // first-time users must register their prize before they can join
+      if (!userPrize?.prizeId) {
+        const ok = await handleSendPrize(user?.id, pendingPrize);
+        if (!ok) return;
+      }
+      handleReadyUp(user, pendingPrize);
     }
     setShowModal(false);
     setPendingPrize(null);

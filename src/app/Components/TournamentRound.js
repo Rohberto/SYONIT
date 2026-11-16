@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-const Round = ({ round, currentRound, yesScore, noScore, isPlayed, minority, roundId}) => {
+const Round = ({ round, currentRound, yesScore, noScore, isPlayed, isActive, minority, roundId}) => {
   const [highlightY, setHighlightY] = useState(false);
 
   // Randomly assign background before play
@@ -17,14 +17,14 @@ const Round = ({ round, currentRound, yesScore, noScore, isPlayed, minority, rou
   const showNone = isPlayed && minority === "none";
 
   return (
-    <div className="game_round">
+    <div className={`game_round ${isActive ? "game_round--active" : ""} ${isPlayed ? "game_round--played" : ""}`} aria-label={`Opportunity ${round}`}>
       <div
         className={`y-section y${roundId}section
           ${isPlayed && minority === "yes" ? "section_highlight" : ""} 
           ${isPlayed ? "played" : ""}`}
       >
         <p>
-            {yesScore}
+            {isPlayed ? yesScore : ""}
         </p>
       </div>
 
@@ -39,7 +39,7 @@ const Round = ({ round, currentRound, yesScore, noScore, isPlayed, minority, rou
           ${isPlayed ? "played" : ""}`}
       >
         <p>
-          {noScore}
+          {isPlayed ? noScore : ""}
         </p>
       </div>
     </div>

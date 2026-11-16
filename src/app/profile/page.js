@@ -81,7 +81,7 @@ export default function Welcome() {
   return (
     <div className="profileContainer">
       <h1 className="profileHeader">SYONIT</h1>
-      <h2 className="subheader">WELCOME SYONNAIRE {user.username}!</h2>
+      <h2 className="subheader">WELCOME SYONNAIRE {user?.username || ""}!</h2>
 
       <div className="profile-container">
         <div className="profile-picture">

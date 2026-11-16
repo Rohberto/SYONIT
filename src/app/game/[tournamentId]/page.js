@@ -28,6 +28,7 @@ const GameConsole = () => {
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
   const [isWinner, setIsWinner] = useState(false);
+  const [sharedWin, setSharedWin] = useState(false);
   const [audioBuffer, setAudioBuffer] = useState(null);
   const [celebrationBuffer, setCelebrationBuffer] = useState(null);
   const [sirenBuffer, setSirenBuffer] = useState(null);
@@ -44,7 +45,6 @@ const GameConsole = () => {
 
   const handleSelectOption = (option) => {
     setOption(option);
-    toast.success("Click on the center button to lock your decision.");
     if (audioBuffer) playSound(audioBuffer, "/Sounds/click_sound.wav");
   };
 
@@ -87,6 +87,7 @@ const GameConsole = () => {
       setOpportunityNumber(opportunityNumber);
       if (sirenBuffer) playSound(sirenBuffer, "/Sounds/celebration.wav");
       setIsVoting(true);
+      setShowVoteResultOverlay(null); // never leave the previous result covering a new vote
       setLastVote(null);
       setHasVoted(false); // Reset hasVoted for new voting opportunity
       setResults((prev) => ({
@@ -109,7 +110,6 @@ const GameConsole = () => {
         },
       }));
       setShowVoteResultOverlay({ voters, yesVotes, noVotes, minority });
-      setTimeout(() => setShowVoteResultOverlay(null), 5000);
       if (lastVote) {
         if (lastVote === minority) {
           if (celebrationBuffer) playSound(celebrationBuffer, "/Sounds/celebration.wav");
@@ -117,6 +117,10 @@ const GameConsole = () => {
           toast.warn("Oops, you are not in the minority!");
         }
       }
+    };
+
+    const handleRoundReplay = ({ message }) => {
+      toast.info(message || "Nobody was in the minority. Replaying the round!", { toastId: "round-replay" });
     };
 
     const handleRoundEnded = () => {
@@ -134,11 +138,12 @@ const GameConsole = () => {
       setShowTieBreaker(true);
     };
 
-    const handleTournamentEnded = ({ tid, winnerId, winnerName }) => {
+    const handleTournamentEnded = ({ tid, winnerId, winnerName, winnerIds, shared }) => {
       console.log(`🏆 Tournament ${tid} ended. Winner: ${winnerName} (ID: ${winnerId})`);
       setGameOver(true);
       setWinner(winnerName || "No Winner");
-      setIsWinner(userId && userId === winnerId);
+      setSharedWin(!!shared);
+      setIsWinner(!!userId && (userId === winnerId || (Array.isArray(winnerIds) && winnerIds.includes(userId))));
       setIsEliminated(false);
       setShowTieBreaker(false);
     };
@@ -155,6 +160,7 @@ const GameConsole = () => {
     socket.on("opportunity:started", handleOpportunityStarted);
     socket.on("opportunity:ended", handleOpportunityEnded);
     socket.on("round:ended", handleRoundEnded);
+    socket.on("round:replay", handleRoundReplay);
     socket.on("player:eliminated", handlePlayerEliminated);
     socket.on("tie:breaker", handleTieBreaker);
     socket.on("tournament:ended", handleTournamentEnded);
@@ -166,6 +172,7 @@ const GameConsole = () => {
       socket.off("opportunity:started", handleOpportunityStarted);
       socket.off("opportunity:ended", handleOpportunityEnded);
       socket.off("round:ended", handleRoundEnded);
+      socket.off("round:replay", handleRoundReplay);
       socket.off("player:eliminated", handlePlayerEliminated);
       socket.off("tie:breaker", handleTieBreaker);
       socket.off("tournament:ended", handleTournamentEnded);
@@ -241,64 +248,48 @@ const GameConsole = () => {
       <Header />
       {isEliminated && !gameOver ? (
         <div className="eliminated-screen">
-          <h2>🚫 You’ve been eliminated</h2>
-          {showTieBreaker ? (
-            <button className="game_stroke_links" onClick={handleBreakTie}>
-              Break the Tie 🔥
+          <div className="status-card">
+            <div className="status-emoji" aria-hidden="true">🚫</div>
+            <h2>You’ve been eliminated</h2>
+            {showTieBreaker ? (
+              <>
+                <p>A tie-breaker is open. Win it to get back in.</p>
+                <button className="status-btn" onClick={handleBreakTie}>
+                  Break the Tie 🔥
+                </button>
+              </>
+            ) : (
+              <p>Waiting to see if a tie-breaker opens...</p>
+            )}
+            <button className="status-btn status-btn--ghost" onClick={() => router.push("/Home")}>
+              Back to Home
             </button>
-          ) : (
-            <p>Waiting to see if tie-breaker opens...</p>
-          )}
+          </div>
         </div>
       ) : gameOver ? (
         <div className="game-over">
           {isWinner ? (
-            <div className="game-over-winner">
+            <div className="game-over-winner status-card status-card--win">
               <h1>
-                <span role="img" aria-label="party">🎉</span> You’re the Champion! <span role="img" aria-label="trophy">🏆</span>
+                <span role="img" aria-label="party">🎉</span> {sharedWin ? "You share the win!" : "You’re the Champion!"} <span role="img" aria-label="trophy">🏆</span>
               </h1>
-              <p>Congratulations, {user?.username || "Player"}! You conquered the tournament!</p>
+              <p>Congratulations, {user?.username || "Player"}! {sharedWin ? "Nobody could be beaten, so the survivors share the win." : "You conquered the tournament!"}</p>
               <div className="game-over-buttons">
-                <button
-                  onClick={() => router.push("/Home")}
-                  className="game-over-button return-home"
-                >
-                  Return Home
-                </button>
-                <button
-                  onClick={() => {
-                    setGameOver(false);
-                    setIsWinner(false);
-                    router.push("/Home");
-                  }}
-                  className="game-over-button play-again"
-                >
-                  Play Again
+                <button onClick={() => router.push("/Home")} className="game-over-button play-again">
+                  Back to Home
                 </button>
               </div>
             </div>
           ) : (
-            <div className="game-over-loser">
+            <div className="game-over-loser status-card status-card--lose">
               <h1>😔 Game Over</h1>
               <p>The tournament has ended. Better luck next time!</p>
               <p>
                 Winner: <span className="winner-name">{winner || "Unknown"}</span>
               </p>
               <div className="game-over-buttons">
-                <button
-                  onClick={() => router.push("/Home")}
-                  className="game-over-button return-home"
-                >
-                  Return Home
-                </button>
-                <button
-                  onClick={() => {
-                    setGameOver(false);
-                    router.push("/Home");
-                  }}
-                  className="game-over-button play-again"
-                >
-                  Play Again
+                <button onClick={() => router.push("/Home")} className="game-over-button play-again">
+                  Back to Home
                 </button>
               </div>
             </div>
@@ -306,16 +297,29 @@ const GameConsole = () => {
         </div>
       ) : (
         <>
-          <div className="current_game_info_buttons">
-            <div className="game_info_circle"><h4>Players</h4><p>{noOfPlayers}</p></div>
-            <div className="game_info_large"><h4>Round</h4><p>{currentRound}</p></div>
-            <div className="game_info_circle"><h4>Points</h4><p>{scores}</p></div>
+          <div className="game-stats" aria-label="Game status">
+            <div className="game-stat"><span className="game-stat__label">Players</span><span className="game-stat__value">{noOfPlayers}</span></div>
+            <div className="game-stat game-stat--main"><span className="game-stat__label">Round</span><span className="game-stat__value">{currentRound}</span></div>
+            <div className="game-stat"><span className="game-stat__label">Points</span><span className="game-stat__value">{scores}</span></div>
           </div>
           <div className="game-slide">
             <div className="game_opportunity_info">
-              <h4>Opportunity: {opportunityNumber}</h4>
+              <h4>{opportunityNumber ? `Opportunity ${opportunityNumber} of 3` : "Get ready"}</h4>
+              <p className="game_hint" role="status" aria-live="polite">
+                {isEliminated
+                  ? ""
+                  : hasVoted
+                  ? "Vote locked in. Waiting for results..."
+                  : isVoting
+                  ? option
+                    ? "Now tap the centre circle to lock it in"
+                    : "Pick YES or NO. Be in the minority to score!"
+                  : opportunityNumber
+                  ? "Waiting for the next opportunity..."
+                  : "The game is about to begin"}
+              </p>
             </div>
-            {showVoteResultOverlay && <Results results={showVoteResultOverlay} />}
+            {showVoteResultOverlay && <Results results={showVoteResultOverlay} myVote={lastVote} onClose={() => setShowVoteResultOverlay(null)} />}
             <div className="game_round_container">
               {[1, 2, 3].map((opp) => {
                 const roundResult = results[opp];
@@ -338,7 +342,8 @@ const GameConsole = () => {
             <div className="gamebuttonsContainer">
               <div className="game_buttons_container">
                 <button
-                  className="game_y_button"
+                  className={`game_y_button ${option === "yes" ? "is-selected" : ""}`}
+                  aria-pressed={option === "yes"}
                   onClick={() => {
                     handleSelectOption("yes");
                   }}
@@ -347,7 +352,8 @@ const GameConsole = () => {
                   Yes
                 </button>
                 <button
-                  className="game_n_button"
+                  className={`game_n_button ${option === "no" ? "is-selected" : ""}`}
+                  aria-pressed={option === "no"}
                   onClick={() => {
                     handleSelectOption("no");
                   }}
@@ -356,16 +362,25 @@ const GameConsole = () => {
                   No
                 </button>
                 <div
-                  className={`game_circle ${!isVoting || hasVoted || !option || roundTimer <= 0 || gameOver ? "disabled" : ""}`}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={option ? `Lock in ${option}` : "Timer"}
+                  className={`game_circle ${!isVoting || hasVoted || !option || roundTimer <= 0 || gameOver ? "disabled" : "ready"} ${isVoting && roundTimer > 0 && roundTimer <= 5 ? "urgent" : ""}`}
                   onClick={() => handleVote(option)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      handleVote(option);
+                    }
+                  }}
                 >
                   {roundTimer > 0 ? (
                     <p className="timer_text">
-                      <span>{roundTimer}s</span>
-                      {option && <span>submit</span>}
+                      <span className="timer_num">{roundTimer}</span>
+                      <span className="timer_sub">{hasVoted ? "locked" : option ? "lock in" : "sec"}</span>
                     </p>
                   ) : (
-                    <span className="timer_text">Loading...</span>
+                    <span className="timer_text">{hasVoted ? "Locked" : "Wait"}</span>
                   )}
                 </div>
               </div>

@@ -328,3 +328,92 @@ top: 0 !important; /* Adjust based on header height (e.g., 50px + padding) */
 
 
 
+
+/* =========================================================
+   SYONIT UI polish layer (mobile-first)
+   ========================================================= */
+:root {
+  --sy-orange: #f7712f;
+  --sy-orange-deep: #f66e2c;
+  --sy-amber: #fcc772;
+  --sy-cream: #faf3df;
+  --sy-ink: #5a2c08;
+  --sy-white: #ffffff;
+  --sy-glass: rgba(255, 255, 255, 0.18);
+  --sy-glass-strong: rgba(255, 255, 255, 0.32);
+  --sy-line: rgba(255, 255, 255, 0.85);
+  --sy-radius-lg: 24px;
+  --sy-radius-pill: 999px;
+  --sy-shadow: 0 8px 24px rgba(120, 52, 10, 0.18);
+  --sy-gap: 12px;
+  --sy-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --sy-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Never let mobile browsers zoom the page when a field is focused (needs >= 16px) */
+input,
+select,
+textarea {
+  font-size: max(16px, 1em);
+}
+
+button,
+[role="button"],
+a {
+  touch-action: manipulation;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 3px solid var(--sy-white);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgba(247, 113, 47, 0.85);
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Toasts: full-width on phones, tidy and compact, and never covering the header for long */
+.custom-toast-container.Toastify__toast-container {
+  width: calc(100% - 24px);
+  max-width: 420px;
+  left: 50% !important;
+  transform: translateX(-50%);
+  top: calc(env(safe-area-inset-top, 0px) + 8px) !important;
+  padding: 0;
+}
+.custom-toast.Toastify__toast {
+  min-height: 0;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  font-family: "Heebo", "DM Sans", sans-serif;
+  font-size: 14px;
+  line-height: 1.35;
+  box-shadow: var(--sy-shadow);
+}
+.custom-toast .Toastify__toast-body {
+  padding: 0;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,13 +1,17 @@
 "use client";
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import "./signup.css";
-import { FaApple, FaGoogle } from "react-icons/fa";
+import { FaApple } from "react-icons/fa";
 import { FcGoogle } from 'react-icons/fc';
 import Button from '../Components/syonit_button/sign';
 import { useRouter } from 'next/navigation';
 import { useUser } from '../Context/userContext';
 import { toast } from 'react-toastify';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { usePaystackPayment } from "react-paystack";
+
+// Registration bot-check fee: ₦50 (Paystack amounts are in kobo). Keep in sync with the backend.
+const REGISTRATION_FEE_KOBO = 5000;
 
 export default function Signup() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -19,18 +23,92 @@ export default function Signup() {
     gender: '',
     ageBracket: '',
     termsAccepted: false,
-    verificationCode: ['', '', '', '']
   });
   const [submitting, setSubmitting] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [pendingUserId, setPendingUserId] = useState(null);
   const router = useRouter();
-  const { user, setUser, setToken, setUserPrize } = useUser();
+  const { setUser, setToken, setUserPrize } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const url = process.env.NEXT_PUBLIC_SOCKET_URL;
 
-  // Create refs for OTP input fields
-  const inputRefs = useRef([null, null, null, null].map(() => useRef(null)));
+  // react-paystack v6: hook gets the base config, per-payment values are passed at click time
+  const initializePayment = usePaystackPayment({
+    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+    amount: REGISTRATION_FEE_KOBO,
+    currency: "NGN",
+    email: formData.email,
+  });
+
+  // Recovery + referral capture: /signup?step=3 (user created earlier but never paid) and /signup?ref=CODE
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get("ref");
+      if (ref) localStorage.setItem("refCode", ref);
+      if (params.get("step") === "3") {
+        const uid = localStorage.getItem("pendingUserId");
+        const email = localStorage.getItem("pendingEmail");
+        if (uid && email) {
+          setPendingUserId(uid);
+          setFormData((f) => ({ ...f, email }));
+          setCurrentStep(3);
+        }
+      }
+    } catch (e) {}
+  }, []);
+
+  const handlePaystackSuccess = async (response) => {
+    const uid = pendingUserId || localStorage.getItem("pendingUserId");
+    setVerifying(true);
+    try {
+      const res = await fetch(`${url}/api/payment/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: uid, reference: response.reference }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("userPrize", JSON.stringify(data.userPrize));
+        localStorage.removeItem("pendingUserId");
+        localStorage.removeItem("pendingEmail");
+        localStorage.removeItem("refCode");
+        setToken(data.token);
+        setUser(data.user);
+        setUserPrize(data.userPrize);
+        toast.success("Registration verified! Welcome aboard.");
+        router.push("/signup/success");
+      } else {
+        toast.error(data.message || "Payment verification failed");
+      }
+    } catch (err) {
+      console.error("Payment verify error:", err);
+      toast.error("Verification failed");
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const handlePaystackClose = () => {
+    toast.warn("Payment window closed. You can retry any time.");
+  };
+
+  // Starts the Paystack popup (wired to the SUBMIT button on step 3)
+  const startPayment = () => {
+    const uid = pendingUserId || localStorage.getItem("pendingUserId");
+    const email = formData.email || localStorage.getItem("pendingEmail");
+    if (!uid || !email) {
+      toast.error("No pending registration found. Please sign up again.");
+      return;
+    }
+    initializePayment({
+      onSuccess: handlePaystackSuccess,
+      onClose: handlePaystackClose,
+      config: { reference: `SYONIT_${uid}_${Date.now()}`, email },
+    });
+  };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -40,143 +118,56 @@ export default function Signup() {
     });
   };
 
-  const handleVerificationCodeChange = (index, value, e) => {
-    if (/^\d?$/.test(value)) { // Allow only single digits
-      const newCode = [...formData.verificationCode];
-      newCode[index] = value;
-      setFormData({ ...formData, verificationCode: newCode });
+const handleSubmit = async () => {
+  if (!formData.termsAccepted) {
+    alert("Please accept Terms & Conditions to proceed");
+    return;
+  }
+  if (!formData.fullName || !formData.email || !formData.password || !formData.gender || !formData.ageBracket) {
+    alert("Please fill in all required fields (first name, last name, email, password, gender, age bracket)");
+    return;
+  }
+  setSubmitting(true);
+  try {
+    const res = await fetch(`${url}/api/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fullName: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        username: formData.displayName || formData.email.split('@')[0],
+        gender: formData.gender,
+        ageBracket: formData.ageBracket,
+        referralCode: localStorage.getItem("refCode") || undefined,
+      }),
+    });
 
-      // Move focus to next input if a digit was entered and not the last input
-      if (value && index < 3) {
-        inputRefs.current[index + 1].current.focus();
-      }
+    const data = await res.json();
 
-      // Move focus to previous input on backspace if the field is empty
-      if (!value && e.key === 'Backspace' && index > 0) {
-        inputRefs.current[index - 1].current.focus();
-      }
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (!formData.termsAccepted) {
-      alert("Please accept Terms & Conditions to proceed");
-      return;
-    }
-    if (!formData.fullName || !formData.email || !formData.password || !formData.gender || !formData.ageBracket) {
-      alert("Please fill in all required fields (first name, last name, email, password, gender, age bracket)");
-      return;
-    }
-    setSubmitting(true);
-    try {
-      const res = await fetch(`${url}/api/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: formData.fullName,
-          email: formData.email,
-          password: formData.password,
-          username: formData.displayName || formData.email.split('@')[0],
-          gender: formData.gender,
-          ageBracket: formData.ageBracket
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.message || "Signup failed");
-        setSubmitting(false);
-        return;
-      }
-
-      const uid = data.userId || (data.user && (data.user.id || data.user.userId)) || data.id || null;
-      if (!uid) {
-        if (data.user && data.user.id) {
-          setPendingUserId(data.user.id);
-          localStorage.setItem("userId", String(data.user.id));
-        } else {
-          console.warn("No userId returned by signup response", data);
-        }
-      } else {
-        setPendingUserId(uid);
-        localStorage.setItem("pendingUserId", String(uid));
-      }
-      toast.success("Signup successful! Verification code sent to your email.");
-      setCurrentStep(3);
-    } catch (err) {
-      console.error("Signup error:", err);
-     toast.error("Signup failed");
-    } finally {
+    if (!res.ok) {
+      toast.error(data.message || "Signup failed");
       setSubmitting(false);
-    }
-  };
-
-  const handleResendCode = async () => {
-    try {
-      const uid = pendingUserId || localStorage.getItem("pendingUserId");
-      if (!uid) {
-        alert("No pending user to resend code for.");
-        return;
-      }
-      const res = await fetch("/api/auth/resend-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: uid }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        alert(data.message || "Unable to resend code");
-        return;
-      }
-     toast.success("Verification code resent to your email.");
-    } catch (err) {
-      console.error("Resend OTP error:", err);
-     toast.error("Unable to resend code");
-    }
-  };
-
-  const handleVerifyOtp = async () => {
-    const code = formData.verificationCode.join("");
-    if (code.length !== 4) {
-      alert("Please enter the 4-digit code.");
       return;
     }
 
-    const uid = pendingUserId || localStorage.getItem("pendingUserId");
-    if (!uid) {
-      alert("No pending user to verify. Please signup again.");
-      return;
+    if (!data.userId) {
+      console.warn("No userId returned by signup response", data);
+    } else {
+      setPendingUserId(data.userId);
+      localStorage.setItem("pendingUserId", String(data.userId));
+      localStorage.setItem("pendingEmail", formData.email);
     }
 
-    setVerifying(true);
-    try {
-      const res = await fetch(`${url}/api/verify`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: uid, otp: code }),
-      });
-      const data = await res.json();
-console.log(data);
-      if (res.ok) {
-        localStorage.setItem("token", data.token);
-        setToken(data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("userPrize", JSON.stringify(data.userPrize));
-        setUser(data.user);
-        setUserPrize(data.userPrize);
-        toast.success("Verification successful! Welcome aboard.");
-        router.push("/signup/success");
-      } else {
-        alert(data.message || "OTP verification failed");
-      }
-    } catch (err) {
-      console.error("Verify OTP error:", err);
-      alert("Verification failed");
-    } finally {
-      setVerifying(false);
-    }
-  };
+    toast.success("Signup successful! Complete payment to verify your account.");
+    setCurrentStep(3);
+  } catch (err) {
+    console.error("Signup error:", err);
+    toast.error("Signup failed");
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const handleNext = () => {
     if (currentStep === 2) {
@@ -187,7 +178,10 @@ console.log(data);
   };
 
   const handleBack = () => {
-    if (currentStep > 1) {
+    if (currentStep === 3) {
+      // account already created at step 2: going back would re-submit it, so leave the flow instead
+      router.push("/login");
+    } else if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     } else {
       router.back();
@@ -252,19 +246,19 @@ console.log(data);
               <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
-              <option value="prefer_not_to_say">Prefer not to say</option>
+              <option value="other">Prefer not to say</option>
             </select>
             <div className="social-login">
-              <p>or sign in with:</p>
+              <p>Social sign-in coming soon</p>
               <div className="social-buttons">
                 <div className="social-button-text">
                   Apple
-                  <button className="social-button">
+                  <button type="button" className="social-button" disabled aria-disabled="true" title="Coming soon">
                     <FaApple />
                   </button>
                 </div>
                 <div className="social-button-text">
-                  <button className="social-button">
+                  <button type="button" className="social-button" disabled aria-disabled="true" title="Coming soon">
                     <FcGoogle />
                   </button>
                   Google
@@ -299,36 +293,20 @@ console.log(data);
               </div>
             </div>
             <p className="instruction-text">
-              A 4-digit code will be sent to your email inbox when you click Next. Kindly input code.
+              Next, a tiny ₦50 payment confirms you're a real player, not a bot.
             </p>
           </div>
         );
       case 3:
         return (
-          <div className="form-container">
-            <label>Verification Code:</label>
-            <div className="verification-inputs">
-              {formData.verificationCode.map((digit, index) => (
-                <input
-                  key={index}
-                  type="text"
-                  maxLength="1"
-                  value={digit}
-                  onChange={(e) => handleVerificationCodeChange(index, e.target.value, e)}
-                  onKeyDown={(e) => handleVerificationCodeChange(index, e.target.value, e)}
-                  className="verification-box"
-                  ref={inputRefs.current[index]}
-                  autoFocus={index === 0} // Auto-focus first input
-                />
-              ))}
-            </div>
-            <div className="resend-code">
-              <p>Problem receiving code?</p>
-              <button onClick={handleResendCode} className="resend-button" disabled={submitting}>
-                RESEND CODE
-              </button>
-              <hr />
-            </div>
+          <div className="form-container pay-card">
+            <p className="instruction-text">One last step. A one-time payment proves you're a real player, not a bot.</p>
+            <div className="pay-amount" aria-label="50 naira">₦50</div>
+            <ul className="pay-points">
+              <li>Secure card, bank or transfer via Paystack</li>
+              <li>Pay once, never again</li>
+            </ul>
+            {verifying && <p className="instruction-text" role="status">Verifying your payment…</p>}
           </div>
         );
       default:
@@ -351,7 +329,7 @@ console.log(data);
           currentStep={currentStep}
           handleBack={handleBack}
           handleNext={handleNext}
-          handleVerifyOtp={handleVerifyOtp}
+          handleVerifyOtp={startPayment}
         />
       </div>
     </div>

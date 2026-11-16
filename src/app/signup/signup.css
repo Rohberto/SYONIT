@@ -108,6 +108,19 @@ input::placeholder{
   font-weight: 700;
   color: rgba(255, 255, 255, 1);
 }
+.signup-link {
+   display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-family: "Heebo", sans-serif;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.3);
+}
+.signup-link-text{
+  margin-left: 5px;
+  color: #faf6d9ff;
+}
 
 .social-buttons {
   display: flex;
@@ -257,3 +270,94 @@ input[type="checkbox"]:checked{
   width: 100%;
   box-sizing: border-box;
 }
+
+/* =========================================================
+   Auth polish layer (signup + login), mobile-first
+   ========================================================= */
+.signContainer {
+  height: auto;
+  min-height: 100svh;
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 16px calc(130px + env(safe-area-inset-bottom, 0px));
+}
+.form-container {
+  height: auto;
+  max-height: none;
+  min-height: 300px;
+  padding: 22px 18px;
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 10px 28px rgba(120, 52, 10, 0.22);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.form-container label {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  margin: 12px 0 6px;
+}
+.form-container input[type="text"],
+.form-container input[type="email"],
+.form-container input[type="password"],
+.form-container select {
+  min-height: 52px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: #fff;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.form-container input::placeholder { color: rgba(255, 255, 255, 0.9); opacity: 1; }
+.form-container select option { color: #5a2c08; }
+.form-container input:focus,
+.form-container select:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.4);
+  border-color: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.45);
+}
+.error-text {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #b3261e;
+  font-family: "Heebo", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+.signup-link, .signup-link-text { font-size: 14px; }
+.signup-link-text { cursor: pointer; text-decoration: underline; font-weight: 700; }
+.instruction-text {
+  color: #fff;
+  font-family: "Heebo", sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: center;
+  margin: 10px 0;
+}
+
+/* social sign-in is not live yet: make that obvious instead of dead buttons */
+.social-button[disabled], .social-button[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+
+/* payment step */
+.pay-card { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+.pay-amount {
+  display: inline-block;
+  padding: 10px 26px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--sy-orange);
+  font-family: "Heebo", sans-serif;
+  font-size: 34px;
+  font-weight: 800;
+  box-shadow: 0 6px 16px rgba(120, 52, 10, 0.25);
+}
+.pay-points { list-style: none; padding: 0; margin: 6px 0 0; color: #fff; font-family: "Heebo", sans-serif; font-size: 14px; line-height: 1.7; }
+
+/* progress dots */
+.progress-circles span { transition: background 0.3s, transform 0.3s; }
+.progress-circles span.active { transform: scale(1.1); }
+.signup-link { color: #fff; }

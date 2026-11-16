@@ -2,18 +2,38 @@
 export const HomeSteps = [
   {
     key: 'points',
-    text: 'This shows your points. You score when you choose the minority.',
+    text: 'This shows your current point and progress to winning the prize pool.',
     selector: '[data-guide="points"]',
   },
   {
-    key: 'game',
-    text: 'This card shows the current game state.',
-    selector: '[data-guide="game"]',
+    key: 'screen',
+    text: 'This section displays the main game content, including live-game, quotes, leaderboard and more.',
+    selector: '[data-guide="screen"]',
   },
   {
     key: 'timer',
-    text: 'When this timer ends, the game starts.',
+    text: 'This countdown shows when the next game starts. Get ready to make your choice!',
     selector: '[data-guide="timer"]',
+  },
+  {
+    key: 'online-status',
+    text: 'See how many players are online and currently in game.',
+    selector: '[data-guide="online"]',
+  },
+  {
+    key: 'actions',
+    text: 'Use INVITE to bring friends, and READY UP to join the next game!',
+    selector: '[data-guide="actions"]', // The INVITE and READY UP buttons
+  },
+  {
+    key: 'profile',
+    text: 'Click on the image to access your profile, settings, and prize information and click on the book to access tutorials and guides.',
+    selector: '[data-guide="profile"]', // Top left profile icon
+  },
+  {
+    key: 'final',
+    text: 'You\'re all set! Wait for the timer to reach zero, then make your strategic choice. Good luck!',
+    selector: '[data-guide="actions"]',
   },
 ];
 
