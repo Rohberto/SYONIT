@@ -1,10 +1,10 @@
 import { io } from "socket.io-client";
 
-const SOCKET_URL = "http://localhost:4000"; // change to your backend URL
+const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000";
 
 // Create the socket instance but don't auto-connect until first use
-const socket = io(SOCKET_URL, {
-  autoConnect: false, 
+export const socket = io(SOCKET_URL, {
+  autoConnect: false,
 });
 
 export default socket;
